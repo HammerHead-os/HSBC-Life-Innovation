@@ -2,6 +2,7 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { Home, Activity, Shield, Lightbulb, User, HelpCircle, LogOut, Bell } from 'lucide-react';
 import { HsbcLogo } from '../components/QuickActions';
 import { USER } from '../data/constants';
+import { webHeaderStyle } from '../styles/headerBackground';
 
 const NAV = [
   { to: '/web', end: true, icon: Home, label: 'Home' },
@@ -62,14 +63,11 @@ export default function WebLayout() {
 
       <div className="flex-1 ml-56">
         <div
-          className="h-48 bg-cover bg-center relative"
-          style={{
-            backgroundImage:
-              'linear-gradient(to right, rgba(0,0,0,0.5), rgba(0,0,0,0.2)), url(https://images.unsplash.com/photo-1536599018102-0f803a642e48?w=1400&q=80)',
-          }}
+          className="h-52 bg-cover bg-no-repeat relative"
+          style={webHeaderStyle}
         >
           <div className="absolute inset-0 flex items-end justify-between p-8">
-            <h1 className="text-white text-3xl font-bold">Good morning, {USER.name} 👋</h1>
+            <h1 className="text-white text-3xl font-bold drop-shadow-md">Good morning, {USER.name} 👋</h1>
             <div className="flex items-center gap-4">
               <button type="button" className="text-white relative">
                 <Bell className="w-6 h-6" />

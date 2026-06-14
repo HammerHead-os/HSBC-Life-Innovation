@@ -2,6 +2,7 @@ import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { Home, Activity, Shield, Lightbulb, User, Bell } from 'lucide-react';
 import { HsbcLogo } from '../components/QuickActions';
 import { USER } from '../data/constants';
+import { mobileHeaderStyle } from '../styles/headerBackground';
 
 const NAV = [
   { to: '/mobile', end: true, icon: Home, label: 'Home' },
@@ -28,11 +29,8 @@ export default function MobileLayout() {
   return (
     <div className="min-h-screen bg-gray-50 max-w-md mx-auto shadow-2xl flex flex-col">
       <header
-        className="relative px-4 pt-10 pb-16 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            'linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.5)), url(https://images.unsplash.com/photo-1536599018102-0f803a642e48?w=800&q=80)',
-        }}
+        className="relative px-4 pt-10 pb-16 bg-cover bg-no-repeat"
+        style={mobileHeaderStyle}
       >
         <div className="flex items-center justify-between mb-6">
           <HsbcLogo light />
@@ -46,7 +44,7 @@ export default function MobileLayout() {
             </div>
           </div>
         </div>
-        <h1 className="text-white text-2xl font-bold">
+        <h1 className="text-white text-2xl font-bold drop-shadow-md">
           Good morning, {USER.name} 👋
         </h1>
       </header>
