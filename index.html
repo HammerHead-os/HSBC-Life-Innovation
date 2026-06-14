@@ -2,12 +2,150 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Micro-Protection Fluid | HSBC Life</title>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        min-height: 100vh;
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        background: linear-gradient(135deg, #fafafa 0%, #fff5f5 100%);
+        color: #111;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+      }
+      .logo-mark {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-right: 0.5rem;
+      }
+      .logo-mark span {
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: 9px solid #db0011;
+      }
+      .logo-mark span:last-child {
+        border-bottom-color: rgba(219, 0, 17, 0.65);
+        margin-top: 2px;
+        transform: scale(0.85);
+      }
+      .logo-text { font-weight: 700; font-size: 0.95rem; }
+      .logo-text em { color: #db0011; font-style: normal; font-weight: 700; }
+      h1 {
+        font-size: clamp(1.75rem, 5vw, 2.25rem);
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        text-align: center;
+      }
+      .subtitle {
+        color: #666;
+        max-width: 28rem;
+        text-align: center;
+        line-height: 1.5;
+        margin-bottom: 2.5rem;
+        font-size: 0.95rem;
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        max-width: 42rem;
+        width: 100%;
+        margin-bottom: 2.5rem;
+      }
+      .card {
+        background: #fff;
+        border: 2px solid #f0f0f0;
+        border-radius: 1rem;
+        padding: 2rem;
+        text-align: center;
+        text-decoration: none;
+        color: inherit;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+        transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+      }
+      .card:hover {
+        border-color: #db0011;
+        box-shadow: 0 16px 32px rgba(219,0,17,0.12);
+        transform: translateY(-2px);
+      }
+      .card-icon {
+        width: 4rem;
+        height: 4rem;
+        margin: 0 auto 1rem;
+        border-radius: 1rem;
+        background: #fff0f1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s;
+      }
+      .card:hover .card-icon { background: #db0011; }
+      .card-icon svg {
+        width: 2rem;
+        height: 2rem;
+        stroke: #db0011;
+        fill: none;
+        stroke-width: 2;
+        transition: stroke 0.2s;
+      }
+      .card:hover .card-icon svg { stroke: #fff; }
+      .card h2 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+      .card p { font-size: 0.85rem; color: #666; line-height: 1.4; }
+      .footer {
+        font-size: 0.75rem;
+        color: #aaa;
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <header class="logo" aria-label="HSBC Life">
+      <div class="logo-mark"><span></span><span></span></div>
+      <div class="logo-text">HSBC <em>Life</em></div>
+    </header>
+
+    <h1>Micro-Protection Fluid</h1>
+    <p class="subtitle">
+      Full interactive prototype — mobile app &amp; web dashboard. Same premium, smarter allocation.
+    </p>
+
+    <div class="cards">
+      <a class="card" href="mobile.html">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="7" y="2" width="10" height="20" rx="2" />
+            <line x1="12" y1="18" x2="12" y2="18.01" stroke-width="3" />
+          </svg>
+        </div>
+        <h2>Mobile App</h2>
+        <p>Phone-first HSBC Life experience with bottom navigation</p>
+      </a>
+      <a class="card" href="web.html">
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="2" y="4" width="20" height="14" rx="2" />
+            <line x1="8" y1="20" x2="16" y2="20" />
+            <line x1="12" y1="18" x2="12" y2="20" />
+          </svg>
+        </div>
+        <h2>Web Dashboard</h2>
+        <p>Desktop portal with sidebar and expanded layout</p>
+      </a>
+    </div>
+
+    <p class="footer">HSBC Life Insurance Innovation Competition · Demo</p>
   </body>
 </html>

@@ -5,11 +5,11 @@ import { USER } from '../data/constants';
 import { mobileHeaderStyle } from '../styles/headerBackground';
 
 const NAV = [
-  { to: '/mobile', end: true, icon: Home, label: 'Home' },
-  { to: '/mobile/activity', icon: Activity, label: 'Activity' },
-  { to: '/mobile/protection', icon: Shield, label: 'My Protection' },
-  { to: '/mobile/insights', icon: Lightbulb, label: 'Insights' },
-  { to: '/mobile/profile', icon: User, label: 'Profile' },
+  { to: '/', end: true, icon: Home, label: 'Home' },
+  { to: '/activity', icon: Activity, label: 'Activity' },
+  { to: '/protection', icon: Shield, label: 'My Protection' },
+  { to: '/insights', icon: Lightbulb, label: 'Insights' },
+  { to: '/profile', icon: User, label: 'Profile' },
 ];
 
 export default function MobileLayout() {

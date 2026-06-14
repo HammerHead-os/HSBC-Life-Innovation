@@ -9,11 +9,11 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173
+Open http://localhost:5173 — the landing page is static `index.html`.
 
-- **/** — Choose mobile or web
-- **/mobile** — Phone app
-- **/web** — Desktop dashboard
+- **index.html** — Choose mobile or web
+- **mobile.html** — Phone app
+- **web.html** — Desktop dashboard
 
 ## Stack
 

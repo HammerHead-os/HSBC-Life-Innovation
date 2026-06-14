@@ -5,11 +5,11 @@ import { USER } from '../data/constants';
 import { webHeaderStyle } from '../styles/headerBackground';
 
 const NAV = [
-  { to: '/web', end: true, icon: Home, label: 'Home' },
-  { to: '/web/activity', icon: Activity, label: 'Activity' },
-  { to: '/web/protection', icon: Shield, label: 'My Protection' },
-  { to: '/web/insights', icon: Lightbulb, label: 'Insights' },
-  { to: '/web/profile', icon: User, label: 'Profile' },
+  { to: '/', end: true, icon: Home, label: 'Home' },
+  { to: '/activity', icon: Activity, label: 'Activity' },
+  { to: '/protection', icon: Shield, label: 'My Protection' },
+  { to: '/insights', icon: Lightbulb, label: 'Insights' },
+  { to: '/profile', icon: User, label: 'Profile' },
 ];
 
 export default function WebLayout() {
