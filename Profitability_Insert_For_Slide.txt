@@ -1,0 +1,108 @@
+8. Profitability Projections (HK$200/mo premium)
+
+COVERAGE MULTIPLIERS (Benchmarked to HSBC Products):
+- Liability: 1:1,000 (max $90,000 at $90 allocation)
+- Life: 1:500 (max $45,000 at $90 allocation)
+- Cyber/Health: 1:200 (max $18,000 at $90 allocation)
+- Travel: 1:150 (max $13,500 at $90 allocation)
+- Property: 1:100 (max $9,000 at $90 allocation)
+
+Payout Formula: MIN(Actual Loss, Allocation × Multiplier)
+
+Adoption based on Section 5 targets: 5-8% Year 1, 15-20% Year 3.
+Using HSBC's 41M customer base.
+
+                        YEAR 1              YEAR 3
+                        (6% = 2.5M)         (18% = 7.4M)
+                        Pool: HK$6B/yr      Pool: HK$17.8B/yr
++-------------------+------------+------------+-----------------------------+
+| Lever             | Y1 HK$    | Y3 HK$    | Proof                       |
++-------------------+------------+------------+-----------------------------+
+| Smarter Payouts   | $1.2B     | $3.6B     | 20pt loss ratio improvement |
+|                   |           |           | (Straits Research'25)       |
++-------------------+------------+------------+-----------------------------+
+| Zero Acquisition  | $480M     | $1.4B     | 8% saved — toggle, not sale |
++-------------------+------------+------------+-----------------------------+
+| Churn Reduction   | $975M     | $2.9B     | 6% fewer leave × HK$13K    |
+|                   |           |           | banking value (JDP'25)      |
++-------------------+------------+------------+-----------------------------+
+| Reinsurance Save  | $144M     | $427M     | 15% on 16% ceded premium    |
++-------------------+------------+------------+-----------------------------+
+| TOTAL             | $2.8B     | $8.3B     | Same premiums. More kept.   |
++-------------------+------------+------------+-----------------------------+
+
+The setup
+
+Year 1: 6% of HSBC's 41M customers = 2.5 million people paying HK$200/month each. That's HK$6 billion flowing into HSBC per year in premiums.
+
+Year 3: 18% adoption = 7.4 million people. HK$17.8 billion per year.
+
+1. Smarter Payouts — Y1: HK$1.2B / Y3: HK$3.6B
+
+Think of it like a buffet restaurant. Today, HSBC puts out a full buffet for every customer every day — sushi, pasta, steak, salad — whether they eat it or not. The food that sits there uneaten is wasted money. That's what fixed insurance is. HSBC is "serving" travel coverage to someone sitting at home. If they slip and claim, HSBC pays. The Fluid is like switching to made-to-order. You only prepare what the customer is actually going to eat.
+
+The industry currently wastes about 65 cents of every premium dollar on claims. Real-time data products like telematics car insurance have proven you can cut that by 15-30 percentage points, because you're only exposed to risks that are actually happening. We use a conservative 20 points.
+
+20% of HK$6B = HK$1.2B in Year 1. 20% of HK$17.8B = HK$3.6B in Year 3.
+
+2. Zero Acquisition Cost — Y1: HK$480M / Y3: HK$1.4B
+
+Imagine you own a shop on a busy street. Normally you'd spend money on signs, flyers, salespeople standing outside to pull customers in. That's what insurance companies do: they spend about 8% of every premium dollar just getting someone to buy the policy.
+
+HSBC already has 41 million people walking through the door every day (the banking app). The Fluid is just a new shelf inside the shop. No signs needed. No salespeople. Customers are already there. They just tap a toggle. 
+
+8% of HK$6B = HK$480M HSBC doesn't have to spend in Year 1. 8% of HK$17.8B = HK$1.4B by Year 3.
+
+3. Churn Reduction — Y1: HK$975M / Y3: HK$2.9B
+
+Think of it like a gym membership. If your gym just has treadmills, you might leave for a cheaper gym. But if your gym also has your personal trainer, your locker, your friend group, etc, you're not going anywhere. The switching cost is too high.
+
+The Fluid adapts to you daily. Going back to a static policy at another insurer feels like downgrading from a smartphone to a flip phone. So fewer people leave.
+
+Industry churn is about 16% per year. AI-driven retention programs already cut that by 18-27% (J.D. Power 2025). We conservatively assume the Fluid cuts it by about 6 percentage points (from 16% to 10%).
+
+6% of 2.5M customers = 150,000 extra people who stay in Year 1. But here's the key, when someone keeps their insurance with HSBC, they also keep their bank account, credit card, mortgage, investments. The whole relationship is worth about HK$13,000/year per customer.
+
+HSBC reported HK$554B (US$71B) in group revenue in 2025 across 41M customers. That's roughly HK$13,500 per customer per year on average (HK$554B ÷ 41M).
+
+150,000 × HK$13,000 = HK$975M in Year 1. By Year 3 with 7.4M customers, that's ~HK$2.9B.
+
+4. Reinsurance Savings — Y1: HK$144M / Y3: HK$427M
+
+HSBC sells you a policy. But what if a thousand customers all get injured on the same day? HSBC can't afford to pay all those claims alone. So HSBC pays another, bigger company (the reinsurer) a fee every year to say: "If things go really bad, you help us pay."
+
+Insurers typically cede (pass on) about 16% of premiums to reinsurers. With precise data, they save about 15% on that cost.
+
+HK$6B × 16% ceded = HK$960M in reinsurance spend. 15% savings = HK$144M in Year 1. Scale that to Year 3: HK$427M.
+
+How much does HSBC pass to the reinsurer? Industry standard is about 16% of premiums go to the reinsurer as their fee for being the backup. So: HK$6B × 16% = HK$960M. That's what HSBC pays the reinsurer every year just to have that safety net.
+
+Why does the Fluid make this cheaper? Today HSBC tells the reinsurer: "We have 2.5 million customers and we don't really know what they're all doing." The reinsurer assumes the worst and charges accordingly.
+
+With the Fluid, HSBC tells the reinsurer: "Here's a live dashboard. Right now, only 3% of our customers are traveling. 92% are low-risk at home. Here's proof." The reinsurer looks at that and says: "OK, your actual risk is lower than we assumed. We'll charge you less."
+
+How much less? About 15% less. That's a conservative estimate. Telematics data in auto insurance already gets 13-30% reinsurance discounts for the same reason (better data = less uncertainty = lower price).
+
+----------------------------------------------------------------------
+EXAMPLE: ALEX RIVERA'S JUNE 2026 CLAIMS
+----------------------------------------------------------------------
+
+Alex pays $200/month. In June 2026, three events occurred:
+
+1. Typhoon T8 in Shenzhen (Parametric)
+   - Travel allocation: $45 × 1:50 multiplier = $2,250 payout (automatic)
+
+2. Minor accident in Macau
+   - Travel allocation: $20 × 1:150 = $3,000 max, actual loss $480 = $480 payout
+
+3. Flight delay to Taipei
+   - Health allocation: $30 × 1:200 = $6,000 max, actual loss $300 = $300 payout
+
+Total claims: $3,030 | Premium: $200 | Leverage: 15x
+Life pool untouched - structurally segregated
+
+LIQUIDITY MANAGEMENT:
+- Tier 1: $22 instant cash (parametric payouts in seconds)
+- Tier 2: $55 T-bills/MMF (travel, accident claims in hours)
+- Tier 3: $33 ultra-short bonds (replenishment buffer)
+

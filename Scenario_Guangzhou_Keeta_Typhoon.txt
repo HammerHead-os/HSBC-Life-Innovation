@@ -1,0 +1,111 @@
+MICRO PROTECTION FLUID - SCENARIO: GUANGZHOU DELIVERY DURING T10 TYPHOON
+HSBC Life Insurance Innovation Competition
+June 2026
+
+============================================================================
+
+CUSTOMER PROFILE: JASON LAM, 28
+
+============================================================================
+
+Jason is 28. He lives in Tuen Mun, Hong Kong and works as a gig worker. He 
+crosses into Guangzhou via High-Speed Rail 4 days a week to deliver food 
+for Keeta, China's leading food delivery platform with 40% market share. 
+He pays HKD 300/month for Micro Protection Fluid (roughly USD 38).
+
+His floors: Travel HKD 40, Purchase HKD 30, Activity HKD 50, Health HKD 50, 
+Property HKD 30. Flexible pool: HKD 100.
+
+--------------------------------------------------------------------------
+
+PROFILE SUMMARY
+
+--------------------------------------------------------------------------
+
+Attribute              | Detail
+-----------------------|--------------------------------------------------
+Lives in               | Tuen Mun, Hong Kong
+Works in               | Guangzhou (4 days/week, Keeta delivery)
+Crossing method        | MTR High-Speed Rail (XRL) West Kowloon to Guangzhou South
+Income                 | HKD 192,000/year (approx HKD 16,000/month)
+Border crossings       | ~200 per year (4 days/week × 50 weeks)
+Vehicle                | Electric bike rental in Guangzhou
+Monthly premium        | HKD 300
+
+============================================================================
+
+THE SCENARIO: WEDNESDAY, SEPTEMBER 17, 2026
+
+============================================================================
+
+Jason's day unfolds across three distinct phases. Each phase triggers 
+different data signals, and the AI reallocates his coverage in real time.
+
+--------------------------------------------------------------------------
+
+PHASE 1: CROSS-BORDER COMMUTE TO GUANGZHOU (06:30 - 09:00)
+
+--------------------------------------------------------------------------
+
+Trigger Signals:
+- 06:32: Octopus tap at Tuen Mun MTR station (heading to West Kowloon)
+- 07:15: XRL boarding detected via MTR Corp API (West Kowloon to Guangzhou South)
+- 08:47: UnionPay transaction at Guangzhou South station (coffee purchase, MCC 5812)
+- 09:02: WMC-linked border crossing confirmation (mainland entry verified)
+
+AI Response:
+The AI detects a cross-border work commute, not a leisure trip. Key indicators:
+- XRL at 07:15 on a weekday morning = work pattern
+- No hotel booking, no return ticket = same-day return
+- Keeta deposit pattern from previous days = delivery work expected
+
+Coverage Reallocation:
+
+Category          | Baseline (HK home) | Guangzhou Delivery Mode | Change
+------------------|--------------------|-------------------------|--------
+Travel            | HKD 40 (floor)     | HKD 85                  | +HKD 45
+Health            | HKD 60             | HKD 75                  | +HKD 15
+Activity          | HKD 50             | HKD 80                  | +HKD 30
+Property          | HKD 45             | HKD 30 (floor)          | -HKD 15
+Purchase          | HKD 40             | HKD 30 (floor)          | -HKD 10
+Liability         | HKD 25             | HKD 65                  | +HKD 40
+----------------------------------------------
+Total             | HKD 260*           | HKD 300                 | --
+
+*Note: Baseline uses HKD 260 of HKD 300 premium; HKD 40 sits in flexible reserve.
+
+What the AI sees:
+- Cross-border travel: Travel coverage boosted to HKD 85 (mainland medical, 
+  trip disruption, emergency evacuation)
+- Delivery work expected: Activity rises to HKD 80 (e-bike accident, personal 
+  injury during delivery)
+- Guangzhou streets: Liability jumps to HKD 65 (third-party injury if Jason 
+  hits pedestrian or damages property)
+- Not at home: Property drops to floor HKD 30 (no exposure to home contents)
+
+--------------------------------------------------------------------------
+
+PHASE 2: KEETA DELIVERY WORK IN GUANGZHOU (09:00 - 14:30)
+
+--------------------------------------------------------------------------
+
+Trigger Signals:
+- 09:15: Keeta app activates delivery mode (API integration)
+- 09:18: WeChat Pay transaction: E-bike rental for the day (RMB 45)
+- 09:30-14:30: Multiple small transactions across Guangzhou districts 
+  (Tianhe, Yuexiu, Haizhu) = active delivery pattern
+- 12:47: Peak delivery hour - 4 orders completed within 30 minutes
+
+AI Response:
+The AI refines the allocation based on real-time activity intensity.
+
+Coverage Reallocation:
+
+Category          | Guangzhou Baseline | Active Delivery Mode    | Change
+------------------|--------------------|-------------------------|--------
+Travel            | HKD 85             | HKD 75                  | -HKD 10
+Health            | HKD 75             | HKD 70                  | -HKD 5
+Activity          | HKD 80             | HKD 95                  | +HKD 15
+Liability         | HKD 65             | HKD 90                  | +HKD 25
+Property          | HKD 30 (floor)     | HKD 30 (floor)          | --
+Purchase          | HKD 30
