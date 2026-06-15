@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Bell, Plane, Zap, TrendingUp, Info, X } from 'lucide-react';
-import { NOTIFICATIONS } from '../data/constants';
+import { Bell, Plane, Zap, TrendingUp, Info, X, Newspaper } from 'lucide-react';
+import { useProtection } from '../context/ProtectionContext';
 
-const TYPE_ICONS = { travel: Plane, boost: Zap, summary: TrendingUp, info: Info, alert: Info };
+const TYPE_ICONS = { travel: Plane, boost: Zap, summary: TrendingUp, info: Info, alert: Info, news: Newspaper };
 
-export default function NotificationBell({ light = false, basePath = '' }) {
+export default function NotificationBell({ light = false }) {
+  const { notifications } = useProtection();
   const [open, setOpen] = useState(false);
   const panelRef = useRef(null);
 
@@ -20,7 +21,7 @@ export default function NotificationBell({ light = false, basePath = '' }) {
     return () => document.removeEventListener('mousedown', handleClick);
   }, [open]);
 
-  const unread = NOTIFICATIONS.filter((n) => !n.read).length;
+  const unread = notifications.filter((n) => !n.read).length;
 
   return (
     <div className="relative" ref={panelRef}>
@@ -55,10 +56,10 @@ export default function NotificationBell({ light = false, basePath = '' }) {
             </button>
           </div>
           <div className="max-h-72 overflow-y-auto divide-y divide-gray-50">
-            {NOTIFICATIONS.map((n) => {
+            {notifications.map((n) => {
               const Icon = TYPE_ICONS[n.type] || Info;
               return (
-                <div key={n.id} className="px-4 py-3 hover:bg-gray-50">
+                <div key={n.id} className={`px-4 py-3 ${!n.read ? 'bg-red-50/40' : 'hover:bg-gray-50'}`}>
                   <div className="flex gap-3">
                     <div className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center shrink-0">
                       <Icon className="w-4 h-4 text-hsbc-red" />
@@ -76,7 +77,7 @@ export default function NotificationBell({ light = false, basePath = '' }) {
             })}
           </div>
           <Link
-            to={`${basePath}/insights`}
+            to="/insights"
             onClick={() => setOpen(false)}
             className="block text-center text-xs font-semibold text-hsbc-red py-3 border-t border-gray-100 hover:bg-red-50"
           >

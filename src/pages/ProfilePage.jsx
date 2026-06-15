@@ -1,19 +1,20 @@
 import { PREMIUM } from '../data/constants';
 import { ChevronRight, CreditCard, Shield, Sliders, HelpCircle, LogOut, RotateCcw } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { SubPageLink } from '../components/SubPageHeader';
 import { useAuth } from '../context/AuthContext';
 import { useProtection } from '../context/ProtectionContext';
 
-export default function ProfilePage({ basePath, variant = 'mobile' }) {
+export default function ProfilePage({ variant = 'mobile' }) {
   const { user, logout } = useAuth();
-  const { resetProtection } = useProtection();
+  const { refreshData } = useProtection();
   const navigate = useNavigate();
 
   const items = [
-    { icon: CreditCard, label: 'Plan & billing', desc: `${user.plan} · HKD ${PREMIUM}/month`, to: `${basePath}/settings` },
-    { icon: Sliders, label: 'Coverage floors', desc: 'Set personal minimums', to: `${basePath}/settings` },
-    { icon: Shield, label: 'Privacy & data', desc: 'No GPS · 24hr retention', to: `${basePath}/settings` },
-    { icon: HelpCircle, label: 'FAQ for judges', desc: 'Long-term vs short-term, and more', to: `${basePath}/faq` },
+    { icon: CreditCard, label: 'Plan & billing', desc: `${user.plan} · HKD ${PREMIUM}/month`, to: '/settings' },
+    { icon: Sliders, label: 'Coverage floors', desc: 'Set personal minimums', to: '/settings' },
+    { icon: Shield, label: 'Privacy & data', desc: 'Location checkpoints · 24hr retention', to: '/settings' },
+    { icon: HelpCircle, label: 'FAQ for judges', desc: 'Long-term vs short-term, and more', to: '/faq' },
   ];
 
   const handleLogout = () => {
@@ -21,10 +22,9 @@ export default function ProfilePage({ basePath, variant = 'mobile' }) {
     navigate('/login', { replace: true });
   };
 
-  const handleResetDemo = () => {
-    resetProtection();
-    logout();
-    navigate('/login', { replace: true });
+  const handleRefreshData = () => {
+    refreshData();
+    navigate('/', { replace: true });
   };
 
   return (
@@ -42,7 +42,7 @@ export default function ProfilePage({ basePath, variant = 'mobile' }) {
 
       <div className="bg-white rounded-2xl border border-gray-100 divide-y divide-gray-50">
         {items.map(({ icon: Icon, label, desc, to }) => (
-          <Link key={label} to={to} className="flex items-center gap-4 px-4 py-4 hover:bg-gray-50">
+          <SubPageLink key={label} to={to} className="flex items-center gap-4 px-4 py-4 hover:bg-gray-50">
             <div className="w-10 h-10 rounded-xl bg-gray-100 flex items-center justify-center">
               <Icon className="w-5 h-5 text-gray-600" />
             </div>
@@ -51,16 +51,16 @@ export default function ProfilePage({ basePath, variant = 'mobile' }) {
               <p className="text-xs text-gray-500">{desc}</p>
             </div>
             <ChevronRight className="w-5 h-5 text-gray-300" />
-          </Link>
+          </SubPageLink>
         ))}
       </div>
 
       <button
         type="button"
-        onClick={handleResetDemo}
+        onClick={handleRefreshData}
         className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-hsbc-red/30 bg-red-50 text-hsbc-red text-sm font-medium hover:bg-red-100"
       >
-        <RotateCcw className="w-4 h-4" /> Reset demo
+        <RotateCcw className="w-4 h-4" /> Refresh data
       </button>
 
       <button

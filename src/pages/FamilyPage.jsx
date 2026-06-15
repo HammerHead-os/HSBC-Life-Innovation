@@ -6,7 +6,7 @@ const FAMILY = [
   { name: 'Sam Rivera', relation: 'Child', status: 'Add-on available', premium: null },
 ];
 
-export default function FamilyPage({ basePath, wide = false }) {
+export default function FamilyPage({ wide = false }) {
   return (
     <PageShell title="Family Protection" backTo="/" wide={wide}>
       <p className="text-sm text-gray-600">

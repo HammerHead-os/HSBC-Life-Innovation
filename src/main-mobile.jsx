@@ -35,16 +35,16 @@ export default function MobileApp() {
                 </RequireAuth>
               }
             >
-              <Route index element={<HomePage basePath={BASE} variant="mobile" />} />
+              <Route index element={<HomePage variant="mobile" />} />
               <Route path="activity" element={<ActivityPage variant="mobile" />} />
               <Route path="protection" element={<ProtectionPage variant="mobile" />} />
               <Route path="insights" element={<InsightsPage variant="mobile" />} />
-              <Route path="profile" element={<ProfilePage basePath={BASE} variant="mobile" />} />
-              <Route path="claims" element={<ClaimsPage basePath={BASE} />} />
-              <Route path="family" element={<FamilyPage basePath={BASE} />} />
-              <Route path="settings" element={<SettingsPage basePath={BASE} />} />
-              <Route path="details" element={<DetailsPage basePath={BASE} />} />
-              <Route path="faq" element={<FAQPage basePath={BASE} />} />
+              <Route path="profile" element={<ProfilePage variant="mobile" />} />
+              <Route path="claims" element={<ClaimsPage />} />
+              <Route path="family" element={<FamilyPage />} />
+              <Route path="settings" element={<SettingsPage />} />
+              <Route path="details" element={<DetailsPage />} />
+              <Route path="faq" element={<FAQPage />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

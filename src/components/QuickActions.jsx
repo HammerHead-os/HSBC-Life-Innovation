@@ -1,27 +1,27 @@
-import { Link } from 'react-router-dom';
-import { FileText, Shield, Users, Settings, Eye, HelpCircle } from 'lucide-react';
+import { FileText, Users, Settings, Eye, HelpCircle } from 'lucide-react';
+import { SubPageLink } from './SubPageHeader';
 
 const ACTIONS = [
-  { to: 'details', icon: Eye, label: 'View Details' },
-  { to: 'claims', icon: FileText, label: 'Claims' },
-  { to: 'family', icon: Users, label: 'Family Protection' },
-  { to: 'settings', icon: Settings, label: 'Settings' },
-  { to: 'faq', icon: HelpCircle, label: 'FAQ' },
+  { to: '/details', icon: Eye, label: 'View Details' },
+  { to: '/claims', icon: FileText, label: 'Claims' },
+  { to: '/family', icon: Users, label: 'Family Protection' },
+  { to: '/settings', icon: Settings, label: 'Settings' },
+  { to: '/faq', icon: HelpCircle, label: 'FAQ' },
 ];
 
-export default function QuickActions({ basePath, large = false }) {
+export default function QuickActions({ large = false }) {
   if (large) {
     return (
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {ACTIONS.map(({ to, icon: Icon, label }) => (
-          <Link
+          <SubPageLink
             key={to}
-            to={`${basePath}/${to}`}
+            to={to}
             className="flex flex-col items-center justify-center gap-2 bg-red-50 hover:bg-red-100 transition rounded-2xl p-6 border border-red-100"
           >
             <Icon className="w-7 h-7 text-hsbc-red" />
             <span className="text-sm font-semibold text-gray-800">{label}</span>
-          </Link>
+          </SubPageLink>
         ))}
       </div>
     );
@@ -30,16 +30,12 @@ export default function QuickActions({ basePath, large = false }) {
   return (
     <div className="grid grid-cols-5 gap-1">
       {ACTIONS.map(({ to, icon: Icon, label }) => (
-        <Link
-          key={to}
-          to={`${basePath}/${to}`}
-          className="flex flex-col items-center gap-1.5 py-2"
-        >
+        <SubPageLink key={to} to={to} className="flex flex-col items-center gap-1.5 py-2">
           <div className="w-11 h-11 rounded-xl bg-gray-100 flex items-center justify-center">
             <Icon className="w-5 h-5 text-gray-700" />
           </div>
           <span className="text-[10px] text-center text-gray-600 leading-tight">{label}</span>
-        </Link>
+        </SubPageLink>
       ))}
     </div>
   );

@@ -1,7 +1,7 @@
-import { Link } from 'react-router-dom';
 import { CheckCircle2 } from 'lucide-react';
+import { SubPageLink } from './SubPageHeader';
 
-export default function ProtectionCard({ allocation, allocatedAt, chart, legend, basePath = '' }) {
+export default function ProtectionCard({ allocation, allocatedAt, chart, legend }) {
   return (
     <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
       <div className="flex items-start justify-between mb-4">
@@ -12,12 +12,9 @@ export default function ProtectionCard({ allocation, allocatedAt, chart, legend,
             All good
           </div>
         </div>
-        <Link
-          to={`${basePath}/details`}
-          className="text-xs font-semibold text-hsbc-red hover:underline"
-        >
+        <SubPageLink to="/details" className="text-xs font-semibold text-hsbc-red hover:underline">
           View details
-        </Link>
+        </SubPageLink>
       </div>
       <div className="flex items-center gap-4 flex-wrap">
         <div className="relative shrink-0">

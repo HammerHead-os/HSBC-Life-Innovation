@@ -2,7 +2,7 @@ import { PageShell } from '../components/SubPageHeader';
 import { CLAIMS } from '../data/constants';
 import { CheckCircle2 } from 'lucide-react';
 
-export default function ClaimsPage({ basePath, wide = false }) {
+export default function ClaimsPage({ wide = false }) {
   return (
     <PageShell title="Claims" backTo="/" wide={wide}>
       <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100 mb-2">

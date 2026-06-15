@@ -35,16 +35,16 @@ export default function WebApp() {
                 </RequireAuth>
               }
             >
-              <Route index element={<HomePage basePath={BASE} variant="web" />} />
+              <Route index element={<HomePage variant="web" />} />
               <Route path="activity" element={<ActivityPage variant="web" />} />
               <Route path="protection" element={<ProtectionPage variant="web" />} />
               <Route path="insights" element={<InsightsPage variant="web" />} />
-              <Route path="profile" element={<ProfilePage basePath={BASE} variant="web" />} />
-              <Route path="claims" element={<ClaimsPage basePath={BASE} wide />} />
-              <Route path="family" element={<FamilyPage basePath={BASE} wide />} />
-              <Route path="settings" element={<SettingsPage basePath={BASE} wide />} />
-              <Route path="details" element={<DetailsPage basePath={BASE} wide />} />
-              <Route path="faq" element={<FAQPage basePath={BASE} wide />} />
+              <Route path="profile" element={<ProfilePage variant="web" />} />
+              <Route path="claims" element={<ClaimsPage wide />} />
+              <Route path="family" element={<FamilyPage wide />} />
+              <Route path="settings" element={<SettingsPage wide />} />
+              <Route path="details" element={<DetailsPage wide />} />
+              <Route path="faq" element={<FAQPage wide />} />
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

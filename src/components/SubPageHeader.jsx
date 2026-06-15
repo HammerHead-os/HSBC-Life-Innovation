@@ -1,22 +1,29 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+
+export function useBackTarget(fallback = '/') {
+  const location = useLocation();
+  return location.state?.from ?? fallback;
+}
+
+export function SubPageLink({ to, children, className, ...rest }) {
+  const location = useLocation();
+  return (
+    <Link to={to} state={{ from: location.pathname }} className={className} {...rest}>
+      {children}
+    </Link>
+  );
+}
 
 export default function SubPageHeader({ title, backTo = '/' }) {
   const navigate = useNavigate();
-
-  const handleBack = () => {
-    if (window.history.state?.idx > 0) {
-      navigate(-1);
-    } else {
-      navigate(backTo);
-    }
-  };
+  const backTarget = useBackTarget(backTo);
 
   return (
     <header className="sticky top-0 z-30 bg-white border-b border-gray-200 px-4 py-3 flex items-center gap-3">
       <button
         type="button"
-        onClick={handleBack}
+        onClick={() => navigate(backTarget)}
         className="p-1 -ml-1 text-gray-600 hover:text-hsbc-red"
         aria-label="Go back"
       >

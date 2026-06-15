@@ -1,6 +1,7 @@
-import { NavLink, Outlet, useLocation, useNavigate, Link } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Home, Activity, Shield, Lightbulb, User, HelpCircle, LogOut } from 'lucide-react';
 import { HsbcLogo } from '../components/QuickActions';
+import { SubPageLink } from '../components/SubPageHeader';
 import NotificationBell from '../components/NotificationBell';
 import { useAuth } from '../context/AuthContext';
 import { webHeaderStyle } from '../styles/headerBackground';
@@ -60,12 +61,12 @@ export default function WebLayout() {
           ))}
         </nav>
         <div className="p-3 border-t border-gray-100 space-y-1">
-          <Link
+          <SubPageLink
             to="/faq"
             className="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 w-full hover:bg-gray-50 rounded-lg"
           >
             <HelpCircle className="w-5 h-5" /> FAQ for judges
-          </Link>
+          </SubPageLink>
           <button
             type="button"
             onClick={handleLogout}
@@ -85,13 +86,13 @@ export default function WebLayout() {
             <h1 className="text-white text-3xl font-bold drop-shadow-md">Good morning, {user.name} 👋</h1>
             <div className="flex items-center gap-4">
               <NotificationBell light />
-              <Link
+              <SubPageLink
                 to="/profile"
                 className="w-10 h-10 rounded-full bg-white/20 border-2 border-white flex items-center justify-center text-white font-bold hover:bg-white/30 transition"
                 aria-label="Profile"
               >
                 {user.name[0]}
-              </Link>
+              </SubPageLink>
             </div>
           </div>
         </div>

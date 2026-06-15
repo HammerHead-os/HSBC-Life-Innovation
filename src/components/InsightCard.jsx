@@ -65,16 +65,25 @@ export default function InsightCard({ title, body, highlightCategory, variant = 
   );
 }
 
-export function InsightListItem({ title, body, time, type }) {
-  const TypeIcon = type === 'travel' ? Plane : type === 'boost' ? Zap : type === 'summary' ? TrendingUp : Info;
+export function InsightListItem({ title, body, time, type, source }) {
+  const TypeIcon = type === 'travel' ? Plane : type === 'boost' ? Zap : type === 'summary' ? TrendingUp : type === 'news' ? Info : Info;
+  const sourceLabel = source === 'hsbc' ? 'HSBC News' : source === 'ai' ? 'AI' : null;
+
   return (
     <div className="bg-white rounded-xl p-4 border border-gray-100 flex gap-3">
       <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center shrink-0">
         <TypeIcon className="w-5 h-5 text-hsbc-red" />
       </div>
       <div className="flex-1 min-w-0">
-        <div className="flex justify-between gap-2">
-          <h4 className="font-semibold text-gray-900 text-sm">{title}</h4>
+        <div className="flex justify-between gap-2 items-start">
+          <div className="flex-1 min-w-0">
+            {sourceLabel && (
+              <span className="inline-block text-[10px] font-bold uppercase tracking-wide text-hsbc-red mb-0.5">
+                {sourceLabel}
+              </span>
+            )}
+            <h4 className="font-semibold text-gray-900 text-sm">{title}</h4>
+          </div>
           <span className="text-xs text-gray-400 shrink-0">{time}</span>
         </div>
         <p className="text-sm text-gray-600 mt-1">{body}</p>

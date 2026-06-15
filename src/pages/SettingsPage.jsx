@@ -1,19 +1,35 @@
+import { useState } from 'react';
 import { PageShell } from '../components/SubPageHeader';
 import { CATEGORIES } from '../data/constants';
 import { Bell, Eye, MapPin, Lock, RotateCcw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import { useProtection } from '../context/ProtectionContext';
+
+const SETTINGS_KEY = 'mpf-settings';
+
+function loadSettings() {
+  try {
+    const raw = localStorage.getItem(SETTINGS_KEY);
+    return raw ? JSON.parse(raw) : { locationCheckpoints: true };
+  } catch {
+    return { locationCheckpoints: true };
+  }
+}
 
 export default function SettingsPage({ wide = false }) {
   const navigate = useNavigate();
-  const { logout } = useAuth();
-  const { resetProtection } = useProtection();
+  const { refreshData } = useProtection();
+  const [settings, setSettings] = useState(loadSettings);
 
-  const handleResetDemo = () => {
-    resetProtection();
-    logout();
-    navigate('/login', { replace: true });
+  const toggleLocation = () => {
+    const next = { ...settings, locationCheckpoints: !settings.locationCheckpoints };
+    setSettings(next);
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(next));
+  };
+
+  const handleRefreshData = () => {
+    refreshData();
+    navigate('/', { replace: true });
   };
 
   return (
@@ -39,7 +55,6 @@ export default function SettingsPage({ wide = false }) {
         {[
           { icon: Bell, label: 'Reallocation alerts', on: true },
           { icon: Eye, label: 'Boost suggestions', on: true },
-          { icon: MapPin, label: 'Location (point-in-time only)', on: false },
         ].map(({ icon: Icon, label, on }) => (
           <div key={label} className="px-4 py-3 flex items-center justify-between">
             <span className="flex items-center gap-3 text-sm text-gray-800">
@@ -50,18 +65,37 @@ export default function SettingsPage({ wide = false }) {
             </div>
           </div>
         ))}
+        <div className="px-4 py-3">
+          <div className="flex items-center justify-between mb-2">
+            <span className="flex items-center gap-3 text-sm text-gray-800">
+              <MapPin className="w-4 h-4 text-gray-400" /> Location checkpoints
+            </span>
+            <button
+              type="button"
+              onClick={toggleLocation}
+              className={`w-10 h-6 rounded-full p-0.5 transition ${settings.locationCheckpoints ? 'bg-hsbc-red' : 'bg-gray-200'}`}
+              aria-pressed={settings.locationCheckpoints}
+            >
+              <div className={`w-5 h-5 rounded-full bg-white shadow transition ${settings.locationCheckpoints ? 'translate-x-4' : ''}`} />
+            </button>
+          </div>
+          <p className="text-xs text-gray-500 leading-relaxed">
+            One-time ping when you arrive at a registered venue (airport, West Kowloon Station, partner gyms).
+            Confirms you are physically at risk — not just a card payment. Never continuous GPS; deleted within 24 hours.
+          </p>
+        </div>
       </section>
 
       <p className="text-xs text-gray-500 text-center px-4">
-        We never store continuous GPS or biometrics. Data retained max 24 hours. PDPO & PIPL compliant.
+        PDPO & PIPL compliant. No biometric or continuous location tracking.
       </p>
 
       <button
         type="button"
-        onClick={handleResetDemo}
+        onClick={handleRefreshData}
         className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-hsbc-red/30 bg-red-50 text-hsbc-red text-sm font-medium hover:bg-red-100"
       >
-        <RotateCcw className="w-4 h-4" /> Reset demo
+        <RotateCcw className="w-4 h-4" /> Refresh data
       </button>
     </PageShell>
   );

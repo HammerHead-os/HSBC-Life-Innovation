@@ -21,16 +21,6 @@ export const SCENARIOS = {
     allocatedAt: '08:30',
     allocation: { life: 90, health: 40, travel: 35, property: 10, cyber: 5, liability: 20 },
   },
-  wfh: {
-    id: 'wfh',
-    label: 'Work from home',
-    icon: 'home',
-    insight: 'Home activity detected — property and cyber coverage boosted.',
-    insightTitle: 'Home mode active',
-    highlightCategory: 'property',
-    allocatedAt: '07:15',
-    allocation: { life: 90, health: 60, travel: 5, property: 25, cyber: 15, liability: 5 },
-  },
   keeta: {
     id: 'keeta',
     label: 'Keeta delivery',
@@ -63,10 +53,10 @@ export const SCENARIOS = {
   },
   climbing: {
     id: 'climbing',
-    label: 'Rock climbing',
+    label: 'Rock climbing session',
     icon: 'mountain',
-    insight: 'Sports facility payment detected — health and liability boosted.',
-    insightTitle: 'High activity detected',
+    insight: 'Location checkpoint: Kai Tak Climbing Centre — session coverage active for 2 hours. Gym payment alone does not trigger a boost.',
+    insightTitle: 'Activity checkpoint detected',
     highlightCategory: 'health',
     allocatedAt: '14:00',
     allocation: { life: 90, health: 70, travel: 5, property: 15, cyber: 5, liability: 15 },
@@ -75,24 +65,16 @@ export const SCENARIOS = {
 
 export const ACTIVITY_LOG = [
   { time: '08:30', date: 'Today', event: 'Flight CX500 booked', change: 'Travel +35, Property −15', scenario: 'tokyo' },
-  { time: '07:15', date: 'Yesterday', event: 'Work from home — Octopus tap', change: 'Property +20, Travel −30', scenario: 'wfh' },
-  { time: '09:15', date: 'Wed 17 Sep', event: 'Keeta delivery mode on', change: 'Liability +20, Health +15', scenario: 'keeta' },
-  { time: '07:15', date: 'Wed 17 Sep', event: 'XRL West Kowloon → Guangzhou', change: 'Travel +35, Property −15', scenario: 'guangzhou' },
+  { time: '09:15', date: 'Today', event: 'Keeta delivery mode on', change: 'Liability +20, Health +15', scenario: 'keeta' },
+  { time: '07:45', date: 'Yesterday', event: 'XRL West Kowloon → Guangzhou', change: 'Travel +35, Property −15', scenario: 'guangzhou' },
   { time: '06:00', date: 'Mon 15 Sep', event: 'HKO Typhoon Signal T10', change: 'Property +35, Travel −25', scenario: 'typhoon' },
-  { time: '14:00', date: 'Sat 13 Sep', event: 'Rock climbing gym payment', change: 'Health +25, Liability +10', scenario: 'climbing' },
+  { time: '14:00', date: 'Sat 13 Sep', event: 'Checkpoint: Kai Tak Climbing Centre', change: 'Health +25, Liability +10', scenario: 'climbing' },
 ];
 
 export const CLAIMS = [
   { id: 'CLM-2401', date: '12 Jun 2026', category: 'Travel', amount: 480, status: 'Paid', desc: 'Flight delay — CX500' },
   { id: 'CLM-2398', date: '3 Jun 2026', category: 'Health', amount: 300, status: 'Paid', desc: 'Clinic visit — Central' },
   { id: 'CLM-2385', date: '18 May 2026', category: 'Property', amount: 2250, status: 'Paid', desc: 'Typhoon T8 parametric payout' },
-];
-
-export const NOTIFICATIONS = [
-  { id: 1, title: 'Travel coverage increased', body: 'Flight CX500 detected — travel allocation raised to HKD 35.', time: '2h ago', type: 'travel', read: false },
-  { id: 2, title: 'Reallocation complete', body: 'AI shifted HKD 15 from property to travel based on your schedule.', time: '2h ago', type: 'alert', read: false },
-  { id: 3, title: 'Coverage floor reminder', body: 'Every category floor is HKD 5 except Life (fixed at HKD 90). AI cannot drop below these.', time: '1d ago', type: 'info', read: true },
-  { id: 4, title: 'Monthly summary ready', body: '47 micro-reallocations this month. Most active: Travel.', time: '3d ago', type: 'summary', read: true },
 ];
 
 export const FAQ_ITEMS = [
@@ -109,7 +91,7 @@ export const FAQ_ITEMS = [
   {
     question: 'What data do you use, and is it privacy-safe?',
     answer:
-      'We use HSBC transaction metadata, calendar events, and public weather APIs — never raw GPS. Data is processed on-device where possible and retained for 24 hours only. Users set personal coverage floors so AI cannot drop protection below their comfort level.',
+      'We use HSBC transaction metadata, calendar events, location checkpoints, and public weather APIs — never continuous GPS. Data is processed on-device where possible and retained for 24 hours only. Users set personal coverage floors so AI cannot drop protection below their comfort level.',
   },
   {
     question: 'How does the AI decide allocation?',
@@ -122,17 +104,15 @@ export const FAQ_ITEMS = [
       'HKD 200/month flat premium with lower claims leakage thanks to parametric triggers and real-time risk matching. Reduced adverse selection (coverage follows actual behaviour), lower distribution cost via HSBC app integration, and upsell paths to premium tiers and family plans.',
   },
   {
+    question: 'How do location checkpoints work?',
+    answer:
+      'When enabled, your phone sends a single location ping only when you arrive at a registered venue — airport gates, West Kowloon Station, partner gyms, etc. We never track you continuously or store GPS trails. The checkpoint confirms you are physically at risk (e.g. on a climbing wall, not just paying a gym fee). Data is deleted within 24 hours and is PDPO-compliant.',
+  },
+  {
     question: 'How do claims work?',
     answer:
       'Parametric claims auto-trigger from verified signals (e.g. flight delay, typhoon signal). Standard claims use photo upload and AI triage — average payout time under 5 minutes in our demo. No forms for parametric events.',
   },
-];
-
-export const INSIGHTS = [
-  { id: 1, title: 'More travel risk detected', body: 'We detected a flight in your schedule today, so we increased your travel protection.', time: '2h ago', type: 'travel', scenario: 'tokyo' },
-  { id: 2, title: 'Coverage floor reminder', body: 'Every category floor is HKD 5 except Life (fixed at HKD 90). AI cannot drop below these.', time: '1d ago', type: 'info' },
-  { id: 3, title: 'Monthly summary ready', body: 'You had 47 micro-reallocations this month. Most active: Travel (+12 days).', time: '3d ago', type: 'summary' },
-  { id: 4, title: 'Boost available', body: 'Rock climbing detected. Tap to boost activity coverage for today (+HKD 3.50).', time: '5d ago', type: 'boost', scenario: 'climbing' },
 ];
 
 export function getChartData(allocation) {

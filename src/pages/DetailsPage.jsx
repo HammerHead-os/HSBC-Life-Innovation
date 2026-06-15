@@ -4,7 +4,7 @@ import AllocationLegend from '../components/AllocationLegend';
 import { useProtection } from '../context/ProtectionContext';
 import { getChartData, CATEGORIES, getCoverageCap } from '../data/constants';
 
-export default function DetailsPage({ basePath, wide = false }) {
+export default function DetailsPage({ wide = false }) {
   const { allocation, scenario } = useProtection();
   const chartData = getChartData(allocation);
 

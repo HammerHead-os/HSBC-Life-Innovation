@@ -7,7 +7,7 @@ import { ScenarioPicker } from '../components/SubPageHeader';
 import { useProtection } from '../context/ProtectionContext';
 import { getChartData, SCENARIOS } from '../data/constants';
 
-export default function HomePage({ basePath, variant = 'mobile' }) {
+export default function HomePage({ variant = 'mobile' }) {
   const { scenario, allocation, scenarioId, setScenarioId, allocatedAt } = useProtection();
   const chartData = getChartData(allocation);
   const chartSize = variant === 'web'
@@ -26,7 +26,6 @@ export default function HomePage({ basePath, variant = 'mobile' }) {
             <ProtectionCard
               allocation={allocation}
               allocatedAt={allocatedAt}
-              basePath={basePath}
               chart={<DonutChart data={chartData} {...chartSize} />}
               legend={<AllocationLegend allocation={allocation} />}
             />
@@ -39,7 +38,7 @@ export default function HomePage({ basePath, variant = 'mobile' }) {
             variant="network"
           />
         </div>
-        <QuickActions basePath={basePath} large />
+        <QuickActions large />
       </div>
     );
   }
@@ -53,7 +52,6 @@ export default function HomePage({ basePath, variant = 'mobile' }) {
       <ProtectionCard
         allocation={allocation}
         allocatedAt={allocatedAt}
-        basePath={basePath}
         chart={<DonutChart data={chartData} {...chartSize} />}
         legend={<AllocationLegend allocation={allocation} compact />}
       />
@@ -64,7 +62,7 @@ export default function HomePage({ basePath, variant = 'mobile' }) {
         highlightCategory={scenario.highlightCategory}
         variant="network"
       />
-      <QuickActions basePath={basePath} />
+      <QuickActions />
     </>
   );
 }
