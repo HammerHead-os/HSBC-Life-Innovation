@@ -9,7 +9,7 @@ export default function DetailsPage({ basePath, wide = false }) {
   const chartData = getChartData(allocation);
 
   return (
-    <PageShell title="Coverage details" backTo={basePath} wide={wide}>
+    <PageShell title="Coverage details" backTo="/" wide={wide}>
       <div className="bg-white rounded-xl p-4 border border-gray-100">
         <p className="text-xs text-hsbc-red font-bold uppercase mb-1">Active scenario</p>
         <p className="font-bold text-gray-900">{scenario.label}</p>

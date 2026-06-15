@@ -8,7 +8,7 @@ const FAMILY = [
 
 export default function FamilyPage({ basePath, wide = false }) {
   return (
-    <PageShell title="Family Protection" backTo={basePath} wide={wide}>
+    <PageShell title="Family Protection" backTo="/" wide={wide}>
       <p className="text-sm text-gray-600">
         Link family members to share insights and coordinate life coverage floors.
       </p>

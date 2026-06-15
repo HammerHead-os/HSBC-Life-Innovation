@@ -1,10 +1,23 @@
 import { PageShell } from '../components/SubPageHeader';
 import { CATEGORIES } from '../data/constants';
-import { Bell, Eye, MapPin, Lock } from 'lucide-react';
+import { Bell, Eye, MapPin, Lock, RotateCcw } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useProtection } from '../context/ProtectionContext';
 
-export default function SettingsPage({ basePath, wide = false }) {
+export default function SettingsPage({ wide = false }) {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+  const { resetProtection } = useProtection();
+
+  const handleResetDemo = () => {
+    resetProtection();
+    logout();
+    navigate('/login', { replace: true });
+  };
+
   return (
-    <PageShell title="Settings" backTo={basePath} wide={wide}>
+    <PageShell title="Settings" backTo="/profile" wide={wide}>
       <section className="bg-white rounded-xl border border-gray-100 overflow-hidden">
         <h2 className="px-4 py-3 font-bold text-sm text-gray-900 border-b border-gray-50">Personal floors</h2>
         {CATEGORIES.map((cat) => (
@@ -42,6 +55,14 @@ export default function SettingsPage({ basePath, wide = false }) {
       <p className="text-xs text-gray-500 text-center px-4">
         We never store continuous GPS or biometrics. Data retained max 24 hours. PDPO & PIPL compliant.
       </p>
+
+      <button
+        type="button"
+        onClick={handleResetDemo}
+        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-hsbc-red/30 bg-red-50 text-hsbc-red text-sm font-medium hover:bg-red-100"
+      >
+        <RotateCcw className="w-4 h-4" /> Reset demo
+      </button>
     </PageShell>
   );
 }

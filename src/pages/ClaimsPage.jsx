@@ -4,7 +4,7 @@ import { CheckCircle2 } from 'lucide-react';
 
 export default function ClaimsPage({ basePath, wide = false }) {
   return (
-    <PageShell title="Claims" backTo={basePath} wide={wide}>
+    <PageShell title="Claims" backTo="/" wide={wide}>
       <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100 mb-2">
         <p className="text-sm text-emerald-800">
           Parametric claims (e.g. typhoon T8+) pay out automatically in minutes. Standard claims use MIN(actual loss, allocation × multiplier).

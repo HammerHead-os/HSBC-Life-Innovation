@@ -29,7 +29,7 @@ function FaqItem({ question, answer }) {
 
 export default function FAQPage({ basePath, wide = false }) {
   return (
-    <PageShell title="FAQ for Judges" backTo={`${basePath}/`} wide={wide}>
+    <PageShell title="FAQ for Judges" backTo="/" wide={wide}>
       <p className="text-sm text-gray-500 mb-4">
         Common questions about Micro-Protection Fluid — tap to expand.
       </p>

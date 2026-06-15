@@ -1,10 +1,12 @@
 import { PREMIUM } from '../data/constants';
-import { ChevronRight, CreditCard, Shield, Sliders, HelpCircle, LogOut } from 'lucide-react';
+import { ChevronRight, CreditCard, Shield, Sliders, HelpCircle, LogOut, RotateCcw } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useProtection } from '../context/ProtectionContext';
 
 export default function ProfilePage({ basePath, variant = 'mobile' }) {
   const { user, logout } = useAuth();
+  const { resetProtection } = useProtection();
   const navigate = useNavigate();
 
   const items = [
@@ -15,6 +17,12 @@ export default function ProfilePage({ basePath, variant = 'mobile' }) {
   ];
 
   const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
+
+  const handleResetDemo = () => {
+    resetProtection();
     logout();
     navigate('/login', { replace: true });
   };
@@ -46,6 +54,14 @@ export default function ProfilePage({ basePath, variant = 'mobile' }) {
           </Link>
         ))}
       </div>
+
+      <button
+        type="button"
+        onClick={handleResetDemo}
+        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-hsbc-red/30 bg-red-50 text-hsbc-red text-sm font-medium hover:bg-red-100"
+      >
+        <RotateCcw className="w-4 h-4" /> Reset demo
+      </button>
 
       <button
         type="button"
