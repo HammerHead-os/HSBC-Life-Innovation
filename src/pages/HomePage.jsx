@@ -3,12 +3,12 @@ import AllocationLegend from '../components/AllocationLegend';
 import ProtectionCard from '../components/ProtectionCard';
 import InsightCard, { AiBadge } from '../components/InsightCard';
 import QuickActions from '../components/QuickActions';
-import { ScenarioPicker } from '../components/SubPageHeader';
+import CreditCardPanel from '../components/CreditCardPanel';
 import { useProtection } from '../context/ProtectionContext';
-import { getChartData, SCENARIOS } from '../data/constants';
+import { getChartData } from '../data/constants';
 
 export default function HomePage({ variant = 'mobile' }) {
-  const { scenario, allocation, scenarioId, setScenarioId, allocatedAt } = useProtection();
+  const { scenario, allocation, allocatedAt } = useProtection();
   const chartData = getChartData(allocation);
   const chartSize = variant === 'web'
     ? { size: 180, inner: 58, outer: 82 }
@@ -17,10 +17,7 @@ export default function HomePage({ variant = 'mobile' }) {
   if (variant === 'web') {
     return (
       <div className="space-y-6">
-        <div className="bg-white/80 backdrop-blur rounded-xl p-3 border border-gray-100">
-          <p className="text-xs text-gray-500 mb-2">Demo: switch scenario to see AI reallocate</p>
-          <ScenarioPicker scenarios={SCENARIOS} current={scenarioId} onChange={setScenarioId} />
-        </div>
+        <CreditCardPanel variant="web" />
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
             <ProtectionCard
@@ -45,10 +42,7 @@ export default function HomePage({ variant = 'mobile' }) {
 
   return (
     <>
-      <div className="bg-white/90 backdrop-blur rounded-xl p-2.5 border border-gray-100 mb-1">
-        <p className="text-[10px] text-gray-500 mb-1.5">Demo: tap a scenario</p>
-        <ScenarioPicker scenarios={SCENARIOS} current={scenarioId} onChange={setScenarioId} />
-      </div>
+      <CreditCardPanel variant="mobile" />
       <ProtectionCard
         allocation={allocation}
         allocatedAt={allocatedAt}
