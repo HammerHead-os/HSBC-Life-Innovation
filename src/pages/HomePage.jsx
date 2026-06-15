@@ -8,7 +8,7 @@ import { useProtection } from '../context/ProtectionContext';
 import { getChartData, SCENARIOS } from '../data/constants';
 
 export default function HomePage({ basePath, variant = 'mobile' }) {
-  const { scenario, allocation, scenarioId, setScenarioId } = useProtection();
+  const { scenario, allocation, scenarioId, setScenarioId, allocatedAt } = useProtection();
   const chartData = getChartData(allocation);
 
   if (variant === 'web') {
@@ -21,14 +21,14 @@ export default function HomePage({ basePath, variant = 'mobile' }) {
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
         <ProtectionCard
-          key={scenarioId}
+          key={allocatedAt}
           allocation={allocation}
-          allocatedAt={scenario.allocatedAt}
+          allocatedAt={allocatedAt}
               basePath={basePath}
               chart={<DonutChart data={chartData} size={180} inner={58} outer={82} />}
               legend={<AllocationLegend allocation={allocation} />}
             />
-            <AiBadge key={scenarioId} time={scenario.allocatedAt} />
+            <AiBadge key={allocatedAt} time={allocatedAt} />
           </div>
           <InsightCard
             title={scenario.insightTitle}
@@ -50,14 +50,14 @@ export default function HomePage({ basePath, variant = 'mobile' }) {
         <ScenarioPicker scenarios={SCENARIOS} current={scenarioId} onChange={setScenarioId} />
       </div>
         <ProtectionCard
-          key={scenarioId}
+          key={allocatedAt}
           allocation={allocation}
-          allocatedAt={scenario.allocatedAt}
+          allocatedAt={allocatedAt}
         basePath={basePath}
         chart={<DonutChart data={chartData} size={150} inner={48} outer={68} />}
         legend={<AllocationLegend allocation={allocation} compact />}
       />
-      <AiBadge key={scenarioId} time={scenario.allocatedAt} />
+      <AiBadge key={allocatedAt} time={allocatedAt} />
       <InsightCard
         title={scenario.insightTitle}
         body={scenario.insight}
