@@ -10,6 +10,9 @@ import { getChartData, SCENARIOS } from '../data/constants';
 export default function HomePage({ basePath, variant = 'mobile' }) {
   const { scenario, allocation, scenarioId, setScenarioId, allocatedAt } = useProtection();
   const chartData = getChartData(allocation);
+  const chartSize = variant === 'web'
+    ? { size: 180, inner: 58, outer: 82 }
+    : { size: 150, inner: 48, outer: 68 };
 
   if (variant === 'web') {
     return (
@@ -20,12 +23,11 @@ export default function HomePage({ basePath, variant = 'mobile' }) {
         </div>
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
-        <ProtectionCard
-          key={allocatedAt}
-          allocation={allocation}
-          allocatedAt={allocatedAt}
+            <ProtectionCard
+              allocation={allocation}
+              allocatedAt={allocatedAt}
               basePath={basePath}
-              chart={<DonutChart data={chartData} size={180} inner={58} outer={82} />}
+              chart={<DonutChart data={chartData} {...chartSize} />}
               legend={<AllocationLegend allocation={allocation} />}
             />
             <AiBadge key={allocatedAt} time={allocatedAt} />
@@ -33,8 +35,7 @@ export default function HomePage({ basePath, variant = 'mobile' }) {
           <InsightCard
             title={scenario.insightTitle}
             body={scenario.insight}
-            scenarioIcon={scenario.icon}
-            scenarioId={scenarioId}
+            highlightCategory={scenario.highlightCategory}
             variant="network"
           />
         </div>
@@ -49,20 +50,18 @@ export default function HomePage({ basePath, variant = 'mobile' }) {
         <p className="text-[10px] text-gray-500 mb-1.5">Demo: tap a scenario</p>
         <ScenarioPicker scenarios={SCENARIOS} current={scenarioId} onChange={setScenarioId} />
       </div>
-        <ProtectionCard
-          key={allocatedAt}
-          allocation={allocation}
-          allocatedAt={allocatedAt}
+      <ProtectionCard
+        allocation={allocation}
+        allocatedAt={allocatedAt}
         basePath={basePath}
-        chart={<DonutChart data={chartData} size={150} inner={48} outer={68} />}
+        chart={<DonutChart data={chartData} {...chartSize} />}
         legend={<AllocationLegend allocation={allocation} compact />}
       />
       <AiBadge key={allocatedAt} time={allocatedAt} />
       <InsightCard
         title={scenario.insightTitle}
         body={scenario.insight}
-        scenarioIcon={scenario.icon}
-        scenarioId={scenarioId}
+        highlightCategory={scenario.highlightCategory}
         variant="network"
       />
       <QuickActions basePath={basePath} />

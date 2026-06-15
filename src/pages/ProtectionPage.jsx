@@ -54,7 +54,7 @@ export default function ProtectionPage({ variant = 'mobile' }) {
 
       <div className="bg-red-50 rounded-2xl p-4 border border-red-100">
         <p className="text-sm text-gray-800">
-          <strong className="text-hsbc-red">Floor guarantee:</strong> AI can reallocate freely but never drops below your policy floors. Life (HKD 90) is permanently locked.
+          <strong className="text-hsbc-red">Floor guarantee:</strong> AI can reallocate freely but never drops below HKD 5 per category. Life (HKD 90) is permanently locked.
         </p>
       </div>
     </div>

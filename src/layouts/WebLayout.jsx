@@ -85,9 +85,13 @@ export default function WebLayout() {
             <h1 className="text-white text-3xl font-bold drop-shadow-md">Good morning, {user.name} 👋</h1>
             <div className="flex items-center gap-4">
               <NotificationBell light />
-              <div className="w-10 h-10 rounded-full bg-white/20 border-2 border-white flex items-center justify-center text-white font-bold">
+              <Link
+                to="/profile"
+                className="w-10 h-10 rounded-full bg-white/20 border-2 border-white flex items-center justify-center text-white font-bold hover:bg-white/30 transition"
+                aria-label="Profile"
+              >
                 {user.name[0]}
-              </div>
+              </Link>
             </div>
           </div>
         </div>

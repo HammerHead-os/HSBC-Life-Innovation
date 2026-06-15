@@ -1,19 +1,22 @@
 import { PageShell } from '../components/SubPageHeader';
 import { CATEGORIES } from '../data/constants';
-import { Bell, Eye, MapPin } from 'lucide-react';
+import { Bell, Eye, MapPin, Lock } from 'lucide-react';
 
 export default function SettingsPage({ basePath, wide = false }) {
   return (
     <PageShell title="Settings" backTo={basePath} wide={wide}>
       <section className="bg-white rounded-xl border border-gray-100 overflow-hidden">
         <h2 className="px-4 py-3 font-bold text-sm text-gray-900 border-b border-gray-50">Personal floors</h2>
-        {CATEGORIES.filter((c) => c.key !== 'life').map((cat) => (
+        {CATEGORIES.map((cat) => (
           <div key={cat.key} className="px-4 py-3 flex items-center justify-between border-b border-gray-50 last:border-0">
             <span className="flex items-center gap-2 text-sm">
               <span className="w-2.5 h-2.5 rounded-full" style={{ background: cat.color }} />
               {cat.name} floor
+              {cat.fixed && <Lock className="w-3.5 h-3.5 text-gray-400" />}
             </span>
-            <span className="text-sm font-semibold tabular-nums">HKD {cat.floor}</span>
+            <span className="text-sm font-semibold tabular-nums">
+              HKD {cat.floor}{cat.fixed ? ' (fixed)' : ''}
+            </span>
           </div>
         ))}
       </section>

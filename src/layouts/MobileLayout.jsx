@@ -1,4 +1,4 @@
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, Link } from 'react-router-dom';
 import { Home, Activity, Shield, Lightbulb, User } from 'lucide-react';
 import { HsbcLogo } from '../components/QuickActions';
 import NotificationBell from '../components/NotificationBell';
@@ -38,9 +38,13 @@ export default function MobileLayout() {
           <HsbcLogo light />
           <div className="flex items-center gap-3">
             <NotificationBell light />
-            <div className="w-9 h-9 rounded-full bg-white/20 border-2 border-white flex items-center justify-center text-white font-bold text-sm">
+            <Link
+              to="/profile"
+              className="w-9 h-9 rounded-full bg-white/20 border-2 border-white flex items-center justify-center text-white font-bold text-sm hover:bg-white/30 transition"
+              aria-label="Profile"
+            >
               {user.name[0]}
-            </div>
+            </Link>
           </div>
         </div>
         <h1 className="text-white text-2xl font-bold drop-shadow-md">

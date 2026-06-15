@@ -2,12 +2,12 @@ export const PREMIUM = 200;
 export const USER = { name: 'Alex', fullName: 'Alex Rivera', plan: 'Basic', premium: 200 };
 
 export const CATEGORIES = [
-  { key: 'life', name: 'Life', color: '#DB0011', multiplier: 500, floor: 90, max: 90 },
-  { key: 'health', name: 'Health', color: '#E8A0A8', multiplier: 200, floor: 40, max: 90 },
+  { key: 'life', name: 'Life', color: '#DB0011', multiplier: 500, floor: 90, max: 90, fixed: true },
+  { key: 'health', name: 'Health', color: '#E8A0A8', multiplier: 200, floor: 5, max: 90 },
   { key: 'travel', name: 'Travel', color: '#3D3D3D', multiplier: 150, floor: 5, max: 90 },
-  { key: 'property', name: 'Property', color: '#5B7FA5', multiplier: 100, floor: 15, max: 90 },
+  { key: 'property', name: 'Property', color: '#5B7FA5', multiplier: 100, floor: 5, max: 90 },
   { key: 'cyber', name: 'Cyber', color: '#C4926A', multiplier: 200, floor: 5, max: 90 },
-  { key: 'liability', name: 'Liability', color: '#6B9E8A', multiplier: 1000, floor: 10, max: 90 },
+  { key: 'liability', name: 'Liability', color: '#6B9E8A', multiplier: 1000, floor: 5, max: 90 },
 ];
 
 export const SCENARIOS = {
@@ -17,6 +17,7 @@ export const SCENARIOS = {
     icon: 'plane',
     insight: 'Flight CX500 detected — travel protection increased automatically.',
     insightTitle: 'More travel risk detected',
+    highlightCategory: 'travel',
     allocatedAt: '08:30',
     allocation: { life: 90, health: 40, travel: 35, property: 10, cyber: 5, liability: 20 },
   },
@@ -26,6 +27,7 @@ export const SCENARIOS = {
     icon: 'home',
     insight: 'Home activity detected — property and cyber coverage boosted.',
     insightTitle: 'Home mode active',
+    highlightCategory: 'property',
     allocatedAt: '07:15',
     allocation: { life: 90, health: 60, travel: 5, property: 25, cyber: 15, liability: 5 },
   },
@@ -35,6 +37,7 @@ export const SCENARIOS = {
     icon: 'bike',
     insight: 'Delivery app active — liability and health coverage increased.',
     insightTitle: 'Delivery mode active',
+    highlightCategory: 'liability',
     allocatedAt: '09:15',
     allocation: { life: 90, health: 55, travel: 15, property: 10, cyber: 5, liability: 25 },
   },
@@ -44,6 +47,7 @@ export const SCENARIOS = {
     icon: 'train',
     insight: 'XRL boarding detected — cross-border travel coverage boosted.',
     insightTitle: 'Cross-border commute',
+    highlightCategory: 'travel',
     allocatedAt: '07:45',
     allocation: { life: 90, health: 45, travel: 40, property: 15, cyber: 5, liability: 5 },
   },
@@ -53,6 +57,7 @@ export const SCENARIOS = {
     icon: 'cloud',
     insight: 'Typhoon Signal T10 — property protection increased. Travel reduced.',
     insightTitle: 'Severe weather alert',
+    highlightCategory: 'property',
     allocatedAt: '06:00',
     allocation: { life: 90, health: 35, travel: 15, property: 50, cyber: 5, liability: 5 },
   },
@@ -62,6 +67,7 @@ export const SCENARIOS = {
     icon: 'mountain',
     insight: 'Sports facility payment detected — health and liability boosted.',
     insightTitle: 'High activity detected',
+    highlightCategory: 'health',
     allocatedAt: '14:00',
     allocation: { life: 90, health: 70, travel: 5, property: 15, cyber: 5, liability: 15 },
   },
@@ -85,7 +91,7 @@ export const CLAIMS = [
 export const NOTIFICATIONS = [
   { id: 1, title: 'Travel coverage increased', body: 'Flight CX500 detected — travel allocation raised to HKD 35.', time: '2h ago', type: 'travel', read: false },
   { id: 2, title: 'Reallocation complete', body: 'AI shifted HKD 15 from property to travel based on your schedule.', time: '2h ago', type: 'alert', read: false },
-  { id: 3, title: 'Coverage floor reminder', body: 'Your health floor is HKD 40. AI cannot drop below this.', time: '1d ago', type: 'info', read: true },
+  { id: 3, title: 'Coverage floor reminder', body: 'Every category floor is HKD 5 except Life (fixed at HKD 90). AI cannot drop below these.', time: '1d ago', type: 'info', read: true },
   { id: 4, title: 'Monthly summary ready', body: '47 micro-reallocations this month. Most active: Travel.', time: '3d ago', type: 'summary', read: true },
 ];
 
@@ -124,7 +130,7 @@ export const FAQ_ITEMS = [
 
 export const INSIGHTS = [
   { id: 1, title: 'More travel risk detected', body: 'We detected a flight in your schedule today, so we increased your travel protection.', time: '2h ago', type: 'travel', scenario: 'tokyo' },
-  { id: 2, title: 'Coverage floor reminder', body: 'Your health floor is set to HKD 40. AI cannot drop below this amount.', time: '1d ago', type: 'info' },
+  { id: 2, title: 'Coverage floor reminder', body: 'Every category floor is HKD 5 except Life (fixed at HKD 90). AI cannot drop below these.', time: '1d ago', type: 'info' },
   { id: 3, title: 'Monthly summary ready', body: 'You had 47 micro-reallocations this month. Most active: Travel (+12 days).', time: '3d ago', type: 'summary' },
   { id: 4, title: 'Boost available', body: 'Rock climbing detected. Tap to boost activity coverage for today (+HKD 3.50).', time: '5d ago', type: 'boost', scenario: 'climbing' },
 ];
