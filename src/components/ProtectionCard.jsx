@@ -12,7 +12,7 @@ export default function ProtectionCard({ allocation, allocatedAt, chart, legend 
             All good
           </div>
         </div>
-        <SubPageLink to="/details" className="text-xs font-semibold text-hsbc-red hover:underline">
+        <SubPageLink to="/details" className="text-xs font-semibold text-hsbc-red hover:text-hsbc-red-dark transition-colors">
           View details
         </SubPageLink>
       </div>

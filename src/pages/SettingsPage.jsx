@@ -60,7 +60,7 @@ export default function SettingsPage({ wide = false }) {
             <span className="flex items-center gap-3 text-sm text-gray-800">
               <Icon className="w-4 h-4 text-gray-400" /> {label}
             </span>
-            <div className={`w-10 h-6 rounded-full p-0.5 transition ${on ? 'bg-hsbc-red' : 'bg-gray-200'}`}>
+            <div className={`w-10 h-6 rounded-full p-0.5 transition-colors ${on ? 'bg-hsbc-red hover:bg-hsbc-red-dark' : 'bg-gray-200 hover:bg-gray-300'}`}>
               <div className={`w-5 h-5 rounded-full bg-white shadow transition ${on ? 'translate-x-4' : ''}`} />
             </div>
           </div>
@@ -73,7 +73,7 @@ export default function SettingsPage({ wide = false }) {
             <button
               type="button"
               onClick={toggleLocation}
-              className={`w-10 h-6 rounded-full p-0.5 transition ${settings.locationCheckpoints ? 'bg-hsbc-red' : 'bg-gray-200'}`}
+              className={`w-10 h-6 rounded-full p-0.5 transition-colors ${settings.locationCheckpoints ? 'bg-hsbc-red hover:bg-hsbc-red-dark' : 'bg-gray-200 hover:bg-gray-300'}`}
               aria-pressed={settings.locationCheckpoints}
             >
               <div className={`w-5 h-5 rounded-full bg-white shadow transition ${settings.locationCheckpoints ? 'translate-x-4' : ''}`} />
@@ -93,7 +93,7 @@ export default function SettingsPage({ wide = false }) {
       <button
         type="button"
         onClick={handleRefreshData}
-        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-hsbc-red/30 bg-red-50 text-hsbc-red text-sm font-medium hover:bg-red-100"
+        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-hsbc-red/30 bg-red-50 text-hsbc-red text-sm font-medium hover:bg-hsbc-red hover:text-white transition-colors"
       >
         <RotateCcw className="w-4 h-4" /> Refresh data
       </button>

@@ -48,10 +48,10 @@ export default function WebLayout() {
               to={to}
               end={end}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition ${
+                `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                   isActive
                     ? 'bg-red-50 text-hsbc-red'
-                    : 'text-gray-600 hover:bg-gray-50'
+                    : 'text-gray-600 hover:bg-red-50 hover:text-hsbc-red'
                 }`
               }
             >
@@ -63,14 +63,14 @@ export default function WebLayout() {
         <div className="p-3 border-t border-gray-100 space-y-1">
           <SubPageLink
             to="/faq"
-            className="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 w-full hover:bg-gray-50 rounded-lg"
+            className="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 w-full hover:bg-red-50 hover:text-hsbc-red rounded-lg transition-colors"
           >
             <HelpCircle className="w-5 h-5" /> FAQ for judges
           </SubPageLink>
           <button
             type="button"
             onClick={handleLogout}
-            className="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 w-full hover:bg-gray-50 rounded-lg"
+            className="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 w-full hover:bg-red-50 hover:text-hsbc-red rounded-lg transition-colors"
           >
             <LogOut className="w-5 h-5" /> Log out
           </button>
@@ -88,7 +88,7 @@ export default function WebLayout() {
               <NotificationBell light />
               <SubPageLink
                 to="/profile"
-                className="w-10 h-10 rounded-full bg-white/20 border-2 border-white flex items-center justify-center text-white font-bold hover:bg-white/30 transition"
+                className="w-10 h-10 rounded-full bg-white/20 border-2 border-white flex items-center justify-center text-white font-bold hover:bg-white hover:text-hsbc-red transition-colors"
                 aria-label="Profile"
               >
                 {user.name[0]}

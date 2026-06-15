@@ -17,10 +17,10 @@ export default function QuickActions({ large = false }) {
           <SubPageLink
             key={to}
             to={to}
-            className="flex flex-col items-center justify-center gap-2 bg-red-50 hover:bg-red-100 transition rounded-2xl p-6 border border-red-100"
+            className="flex flex-col items-center justify-center gap-2 bg-red-50 hover:bg-hsbc-red hover:border-hsbc-red transition-colors rounded-2xl p-6 border border-red-100 group"
           >
-            <Icon className="w-7 h-7 text-hsbc-red" />
-            <span className="text-sm font-semibold text-gray-800">{label}</span>
+            <Icon className="w-7 h-7 text-hsbc-red group-hover:text-white transition-colors" />
+            <span className="text-sm font-semibold text-gray-800 group-hover:text-white transition-colors">{label}</span>
           </SubPageLink>
         ))}
       </div>
@@ -30,11 +30,11 @@ export default function QuickActions({ large = false }) {
   return (
     <div className="grid grid-cols-5 gap-1">
       {ACTIONS.map(({ to, icon: Icon, label }) => (
-        <SubPageLink key={to} to={to} className="flex flex-col items-center gap-1.5 py-2">
-          <div className="w-11 h-11 rounded-xl bg-gray-100 flex items-center justify-center">
-            <Icon className="w-5 h-5 text-gray-700" />
+        <SubPageLink key={to} to={to} className="flex flex-col items-center gap-1.5 py-2 group">
+          <div className="w-11 h-11 rounded-xl bg-gray-100 group-hover:bg-red-100 flex items-center justify-center transition-colors">
+            <Icon className="w-5 h-5 text-gray-700 group-hover:text-hsbc-red transition-colors" />
           </div>
-          <span className="text-[10px] text-center text-gray-600 leading-tight">{label}</span>
+          <span className="text-[10px] text-center text-gray-600 group-hover:text-hsbc-red leading-tight transition-colors">{label}</span>
         </SubPageLink>
       ))}
     </div>

@@ -28,7 +28,7 @@ export default function NotificationBell({ light = false }) {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className={`relative ${light ? 'text-white' : 'text-gray-700'}`}
+        className={`relative ${light ? 'text-white hover:text-red-100' : 'text-gray-700 hover:text-hsbc-red'} transition-colors rounded-full p-1 hover:bg-black/5`}
         aria-label="Notifications"
         aria-expanded={open}
       >
@@ -49,7 +49,7 @@ export default function NotificationBell({ light = false }) {
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="p-1 text-gray-400 hover:text-gray-600"
+              className="p-1 rounded-lg text-gray-400 hover:text-hsbc-red hover:bg-red-50 transition-colors"
               aria-label="Close"
             >
               <X className="w-4 h-4" />
@@ -79,7 +79,7 @@ export default function NotificationBell({ light = false }) {
           <Link
             to="/insights"
             onClick={() => setOpen(false)}
-            className="block text-center text-xs font-semibold text-hsbc-red py-3 border-t border-gray-100 hover:bg-red-50"
+            className="block text-center text-xs font-semibold text-hsbc-red py-3 border-t border-gray-100 hover:bg-red-50 hover:text-hsbc-red-dark transition-colors"
           >
             View all insights
           </Link>

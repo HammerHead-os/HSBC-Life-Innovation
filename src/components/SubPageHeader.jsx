@@ -24,7 +24,7 @@ export default function SubPageHeader({ title, backTo = '/' }) {
       <button
         type="button"
         onClick={() => navigate(backTarget)}
-        className="p-1 -ml-1 text-gray-600 hover:text-hsbc-red"
+        className="p-1 -ml-1 rounded-lg text-gray-600 hover:text-hsbc-red hover:bg-red-50 transition"
         aria-label="Go back"
       >
         <ArrowLeft className="w-5 h-5" />
@@ -51,10 +51,10 @@ export function ScenarioPicker({ scenarios, current, onChange }) {
           key={s.id}
           type="button"
           onClick={() => onChange(s.id)}
-          className={`px-3 py-1.5 rounded-full text-xs font-semibold transition ${
+          className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
             current === s.id
-              ? 'bg-hsbc-red text-white'
-              : 'bg-white border border-gray-200 text-gray-600 hover:border-hsbc-red'
+              ? 'bg-hsbc-red text-white hover:bg-hsbc-red-dark'
+              : 'bg-white border border-gray-200 text-gray-600 hover:border-hsbc-red hover:bg-red-50 hover:text-hsbc-red'
           }`}
         >
           {s.label}

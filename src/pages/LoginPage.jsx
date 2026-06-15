@@ -52,7 +52,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={!name.trim()}
-              className="w-full py-3 rounded-xl bg-hsbc-red text-white font-semibold hover:bg-hsbc-red-dark transition disabled:opacity-40 disabled:cursor-not-allowed"
+              className="w-full py-3 rounded-xl bg-hsbc-red text-white font-semibold hover:bg-hsbc-red-dark transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-hsbc-red"
             >
               Continue to demo
             </button>

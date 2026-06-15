@@ -40,7 +40,7 @@ export default function MobileLayout() {
             <NotificationBell light />
             <Link
               to="/profile"
-              className="w-9 h-9 rounded-full bg-white/20 border-2 border-white flex items-center justify-center text-white font-bold text-sm hover:bg-white/30 transition"
+              className="w-9 h-9 rounded-full bg-white/20 border-2 border-white flex items-center justify-center text-white font-bold text-sm hover:bg-white hover:text-hsbc-red transition-colors"
               aria-label="Profile"
             >
               {user.name[0]}
@@ -63,8 +63,8 @@ export default function MobileLayout() {
             to={to}
             end={end}
             className={({ isActive }) =>
-              `flex flex-col items-center gap-0.5 py-1 px-2 text-[10px] ${
-                isActive ? 'text-hsbc-red font-semibold' : 'text-gray-500'
+              `flex flex-col items-center gap-0.5 py-1 px-2 text-[10px] transition-colors rounded-lg ${
+                isActive ? 'text-hsbc-red font-semibold' : 'text-gray-500 hover:text-hsbc-red hover:bg-red-50'
               }`
             }
           >

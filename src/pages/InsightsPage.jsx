@@ -14,7 +14,7 @@ export default function InsightsPage({ variant = 'mobile' }) {
           key={item.id}
           type="button"
           onClick={() => item.scenario && setScenarioId(item.scenario)}
-          className="w-full text-left"
+          className={`w-full text-left rounded-xl transition-colors ${item.scenario ? 'hover:bg-red-50 cursor-pointer' : 'cursor-default'}`}
         >
           <InsightListItem {...item} />
         </button>

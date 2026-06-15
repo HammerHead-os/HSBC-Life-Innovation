@@ -29,7 +29,7 @@ export default function ClaimsPage({ wide = false }) {
           </div>
         ))}
       </div>
-      <button type="button" className="w-full py-3 bg-hsbc-red text-white font-semibold rounded-xl hover:bg-hsbc-red-dark transition">
+      <button type="button" className="w-full py-3 bg-hsbc-red text-white font-semibold rounded-xl hover:bg-hsbc-red-dark transition-colors">
         File a new claim
       </button>
     </PageShell>

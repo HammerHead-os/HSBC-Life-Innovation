@@ -7,15 +7,15 @@ function FaqItem({ question, answer }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+    <div className="bg-white rounded-xl border border-gray-100 overflow-hidden transition-colors hover:border-hsbc-red/30">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center justify-between gap-3 px-4 py-4 text-left hover:bg-gray-50 transition"
+        className="w-full flex items-center justify-between gap-3 px-4 py-4 text-left hover:bg-red-50 transition-colors"
       >
-        <span className="font-semibold text-gray-900 text-sm">{question}</span>
+        <span className="font-semibold text-gray-900 text-sm group-hover:text-hsbc-red">{question}</span>
         <ChevronDown
-          className={`w-5 h-5 text-gray-400 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`}
+          className={`w-5 h-5 text-gray-400 shrink-0 transition-transform hover:text-hsbc-red ${open ? 'rotate-180 text-hsbc-red' : ''}`}
         />
       </button>
       {open && (

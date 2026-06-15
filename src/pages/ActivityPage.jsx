@@ -18,7 +18,7 @@ export default function ActivityPage({ variant = 'mobile' }) {
               <button
                 type="button"
                 onClick={() => setScenarioId(item.scenario)}
-                className="w-full text-left px-4 py-4 hover:bg-red-50/50 transition"
+                className="w-full text-left px-4 py-4 hover:bg-red-50 transition-colors"
               >
                 <div className="flex justify-between items-start gap-2">
                   <div>
