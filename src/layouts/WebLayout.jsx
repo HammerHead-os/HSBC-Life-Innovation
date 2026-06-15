@@ -1,7 +1,8 @@
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Home, Activity, Shield, Lightbulb, User, HelpCircle, LogOut, Bell } from 'lucide-react';
+import { NavLink, Outlet, useLocation, useNavigate, Link } from 'react-router-dom';
+import { Home, Activity, Shield, Lightbulb, User, HelpCircle, LogOut } from 'lucide-react';
 import { HsbcLogo } from '../components/QuickActions';
-import { USER } from '../data/constants';
+import NotificationBell from '../components/NotificationBell';
+import { useAuth } from '../context/AuthContext';
 import { webHeaderStyle } from '../styles/headerBackground';
 
 const NAV = [
@@ -12,11 +13,18 @@ const NAV = [
   { to: '/profile', icon: User, label: 'Profile' },
 ];
 
+const SUB_PAGES = ['/claims', '/family', '/settings', '/details', '/faq'];
+
 export default function WebLayout() {
   const location = useLocation();
-  const isSubPage = ['/claims', '/family', '/settings', '/details'].some((p) =>
-    location.pathname.includes(p),
-  );
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const isSubPage = SUB_PAGES.some((p) => location.pathname.includes(p));
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
 
   if (isSubPage) {
     return (
@@ -52,10 +60,17 @@ export default function WebLayout() {
           ))}
         </nav>
         <div className="p-3 border-t border-gray-100 space-y-1">
-          <button type="button" className="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 w-full hover:bg-gray-50 rounded-lg">
-            <HelpCircle className="w-5 h-5" /> Need help?
-          </button>
-          <button type="button" className="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 w-full hover:bg-gray-50 rounded-lg">
+          <Link
+            to="/faq"
+            className="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 w-full hover:bg-gray-50 rounded-lg"
+          >
+            <HelpCircle className="w-5 h-5" /> FAQ for judges
+          </Link>
+          <button
+            type="button"
+            onClick={handleLogout}
+            className="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 w-full hover:bg-gray-50 rounded-lg"
+          >
             <LogOut className="w-5 h-5" /> Log out
           </button>
         </div>
@@ -67,14 +82,11 @@ export default function WebLayout() {
           style={webHeaderStyle}
         >
           <div className="absolute inset-0 flex items-end justify-between p-8">
-            <h1 className="text-white text-3xl font-bold drop-shadow-md">Good morning, {USER.name} 👋</h1>
+            <h1 className="text-white text-3xl font-bold drop-shadow-md">Good morning, {user.name} 👋</h1>
             <div className="flex items-center gap-4">
-              <button type="button" className="text-white relative">
-                <Bell className="w-6 h-6" />
-                <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-hsbc-red rounded-full" />
-              </button>
+              <NotificationBell light />
               <div className="w-10 h-10 rounded-full bg-white/20 border-2 border-white flex items-center justify-center text-white font-bold">
-                {USER.name[0]}
+                {user.name[0]}
               </div>
             </div>
           </div>

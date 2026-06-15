@@ -1,7 +1,8 @@
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Home, Activity, Shield, Lightbulb, User, Bell } from 'lucide-react';
+import { Home, Activity, Shield, Lightbulb, User } from 'lucide-react';
 import { HsbcLogo } from '../components/QuickActions';
-import { USER } from '../data/constants';
+import NotificationBell from '../components/NotificationBell';
+import { useAuth } from '../context/AuthContext';
 import { mobileHeaderStyle } from '../styles/headerBackground';
 
 const NAV = [
@@ -12,11 +13,12 @@ const NAV = [
   { to: '/profile', icon: User, label: 'Profile' },
 ];
 
+const SUB_PAGES = ['/claims', '/family', '/settings', '/details', '/faq'];
+
 export default function MobileLayout() {
   const location = useLocation();
-  const isSubPage = ['/claims', '/family', '/settings', '/details'].some((p) =>
-    location.pathname.includes(p),
-  );
+  const { user } = useAuth();
+  const isSubPage = SUB_PAGES.some((p) => location.pathname.includes(p));
 
   if (isSubPage) {
     return (
@@ -35,17 +37,14 @@ export default function MobileLayout() {
         <div className="flex items-center justify-between mb-6">
           <HsbcLogo light />
           <div className="flex items-center gap-3">
-            <button type="button" className="relative text-white">
-              <Bell className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-2 h-2 bg-hsbc-red rounded-full border border-white" />
-            </button>
+            <NotificationBell light />
             <div className="w-9 h-9 rounded-full bg-white/20 border-2 border-white flex items-center justify-center text-white font-bold text-sm">
-              {USER.name[0]}
+              {user.name[0]}
             </div>
           </div>
         </div>
         <h1 className="text-white text-2xl font-bold drop-shadow-md">
-          Good morning, {USER.name} 👋
+          Good morning, {user.name} 👋
         </h1>
       </header>
 

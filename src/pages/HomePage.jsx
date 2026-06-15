@@ -20,19 +20,21 @@ export default function HomePage({ basePath, variant = 'mobile' }) {
         </div>
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
-            <ProtectionCard
-              allocation={allocation}
-              allocatedAt={scenario.allocatedAt}
+        <ProtectionCard
+          key={scenarioId}
+          allocation={allocation}
+          allocatedAt={scenario.allocatedAt}
               basePath={basePath}
               chart={<DonutChart data={chartData} size={180} inner={58} outer={82} />}
               legend={<AllocationLegend allocation={allocation} />}
             />
-            <AiBadge time={scenario.allocatedAt} />
+            <AiBadge key={scenarioId} time={scenario.allocatedAt} />
           </div>
           <InsightCard
             title={scenario.insightTitle}
             body={scenario.insight}
             scenarioIcon={scenario.icon}
+            scenarioId={scenarioId}
             variant="network"
           />
         </div>
@@ -47,18 +49,20 @@ export default function HomePage({ basePath, variant = 'mobile' }) {
         <p className="text-[10px] text-gray-500 mb-1.5">Demo: tap a scenario</p>
         <ScenarioPicker scenarios={SCENARIOS} current={scenarioId} onChange={setScenarioId} />
       </div>
-      <ProtectionCard
-        allocation={allocation}
-        allocatedAt={scenario.allocatedAt}
+        <ProtectionCard
+          key={scenarioId}
+          allocation={allocation}
+          allocatedAt={scenario.allocatedAt}
         basePath={basePath}
         chart={<DonutChart data={chartData} size={150} inner={48} outer={68} />}
         legend={<AllocationLegend allocation={allocation} compact />}
       />
-      <AiBadge time={scenario.allocatedAt} />
+      <AiBadge key={scenarioId} time={scenario.allocatedAt} />
       <InsightCard
         title={scenario.insightTitle}
         body={scenario.insight}
         scenarioIcon={scenario.icon}
+        scenarioId={scenarioId}
         variant="network"
       />
       <QuickActions basePath={basePath} />

@@ -1,17 +1,18 @@
 import { Link } from 'react-router-dom';
-import { FileText, Shield, Users, Settings, Eye } from 'lucide-react';
+import { FileText, Shield, Users, Settings, Eye, HelpCircle } from 'lucide-react';
 
 const ACTIONS = [
   { to: 'details', icon: Eye, label: 'View Details' },
   { to: 'claims', icon: FileText, label: 'Claims' },
   { to: 'family', icon: Users, label: 'Family Protection' },
   { to: 'settings', icon: Settings, label: 'Settings' },
+  { to: 'faq', icon: HelpCircle, label: 'FAQ' },
 ];
 
 export default function QuickActions({ basePath, large = false }) {
   if (large) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {ACTIONS.map(({ to, icon: Icon, label }) => (
           <Link
             key={to}
@@ -27,7 +28,7 @@ export default function QuickActions({ basePath, large = false }) {
   }
 
   return (
-    <div className="grid grid-cols-4 gap-2">
+    <div className="grid grid-cols-5 gap-1">
       {ACTIONS.map(({ to, icon: Icon, label }) => (
         <Link
           key={to}
