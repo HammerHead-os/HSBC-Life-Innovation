@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Bell, Plane, Zap, TrendingUp, Info, X, Newspaper } from 'lucide-react';
 import { useProtection } from '../context/ProtectionContext';
+import { shouldShowNotification } from '../data/settings';
 
 const TYPE_ICONS = { travel: Plane, boost: Zap, summary: TrendingUp, info: Info, alert: Info, news: Newspaper };
 
@@ -21,7 +22,8 @@ export default function NotificationBell({ light = false }) {
     return () => document.removeEventListener('mousedown', handleClick);
   }, [open]);
 
-  const unread = notifications.filter((n) => !n.read).length;
+  const visible = notifications.filter(shouldShowNotification);
+  const unread = visible.filter((n) => !n.read).length;
 
   return (
     <div className="relative" ref={panelRef}>
@@ -56,7 +58,9 @@ export default function NotificationBell({ light = false }) {
             </button>
           </div>
           <div className="max-h-72 overflow-y-auto divide-y divide-gray-50">
-            {notifications.map((n) => {
+            {visible.length === 0 ? (
+              <p className="px-4 py-6 text-sm text-gray-500 text-center">No notifications — check your settings.</p>
+            ) : visible.map((n) => {
               const Icon = TYPE_ICONS[n.type] || Info;
               return (
                 <div key={n.id} className={`px-4 py-3 ${!n.read ? 'bg-red-50/40' : 'hover:bg-gray-50'}`}>

@@ -6,6 +6,7 @@ import {
   createAllocationInsight,
   createAllocationNotification,
 } from '../data/insights';
+import { loadSettings } from '../data/settings';
 
 const ProtectionContext = createContext(null);
 const STORAGE_KEY = 'mpf-protection';
@@ -53,16 +54,19 @@ export function ProtectionProvider({ children }) {
   const setScenarioId = useCallback((id) => {
     const time = formatAllocationTime();
     const next = SCENARIOS[id];
+    const settings = loadSettings();
     setScenarioIdState(id);
     setAllocatedAt(time);
     setInsights((prev) => [
       createAllocationInsight(next, time),
       ...prev.filter((item) => item.source !== 'ai' || item.scenario !== id),
     ]);
-    setNotifications((prev) => [
-      createAllocationNotification(next, time),
-      ...prev.map((n) => ({ ...n, read: true })),
-    ]);
+    if (settings.reallocationAlerts) {
+      setNotifications((prev) => [
+        createAllocationNotification(next, time),
+        ...prev.map((n) => ({ ...n, read: true })),
+      ]);
+    }
   }, []);
 
   const refreshData = useCallback(() => {

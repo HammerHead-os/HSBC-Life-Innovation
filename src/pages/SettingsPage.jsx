@@ -5,15 +5,20 @@ import { Bell, Eye, MapPin, Lock, RotateCcw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useProtection } from '../context/ProtectionContext';
 
-const SETTINGS_KEY = 'mpf-settings';
+import { DEFAULT_SETTINGS, loadSettings, SETTINGS_KEY } from '../data/settings';
 
-function loadSettings() {
-  try {
-    const raw = localStorage.getItem(SETTINGS_KEY);
-    return raw ? JSON.parse(raw) : { locationCheckpoints: true };
-  } catch {
-    return { locationCheckpoints: true };
-  }
+function Toggle({ on, onToggle, label }) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      className={`w-10 h-6 rounded-full p-0.5 transition-colors shrink-0 ${on ? 'bg-hsbc-red hover:bg-hsbc-red-dark' : 'bg-gray-200 hover:bg-gray-300'}`}
+      aria-pressed={on}
+      aria-label={label}
+    >
+      <div className={`w-5 h-5 rounded-full bg-white shadow transition-transform ${on ? 'translate-x-4' : ''}`} />
+    </button>
+  );
 }
 
 export default function SettingsPage({ wide = false }) {
@@ -21,8 +26,8 @@ export default function SettingsPage({ wide = false }) {
   const { refreshData } = useProtection();
   const [settings, setSettings] = useState(loadSettings);
 
-  const toggleLocation = () => {
-    const next = { ...settings, locationCheckpoints: !settings.locationCheckpoints };
+  const updateSetting = (key) => {
+    const next = { ...settings, [key]: !settings[key] };
     setSettings(next);
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(next));
   };
@@ -52,32 +57,36 @@ export default function SettingsPage({ wide = false }) {
 
       <section className="bg-white rounded-xl border border-gray-100 divide-y divide-gray-50">
         <h2 className="px-4 py-3 font-bold text-sm text-gray-900">Notifications</h2>
-        {[
-          { icon: Bell, label: 'Reallocation alerts', on: true },
-          { icon: Eye, label: 'Boost suggestions', on: true },
-        ].map(({ icon: Icon, label, on }) => (
-          <div key={label} className="px-4 py-3 flex items-center justify-between">
-            <span className="flex items-center gap-3 text-sm text-gray-800">
-              <Icon className="w-4 h-4 text-gray-400" /> {label}
-            </span>
-            <div className={`w-10 h-6 rounded-full p-0.5 transition-colors ${on ? 'bg-hsbc-red hover:bg-hsbc-red-dark' : 'bg-gray-200 hover:bg-gray-300'}`}>
-              <div className={`w-5 h-5 rounded-full bg-white shadow transition ${on ? 'translate-x-4' : ''}`} />
-            </div>
-          </div>
-        ))}
+        <div className="px-4 py-3 flex items-center justify-between">
+          <span className="flex items-center gap-3 text-sm text-gray-800">
+            <Bell className="w-4 h-4 text-gray-400" /> Reallocation alerts
+          </span>
+          <Toggle
+            on={settings.reallocationAlerts}
+            onToggle={() => updateSetting('reallocationAlerts')}
+            label="Reallocation alerts"
+          />
+        </div>
+        <div className="px-4 py-3 flex items-center justify-between">
+          <span className="flex items-center gap-3 text-sm text-gray-800">
+            <Eye className="w-4 h-4 text-gray-400" /> Boost suggestions
+          </span>
+          <Toggle
+            on={settings.boostSuggestions}
+            onToggle={() => updateSetting('boostSuggestions')}
+            label="Boost suggestions"
+          />
+        </div>
         <div className="px-4 py-3">
           <div className="flex items-center justify-between mb-2">
             <span className="flex items-center gap-3 text-sm text-gray-800">
               <MapPin className="w-4 h-4 text-gray-400" /> Location checkpoints
             </span>
-            <button
-              type="button"
-              onClick={toggleLocation}
-              className={`w-10 h-6 rounded-full p-0.5 transition-colors ${settings.locationCheckpoints ? 'bg-hsbc-red hover:bg-hsbc-red-dark' : 'bg-gray-200 hover:bg-gray-300'}`}
-              aria-pressed={settings.locationCheckpoints}
-            >
-              <div className={`w-5 h-5 rounded-full bg-white shadow transition ${settings.locationCheckpoints ? 'translate-x-4' : ''}`} />
-            </button>
+            <Toggle
+              on={settings.locationCheckpoints}
+              onToggle={() => updateSetting('locationCheckpoints')}
+              label="Location checkpoints"
+            />
           </div>
           <p className="text-xs text-gray-500 leading-relaxed">
             One-time ping when you arrive at a registered venue (airport, West Kowloon Station, partner gyms).
