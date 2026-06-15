@@ -1,14 +1,17 @@
-# Micro-Protection Fluid — HSBC Life
+# Micro Protection Fluid - HSBC Life Innovation Competition
 
-Interactive **mobile app** and **web dashboard** prototype for HSBC Life's Micro-Protection Fluid product.
+This is an interactive mobile app and web dashboard prototype for HSBC Life's Innovation Competition 2026
+
+## Access it online
+
+https://hammerhead-os.github.io/HSBC-Life-Innovation/mobile.html
 
 ## Run locally
 
 ```bash
 npm install
-npm run dev
+nmp run dev
 ```
-
 Open http://localhost:5173 — the landing page is static `index.html`.
 
 - **index.html** — Choose mobile or web
