@@ -5,7 +5,7 @@ import { Bell, Eye, MapPin, Lock, RotateCcw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useProtection } from '../context/ProtectionContext';
 
-import { DEFAULT_SETTINGS, loadSettings, SETTINGS_KEY } from '../data/settings';
+import { loadSettings, SETTINGS_KEY } from '../data/settings';
 
 function Toggle({ on, onToggle, label }) {
   return (
