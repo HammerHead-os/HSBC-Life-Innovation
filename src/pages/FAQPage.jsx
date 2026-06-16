@@ -1,7 +1,8 @@
 import { useMemo, useState } from 'react';
 import { ChevronDown, Search, X } from 'lucide-react';
 import { PageShell } from '../components/SubPageHeader';
-import { FAQ_ITEMS } from '../data/faq';
+import { FaqAnswer } from '../components/FaqAnswer';
+import { FAQ_ITEMS, faqAnswerText } from '../data/faq';
 
 function FaqItem({ question, answer, tags }) {
   const [open, setOpen] = useState(false);
@@ -19,10 +20,10 @@ function FaqItem({ question, answer, tags }) {
         />
       </button>
       {open && (
-        <div className="px-4 pb-4 border-t border-gray-50 pt-3">
-          <p className="text-sm text-gray-600 leading-relaxed">{answer}</p>
+        <div className="px-4 pb-4 border-t border-gray-50 pt-4">
+          <FaqAnswer answer={answer} />
           {tags?.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 mt-3">
+            <div className="flex flex-wrap gap-1.5 mt-4 pt-3 border-t border-gray-50">
               {tags.map((tag) => (
                 <span
                   key={tag}
@@ -44,7 +45,7 @@ function matchesQuery(item, query) {
   if (!q) return true;
   const haystack = [
     item.question,
-    item.answer,
+    faqAnswerText(item.answer),
     ...(item.tags ?? []),
   ].join(' ').toLowerCase();
   return q.split(/\s+/).every((word) => haystack.includes(word));
