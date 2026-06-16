@@ -16,7 +16,7 @@ const GROUPS = [
     ],
   },
   {
-    title: 'Card + location (2 boxes)',
+    title: 'Card + location (2 boxes — ticket first, then gate)',
     items: [
       { id: 'hsr_card', icon: Ticket, label: 'HSR ticket purchased (card)' },
       { id: 'hsr_gate', icon: MapPin, label: 'HSR station gate checkpoint' },

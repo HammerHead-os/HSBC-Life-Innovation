@@ -13,6 +13,7 @@ export default function ScenarioPanel() {
       </p>
       <p className="text-sm text-gray-600 mb-3">
         Select a situation below — AI reallocates coverage instantly.
+        Flight &amp; HSR need <strong>ticket + gate</strong> (use NFC boxes or signal console).
       </p>
       <ScenarioPicker scenarios={scenarios} current={scenarioId} onChange={setScenarioId} />
       <p className="text-xs text-gray-500 mt-3 leading-relaxed">

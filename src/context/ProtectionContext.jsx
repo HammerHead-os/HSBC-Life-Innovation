@@ -6,7 +6,14 @@ import {
   createAllocationInsight,
   createAllocationNotification,
 } from '../data/insights';
+import { getScenarioPopup } from '../data/scenarioPopups';
 import { loadSettings } from '../data/settings';
+import {
+  TRAVEL_SIGNALS,
+  loadTravelFlags,
+  saveTravelFlags,
+  isTravelSignal,
+} from '../data/travelSignals';
 
 const ProtectionContext = createContext(null);
 const STORAGE_KEY = 'mpf-protection';
@@ -41,19 +48,19 @@ export function ProtectionProvider({ children }) {
   const [notifications, setNotifications] = useState(
     saved?.notifications ?? buildInitialNotifications(initialScenario, initialTime),
   );
+  const [travelFlags, setTravelFlags] = useState(loadTravelFlags);
+  const [popupContent, setPopupContent] = useState(null);
   const [popupSignal, setPopupSignal] = useState(0);
 
   const scenario = SCENARIOS[scenarioId];
   const allocation = scenario.allocation;
 
-  useEffect(() => {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ scenarioId, allocatedAt, insights, notifications }),
-    );
-  }, [scenarioId, allocatedAt, insights, notifications]);
+  const showPopup = useCallback((content) => {
+    setPopupContent(content);
+    setPopupSignal((n) => n + 1);
+  }, []);
 
-  const setScenarioId = useCallback((id) => {
+  const commitScenario = useCallback((id) => {
     const time = formatAllocationTime();
     const next = SCENARIOS[id];
     const settings = loadSettings();
@@ -69,8 +76,45 @@ export function ProtectionProvider({ children }) {
         ...prev.map((n) => ({ ...n, read: true })),
       ]);
     }
-    setPopupSignal((n) => n + 1);
-  }, []);
+    showPopup(getScenarioPopup(next));
+  }, [showPopup]);
+
+  const setScenarioId = useCallback((id) => {
+    if (!SCENARIOS[id]) return;
+
+    if (isTravelSignal(id)) {
+      const signal = TRAVEL_SIGNALS[id];
+
+      if (signal.type === 'ticket') {
+        const nextFlags = { ...travelFlags, [signal.flag]: true };
+        setTravelFlags(nextFlags);
+        saveTravelFlags(nextFlags);
+        showPopup(signal.popup);
+        return;
+      }
+
+      if (signal.type === 'checkpoint') {
+        if (!travelFlags[signal.requires]) {
+          showPopup(signal.blockedPopup);
+          return;
+        }
+        const nextFlags = { ...travelFlags, [signal.requires]: false };
+        setTravelFlags(nextFlags);
+        saveTravelFlags(nextFlags);
+        commitScenario(signal.applies);
+        return;
+      }
+    }
+
+    commitScenario(id);
+  }, [travelFlags, showPopup, commitScenario]);
+
+  useEffect(() => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({ scenarioId, allocatedAt, insights, notifications }),
+    );
+  }, [scenarioId, allocatedAt, insights, notifications]);
 
   // Listen for external signals sent from a separate "console" page (same origin).
   useEffect(() => {
@@ -86,8 +130,6 @@ export function ProtectionProvider({ children }) {
       }
     };
 
-    // If a signal was already written (e.g. user opens app after pressing a button)
-    // apply it once on load.
     applySignal(localStorage.getItem(EXTERNAL_SIGNAL_KEY));
 
     const onStorage = (e) => {
@@ -100,6 +142,9 @@ export function ProtectionProvider({ children }) {
 
   const refreshData = useCallback(() => {
     const time = formatAllocationTime();
+    const clearedFlags = { flightTicket: false, hsrTicket: false };
+    setTravelFlags(clearedFlags);
+    saveTravelFlags(clearedFlags);
     setScenarioIdState('tokyo');
     setAllocatedAt(time);
     setInsights(buildInitialInsights('tokyo', time));
@@ -124,10 +169,12 @@ export function ProtectionProvider({ children }) {
       allocatedAt,
       insights,
       notifications,
+      travelFlags,
+      popupContent,
       popupSignal,
       refreshData,
     }),
-    [scenarioId, scenario, allocation, allocatedAt, insights, notifications, popupSignal, setScenarioId, refreshData],
+    [scenarioId, scenario, allocation, allocatedAt, insights, notifications, travelFlags, popupContent, popupSignal, setScenarioId, refreshData],
   );
 
   return (

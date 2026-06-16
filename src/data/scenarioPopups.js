@@ -25,12 +25,12 @@ const POPUP_COPY = {
   },
   flight_gate: {
     title: 'Airport checkpoint',
-    body: 'You entered the airport zone — travel & health cover active for your journey.',
+    body: 'Ticket + location confirmed — travel & health cover active for your journey.',
     variant: 'checkpoint',
   },
   flight_card: {
     title: 'Flight booked',
-    body: 'Trip registered — light travel prep boost. Full cover at airport gate.',
+    body: 'Ticket registered — waiting for airport gate checkpoint before coverage changes.',
     variant: 'travel',
   },
   tokyo: {
@@ -40,12 +40,12 @@ const POPUP_COPY = {
   },
   hsr_gate: {
     title: 'HSR station checkpoint',
-    body: 'West Kowloon gate tap — cross-border travel cover active now.',
+    body: 'Ticket + location confirmed — cross-border travel cover active now.',
     variant: 'checkpoint',
   },
   hsr_card: {
     title: 'HSR ticket purchased',
-    body: 'Travel intent noted — full boost activates at station gate.',
+    body: 'Ticket registered — waiting for station gate checkpoint before coverage changes.',
     variant: 'travel',
   },
   guangzhou: {

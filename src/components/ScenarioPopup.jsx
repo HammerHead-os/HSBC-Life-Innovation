@@ -13,7 +13,6 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useProtection } from '../context/ProtectionContext';
-import { getScenarioPopup } from '../data/scenarioPopups';
 
 const VARIANT_STYLES = {
   hazard: {
@@ -56,7 +55,7 @@ const VARIANT_STYLES = {
 export default function ScenarioPopup() {
   const { user } = useAuth();
   const location = useLocation();
-  const { popupSignal, scenario, allocatedAt } = useProtection();
+  const { popupSignal, popupContent } = useProtection();
   const [open, setOpen] = useState(false);
   const [popup, setPopup] = useState(null);
   const timerRef = useRef(null);
@@ -68,8 +67,9 @@ export default function ScenarioPopup() {
     if (popupSignal === 0 || popupSignal === lastSignal.current) return;
     lastSignal.current = popupSignal;
 
-    const next = getScenarioPopup(scenario);
-    setPopup({ ...next, time: allocatedAt });
+    const next = popupContent;
+    if (!next) return;
+    setPopup({ ...next, time: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) });
     setOpen(true);
 
     clearTimeout(timerRef.current);
@@ -77,7 +77,7 @@ export default function ScenarioPopup() {
     timerRef.current = setTimeout(() => setOpen(false), duration);
 
     return () => clearTimeout(timerRef.current);
-  }, [popupSignal, scenario, allocatedAt]);
+  }, [popupSignal, popupContent]);
 
   if (!user || !isAppRoute || !open || !popup) return null;
 
@@ -137,7 +137,7 @@ export default function ScenarioPopup() {
 
           <div className={`mt-6 flex items-center gap-2 text-sm font-semibold ${isLight ? 'text-white/85' : 'text-hsbc-red'}`}>
             <Sparkles className="w-4 h-4" />
-            Coverage reallocated automatically
+            {popup.footer ?? 'Coverage reallocated automatically'}
           </div>
 
           <button
