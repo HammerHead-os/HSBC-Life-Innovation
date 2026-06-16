@@ -37,6 +37,11 @@ body {
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+@keyframes scaleInAlert {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+
 button,
 [role="button"] {
   cursor: pointer;
