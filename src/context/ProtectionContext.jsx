@@ -10,6 +10,7 @@ import { loadSettings } from '../data/settings';
 
 const ProtectionContext = createContext(null);
 const STORAGE_KEY = 'mpf-protection';
+export const EXTERNAL_SIGNAL_KEY = 'mpf-external-signal';
 
 export function formatAllocationTime(date = new Date()) {
   return date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
@@ -68,6 +69,32 @@ export function ProtectionProvider({ children }) {
       ]);
     }
   }, []);
+
+  // Listen for external signals sent from a separate "console" page (same origin).
+  useEffect(() => {
+    const applySignal = (raw) => {
+      try {
+        if (!raw) return;
+        const payload = JSON.parse(raw);
+        const id = payload?.scenarioId;
+        if (!id || !SCENARIOS[id]) return;
+        setScenarioId(id);
+      } catch {
+        // ignore
+      }
+    };
+
+    // If a signal was already written (e.g. user opens app after pressing a button)
+    // apply it once on load.
+    applySignal(localStorage.getItem(EXTERNAL_SIGNAL_KEY));
+
+    const onStorage = (e) => {
+      if (e.key !== EXTERNAL_SIGNAL_KEY) return;
+      applySignal(e.newValue);
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, [setScenarioId]);
 
   const refreshData = useCallback(() => {
     const time = formatAllocationTime();

@@ -10,6 +10,9 @@ export const CATEGORIES = [
   { key: 'liability', name: 'Liability', color: '#6B9E8A', multiplier: 1000, floor: 5, max: 90 },
 ];
 
+// Keep the manual demo picker simple (booth-friendly) even if we add more scenarios for NFC / external signals.
+export const DEMO_SCENARIO_IDS = ['tokyo', 'keeta', 'guangzhou', 'typhoon', 'climbing'];
+
 export const SCENARIOS = {
   tokyo: {
     id: 'tokyo',
@@ -60,6 +63,112 @@ export const SCENARIOS = {
     highlightCategory: 'health',
     allocatedAt: '14:00',
     allocation: { life: 90, health: 70, travel: 5, property: 15, cyber: 5, liability: 15 },
+  },
+
+  // Mobility (good “tap → risk now” examples)
+  helloride: {
+    id: 'helloride',
+    label: 'HelloRide bike unlock',
+    icon: 'bike',
+    insight: 'Bike unlock detected — real-time road risk. Liability and health protection increased for the ride window.',
+    insightTitle: 'On-the-move risk detected',
+    highlightCategory: 'liability',
+    allocatedAt: '10:05',
+    allocation: { life: 90, health: 55, travel: 10, property: 10, cyber: 5, liability: 30 },
+  },
+  bus: {
+    id: 'bus',
+    label: 'Bus ride (Octopus tap)',
+    icon: 'bus',
+    insight: 'Transit tap detected — short travel window activated. Travel and liability protection increased.',
+    insightTitle: 'Transit window active',
+    highlightCategory: 'travel',
+    allocatedAt: '10:20',
+    allocation: { life: 90, health: 45, travel: 30, property: 10, cyber: 5, liability: 20 },
+  },
+  mtr_gate: {
+    id: 'mtr_gate',
+    label: 'MTR gate tap (contactless)',
+    icon: 'train',
+    insight: 'MTR gate tap detected — commute risk activated. Travel and liability protection increased.',
+    insightTitle: 'Commute window active',
+    highlightCategory: 'travel',
+    allocatedAt: '10:35',
+    allocation: { life: 90, health: 40, travel: 35, property: 10, cyber: 5, liability: 20 },
+  },
+
+  // “Card + location” pairs (use two NFC boxes: purchase vs checkpoint)
+  hsr_card: {
+    id: 'hsr_card',
+    label: 'HSR ticket purchased',
+    icon: 'ticket',
+    insight: 'HSR ticket purchased — small travel prep boost. Full boost activates at station gate checkpoint.',
+    insightTitle: 'Travel intent detected',
+    highlightCategory: 'travel',
+    allocatedAt: '11:10',
+    allocation: { life: 90, health: 40, travel: 25, property: 20, cyber: 5, liability: 20 },
+  },
+  hsr_gate: {
+    id: 'hsr_gate',
+    label: 'HSR station gate checkpoint',
+    icon: 'train',
+    insight: 'Checkpoint: West Kowloon Station — travel window active. Cross-border travel protection boosted now.',
+    insightTitle: 'Station checkpoint detected',
+    highlightCategory: 'travel',
+    allocatedAt: '11:30',
+    allocation: { life: 90, health: 45, travel: 40, property: 15, cyber: 5, liability: 5 },
+  },
+  flight_card: {
+    id: 'flight_card',
+    label: 'Flight booked (card)',
+    icon: 'ticket',
+    insight: 'Flight booking detected — light travel prep boost. Full boost activates at airport gate checkpoint.',
+    insightTitle: 'Trip booked',
+    highlightCategory: 'travel',
+    allocatedAt: '12:05',
+    allocation: { life: 90, health: 40, travel: 25, property: 20, cyber: 5, liability: 20 },
+  },
+  flight_gate: {
+    id: 'flight_gate',
+    label: 'Airport gate checkpoint',
+    icon: 'plane',
+    insight: 'Checkpoint: airport gate — travel window active now. Travel and health protection increased for the journey.',
+    insightTitle: 'Boarding checkpoint detected',
+    highlightCategory: 'travel',
+    allocatedAt: '12:50',
+    allocation: { life: 90, health: 45, travel: 45, property: 10, cyber: 5, liability: 5 },
+  },
+
+  // Hazards (triggered by external console)
+  black_rain: {
+    id: 'black_rain',
+    label: 'Black rainstorm warning',
+    icon: 'cloud',
+    insight: 'Severe rain warning — property protection increased. Travel reduced due to disruption risk.',
+    insightTitle: 'Severe weather warning',
+    highlightCategory: 'property',
+    allocatedAt: '13:15',
+    allocation: { life: 90, health: 35, travel: 10, property: 55, cyber: 5, liability: 5 },
+  },
+  fire: {
+    id: 'fire',
+    label: 'Fire nearby (alert)',
+    icon: 'flame',
+    insight: 'Emergency alert — property and health protection increased for the next 24 hours.',
+    insightTitle: 'Emergency alert detected',
+    highlightCategory: 'property',
+    allocatedAt: '13:40',
+    allocation: { life: 90, health: 45, travel: 5, property: 45, cyber: 5, liability: 10 },
+  },
+  tornado: {
+    id: 'tornado',
+    label: 'Tornado warning (alert)',
+    icon: 'wind',
+    insight: 'Severe wind warning — property protection increased. Travel reduced.',
+    insightTitle: 'Severe wind alert',
+    highlightCategory: 'property',
+    allocatedAt: '14:10',
+    allocation: { life: 90, health: 35, travel: 10, property: 55, cyber: 5, liability: 5 },
   },
 };
 

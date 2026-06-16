@@ -12,6 +12,7 @@ export default defineConfig({
         index: resolve(__dirname, 'index.html'),
         mobile: resolve(__dirname, 'mobile.html'),
         web: resolve(__dirname, 'web.html'),
+        signal: resolve(__dirname, 'signal.html'),
       },
     },
   },

@@ -1,9 +1,10 @@
 import { useProtection } from '../context/ProtectionContext';
-import { SCENARIOS } from '../data/constants';
+import { DEMO_SCENARIO_IDS, SCENARIOS } from '../data/constants';
 import { ScenarioPicker } from './SubPageHeader';
 
 export default function ScenarioPanel() {
   const { scenario, scenarioId, setScenarioId } = useProtection();
+  const scenarios = Object.fromEntries(DEMO_SCENARIO_IDS.map((id) => [id, SCENARIOS[id]]));
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
@@ -13,7 +14,7 @@ export default function ScenarioPanel() {
       <p className="text-sm text-gray-600 mb-3">
         Select a situation below — AI reallocates coverage instantly.
       </p>
-      <ScenarioPicker scenarios={SCENARIOS} current={scenarioId} onChange={setScenarioId} />
+      <ScenarioPicker scenarios={scenarios} current={scenarioId} onChange={setScenarioId} />
       <p className="text-xs text-gray-500 mt-3 leading-relaxed">
         <strong className="text-gray-700">{scenario.label}</strong>
         {' — '}
