@@ -1,4 +1,5 @@
 import { SCENARIOS } from './constants';
+import { getScenarioPopup } from './scenarioPopups';
 
 export const HSBC_NEWS = [
   {
@@ -40,14 +41,15 @@ export function createAllocationInsight(scenario, allocatedAt) {
 }
 
 export function createAllocationNotification(scenario, allocatedAt) {
+  const popup = getScenarioPopup(scenario);
   const cat = scenario.highlightCategory;
   const amount = scenario.allocation[cat];
   return {
     id: `notif-${scenario.id}-${Date.now()}`,
-    title: `AI reallocated at ${allocatedAt}`,
-    body: `${scenario.insightTitle} — ${cat} now HKD ${amount}.`,
+    title: popup.title,
+    body: `${popup.body} ${cat.charAt(0).toUpperCase() + cat.slice(1)} now HKD ${amount}.`,
     time: 'Just now',
-    type: 'alert',
+    type: popup.variant === 'hazard' ? 'alert' : popup.variant === 'travel' ? 'travel' : 'alert',
     read: false,
     source: 'ai',
   };

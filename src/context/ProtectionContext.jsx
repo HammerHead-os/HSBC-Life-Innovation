@@ -41,6 +41,7 @@ export function ProtectionProvider({ children }) {
   const [notifications, setNotifications] = useState(
     saved?.notifications ?? buildInitialNotifications(initialScenario, initialTime),
   );
+  const [popupSignal, setPopupSignal] = useState(0);
 
   const scenario = SCENARIOS[scenarioId];
   const allocation = scenario.allocation;
@@ -68,6 +69,7 @@ export function ProtectionProvider({ children }) {
         ...prev.map((n) => ({ ...n, read: true })),
       ]);
     }
+    setPopupSignal((n) => n + 1);
   }, []);
 
   // Listen for external signals sent from a separate "console" page (same origin).
@@ -122,9 +124,10 @@ export function ProtectionProvider({ children }) {
       allocatedAt,
       insights,
       notifications,
+      popupSignal,
       refreshData,
     }),
-    [scenarioId, scenario, allocation, allocatedAt, insights, notifications, setScenarioId, refreshData],
+    [scenarioId, scenario, allocation, allocatedAt, insights, notifications, popupSignal, setScenarioId, refreshData],
   );
 
   return (

@@ -20,6 +20,7 @@ import PrivacyPage from './pages/PrivacyPage';
 import DetailsPage from './pages/DetailsPage';
 import FAQPage from './pages/FAQPage';
 import TapTriggerPage from './pages/TapTriggerPage';
+import ScenarioPopup from './components/ScenarioPopup';
 import './index.css';
 
 const BASE = '';
@@ -29,6 +30,7 @@ export default function MobileApp() {
     <AuthProvider>
       <ProtectionProvider>
         <HashRouter>
+          <ScenarioPopup />
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route
