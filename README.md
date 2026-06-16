@@ -4,7 +4,7 @@ This is an interactive mobile app and web dashboard prototype for HSBC Life's In
 
 ## Access it online
 
-https://hammerhead-os.github.io/HSBC-Life-Innovation/mobile.html
+https://hammerhead-os.github.io/HSBC-Life-Innovation/
 
 ## Run locally
 
