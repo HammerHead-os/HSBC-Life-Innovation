@@ -1,7 +1,9 @@
 import { CATEGORIES, PREMIUM } from '../data/constants';
-import AnimatedNumber from './AnimatedNumber';
+import { useProtection } from '../context/ProtectionContext';
 
-export default function AllocationLegend({ allocation, compact = false }) {
+export default function AllocationLegend({ compact = false }) {
+  const { displayAllocation } = useProtection();
+
   return (
     <ul className={`space-y-${compact ? '1' : '1.5'} text-sm`}>
       {CATEGORIES.map((c) => (
@@ -11,7 +13,7 @@ export default function AllocationLegend({ allocation, compact = false }) {
             {c.name}
           </span>
           <span className="font-semibold text-gray-900 tabular-nums">
-            HKD <AnimatedNumber value={allocation[c.key]} duration={3000} />
+            HKD {Math.round(displayAllocation[c.key])}
           </span>
         </li>
       ))}

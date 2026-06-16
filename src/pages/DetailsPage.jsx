@@ -5,7 +5,7 @@ import { useProtection } from '../context/ProtectionContext';
 import { CATEGORIES, getCoverageCap } from '../data/constants';
 
 export default function DetailsPage({ wide = false }) {
-  const { allocation, scenario } = useProtection();
+  const { scenario, allocation } = useProtection();
 
   return (
     <PageShell title="Coverage details" backTo="/" wide={wide}>
@@ -16,8 +16,8 @@ export default function DetailsPage({ wide = false }) {
       </div>
 
       <div className="bg-white rounded-xl p-4 border border-gray-100 flex flex-col sm:flex-row items-center gap-6">
-        <DonutChart allocation={allocation} size={200} inner={62} outer={88} />
-        <AllocationLegend allocation={allocation} />
+        <DonutChart size={200} inner={62} outer={88} />
+        <AllocationLegend />
       </div>
 
       <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">

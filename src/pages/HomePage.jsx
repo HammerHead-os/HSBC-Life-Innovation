@@ -7,7 +7,7 @@ import ScenarioPanel from '../components/ScenarioPanel';
 import { useProtection } from '../context/ProtectionContext';
 
 export default function HomePage({ variant = 'mobile' }) {
-  const { scenario, allocation, allocatedAt } = useProtection();
+  const { scenario, allocatedAt } = useProtection();
   const chartSize = variant === 'web'
     ? { size: 180, inner: 58, outer: 82 }
     : { size: 150, inner: 48, outer: 68 };
@@ -19,10 +19,9 @@ export default function HomePage({ variant = 'mobile' }) {
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
             <ProtectionCard
-              allocation={allocation}
               allocatedAt={allocatedAt}
-              chart={<DonutChart allocation={allocation} {...chartSize} />}
-              legend={<AllocationLegend allocation={allocation} />}
+              chart={<DonutChart {...chartSize} />}
+              legend={<AllocationLegend />}
             />
             <AiBadge key={allocatedAt} time={allocatedAt} />
           </div>
@@ -42,10 +41,9 @@ export default function HomePage({ variant = 'mobile' }) {
     <>
       <ScenarioPanel />
       <ProtectionCard
-        allocation={allocation}
         allocatedAt={allocatedAt}
-        chart={<DonutChart allocation={allocation} {...chartSize} />}
-        legend={<AllocationLegend allocation={allocation} compact />}
+        chart={<DonutChart {...chartSize} />}
+        legend={<AllocationLegend compact />}
       />
       <AiBadge key={allocatedAt} time={allocatedAt} />
       <InsightCard

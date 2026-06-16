@@ -1,44 +1,33 @@
 import { useMemo } from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { CATEGORIES } from '../data/constants';
-import useAnimatedAllocation from '../hooks/useAnimatedAllocation';
+import { buildDonutSegments, donutSegmentPath } from '../utils/donutPaths';
+import { useProtection } from '../context/ProtectionContext';
 
-export default function DonutChart({ allocation, size = 160, inner = 52, outer = 72, duration = 3000 }) {
-  const display = useAnimatedAllocation(allocation, duration);
+export default function DonutChart({ size = 160, inner = 52, outer = 72 }) {
+  const { displayAllocation } = useProtection();
+  const cx = size / 2;
+  const cy = size / 2;
 
-  const data = useMemo(
-    () =>
-      CATEGORIES.map((c) => ({
-        name: c.name,
-        value: display[c.key],
-        color: c.color,
-        key: c.key,
-      })),
-    [display],
+  const segments = useMemo(
+    () => buildDonutSegments(displayAllocation, CATEGORIES),
+    [displayAllocation],
   );
 
   return (
-    <ResponsiveContainer width={size} height={size}>
-      <PieChart>
-        <Pie
-          data={data}
-          cx="50%"
-          cy="50%"
-          innerRadius={inner}
-          outerRadius={outer}
-          paddingAngle={2}
-          dataKey="value"
-          nameKey="name"
-          startAngle={90}
-          endAngle={-270}
-          stroke="none"
-          isAnimationActive={false}
-        >
-          {data.map((entry) => (
-            <Cell key={entry.key} fill={entry.color} />
-          ))}
-        </Pie>
-      </PieChart>
-    </ResponsiveContainer>
+    <svg
+      width={size}
+      height={size}
+      viewBox={`0 0 ${size} ${size}`}
+      className="shrink-0"
+      aria-hidden
+    >
+      {segments.map((seg) => (
+        <path
+          key={seg.key}
+          d={donutSegmentPath(cx, cy, outer, inner, seg.start, seg.end)}
+          fill={seg.color}
+        />
+      ))}
+    </svg>
   );
 }
