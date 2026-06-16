@@ -43,20 +43,14 @@ body {
 }
 
 @keyframes revealPulse {
-  0% { transform: translateY(8px) scale(0.985); opacity: 0.88; box-shadow: 0 0 0 0 rgba(219, 0, 17, 0); }
-  40% { transform: translateY(0) scale(1.01); opacity: 1; box-shadow: 0 8px 24px rgba(219, 0, 17, 0.12); }
-  100% { transform: translateY(0) scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(219, 0, 17, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(219, 0, 17, 0); }
+  30% { box-shadow: 0 8px 24px rgba(219, 0, 17, 0.14); }
+  100% { box-shadow: 0 0 0 0 rgba(219, 0, 17, 0); }
 }
 
 @keyframes slideDownBanner {
   from { opacity: 0; transform: translateY(-120%); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes chartReveal {
-  0% { opacity: 0.3; transform: scale(0.88) rotate(-8deg); }
-  60% { opacity: 1; transform: scale(1.04) rotate(2deg); }
-  100% { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
 button,

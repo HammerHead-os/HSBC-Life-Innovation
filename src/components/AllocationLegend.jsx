@@ -1,4 +1,5 @@
 import { CATEGORIES, PREMIUM } from '../data/constants';
+import AnimatedNumber from './AnimatedNumber';
 
 export default function AllocationLegend({ allocation, compact = false }) {
   return (
@@ -9,8 +10,8 @@ export default function AllocationLegend({ allocation, compact = false }) {
             <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: c.color }} />
             {c.name}
           </span>
-          <span className="font-semibold text-gray-900 tabular-nums transition-all duration-700 ease-out">
-            HKD {allocation[c.key]}
+          <span className="font-semibold text-gray-900 tabular-nums">
+            HKD <AnimatedNumber value={allocation[c.key]} duration={3000} />
           </span>
         </li>
       ))}

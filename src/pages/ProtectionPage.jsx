@@ -1,37 +1,29 @@
-import { useEffect, useState } from 'react';
 import { CATEGORIES, getCoverageCap } from '../data/constants';
 import { useProtection } from '../context/ProtectionContext';
 import { Lock, TrendingUp } from 'lucide-react';
+import AnimatedNumber from '../components/AnimatedNumber';
+import useAnimatedAllocation from '../hooks/useAnimatedAllocation';
 
 export default function ProtectionPage({ variant = 'mobile' }) {
-  const { allocation, scenario, uiPulse } = useProtection();
-  const [pulsing, setPulsing] = useState(false);
-
-  useEffect(() => {
-    if (!uiPulse) return;
-    setPulsing(true);
-    const timer = window.setTimeout(() => setPulsing(false), 700);
-    return () => clearTimeout(timer);
-  }, [uiPulse]);
-
-  const pulseClass = pulsing ? 'animate-[revealPulse_700ms_ease-out] ring-2 ring-hsbc-red/20' : '';
+  const { allocation, scenario } = useProtection();
+  const display = useAnimatedAllocation(allocation, 3000);
 
   return (
     <div className={`space-y-4 ${variant === 'web' ? 'max-w-4xl' : ''}`}>
-      <div className={`bg-white rounded-2xl p-4 border border-gray-100 transition-shadow duration-500 ${pulseClass}`}>
+      <div className="bg-white rounded-2xl p-4 border border-gray-100 transition-shadow duration-500">
         <h2 className="font-bold text-gray-900 mb-1">Current mode</h2>
         <p className="text-sm text-hsbc-red font-semibold">{scenario.label}</p>
         <p className="text-xs text-gray-500 mt-1">{scenario.insight}</p>
       </div>
 
-      <div className={`bg-white rounded-2xl border border-gray-100 overflow-hidden transition-shadow duration-500 ${pulseClass}`}>
+      <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden transition-shadow duration-500">
         <div className="px-4 py-3 border-b border-gray-100">
           <h2 className="font-bold text-gray-900">Category breakdown</h2>
           <p className="text-xs text-gray-500">Payout cap = allocation × multiplier</p>
         </div>
         <div className={`${variant === 'web' ? 'grid md:grid-cols-2' : ''} divide-y md:divide-y-0 md:gap-px md:bg-gray-100`}>
           {CATEGORIES.map((cat) => {
-            const amount = allocation[cat.key];
+            const amount = display[cat.key];
             const cap = getCoverageCap(cat.key, amount);
             const pct = (amount / 200) * 100;
             return (
@@ -42,12 +34,14 @@ export default function ProtectionPage({ variant = 'mobile' }) {
                     {cat.name}
                     {cat.key === 'life' && <Lock className="w-3.5 h-3.5 text-gray-400" />}
                   </span>
-                  <span className="font-bold tabular-nums transition-all duration-700 ease-out">HKD {amount}</span>
+                  <span className="font-bold tabular-nums">
+                    HKD <AnimatedNumber value={allocation[cat.key]} duration={3000} />
+                  </span>
                 </div>
                 <div className="h-2 bg-gray-100 rounded-full overflow-hidden mb-2">
                   <div
-                    className="h-full rounded-full transition-all duration-700 ease-out"
-                    style={{ width: `${pct}%`, background: cat.color }}
+                    className="h-full rounded-full"
+                    style={{ width: `${pct}%`, background: cat.color, transition: 'none' }}
                   />
                 </div>
                 <div className="flex justify-between text-xs text-gray-500">

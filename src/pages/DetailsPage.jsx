@@ -2,11 +2,10 @@ import { PageShell } from '../components/SubPageHeader';
 import DonutChart from '../components/DonutChart';
 import AllocationLegend from '../components/AllocationLegend';
 import { useProtection } from '../context/ProtectionContext';
-import { getChartData, CATEGORIES, getCoverageCap } from '../data/constants';
+import { CATEGORIES, getCoverageCap } from '../data/constants';
 
 export default function DetailsPage({ wide = false }) {
   const { allocation, scenario } = useProtection();
-  const chartData = getChartData(allocation);
 
   return (
     <PageShell title="Coverage details" backTo="/" wide={wide}>
@@ -17,7 +16,7 @@ export default function DetailsPage({ wide = false }) {
       </div>
 
       <div className="bg-white rounded-xl p-4 border border-gray-100 flex flex-col sm:flex-row items-center gap-6">
-        <DonutChart data={chartData} size={200} inner={62} outer={88} />
+        <DonutChart allocation={allocation} size={200} inner={62} outer={88} />
         <AllocationLegend allocation={allocation} />
       </div>
 
