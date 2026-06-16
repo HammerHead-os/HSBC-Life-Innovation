@@ -16,7 +16,6 @@ import FamilyPage from './pages/FamilyPage';
 import SettingsPage from './pages/SettingsPage';
 import DetailsPage from './pages/DetailsPage';
 import FAQPage from './pages/FAQPage';
-import TapTriggerPage from './pages/TapTriggerPage';
 import './index.css';
 
 const BASE = '';
@@ -28,14 +27,6 @@ export default function WebApp() {
         <HashRouter>
           <Routes>
             <Route path="/login" element={<LoginPage />} />
-            <Route
-              path="/tap/:scenarioId"
-              element={
-                <RequireAuth>
-                  <TapTriggerPage />
-                </RequireAuth>
-              }
-            />
             <Route
               path="/"
               element={

@@ -3,7 +3,7 @@ import AllocationLegend from '../components/AllocationLegend';
 import ProtectionCard from '../components/ProtectionCard';
 import InsightCard, { AiBadge } from '../components/InsightCard';
 import QuickActions from '../components/QuickActions';
-import CreditCardPanel from '../components/CreditCardPanel';
+import ScenarioPanel from '../components/ScenarioPanel';
 import { useProtection } from '../context/ProtectionContext';
 import { getChartData } from '../data/constants';
 
@@ -17,7 +17,7 @@ export default function HomePage({ variant = 'mobile' }) {
   if (variant === 'web') {
     return (
       <div className="space-y-6">
-        <CreditCardPanel variant="web" />
+        <ScenarioPanel />
         <div className="grid lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
             <ProtectionCard
@@ -42,7 +42,7 @@ export default function HomePage({ variant = 'mobile' }) {
 
   return (
     <>
-      <CreditCardPanel variant="mobile" />
+      <ScenarioPanel />
       <ProtectionCard
         allocation={allocation}
         allocatedAt={allocatedAt}
