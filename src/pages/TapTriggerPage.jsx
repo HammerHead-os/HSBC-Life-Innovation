@@ -1,34 +1,32 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Loader2 } from 'lucide-react';
-import { SCENARIOS } from '../data/constants';
+import { useAuth } from '../context/AuthContext';
 import { useProtection } from '../context/ProtectionContext';
+import { SCENARIOS } from '../data/constants';
+import { isTravelSignal } from '../data/travelSignals';
+import { PENDING_TAP_KEY } from '../utils/pendingTap';
 
 export default function TapTriggerPage() {
   const { scenarioId } = useParams();
   const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
   const { setScenarioId } = useProtection();
 
   useEffect(() => {
-    if (!scenarioId || !SCENARIOS[scenarioId]) {
+    if (!scenarioId || (!SCENARIOS[scenarioId] && !isTravelSignal(scenarioId))) {
       navigate('/', { replace: true });
       return;
     }
 
-    const timer = setTimeout(() => {
-      setScenarioId(scenarioId);
-      navigate('/', { replace: true });
-    }, 450);
+    if (!isAuthenticated) {
+      sessionStorage.setItem(PENDING_TAP_KEY, scenarioId);
+      navigate('/login', { replace: true });
+      return;
+    }
 
-    return () => clearTimeout(timer);
-  }, [scenarioId, setScenarioId, navigate]);
+    setScenarioId(scenarioId);
+    navigate('/', { replace: true });
+  }, [scenarioId, isAuthenticated, setScenarioId, navigate]);
 
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 gap-3 p-6">
-      <Loader2 className="w-10 h-10 text-hsbc-red animate-spin" />
-      <p className="text-sm font-semibold text-gray-800">Applying signal…</p>
-      <p className="text-xs text-gray-500">Updating protection allocation</p>
-    </div>
-  );
+  return null;
 }
-

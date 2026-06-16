@@ -1,9 +1,25 @@
+import { useEffect, useState } from 'react';
 import { CheckCircle2 } from 'lucide-react';
 import { SubPageLink } from './SubPageHeader';
+import { useProtection } from '../context/ProtectionContext';
 
 export default function ProtectionCard({ allocation, allocatedAt, chart, legend }) {
+  const { uiPulse } = useProtection();
+  const [pulsing, setPulsing] = useState(false);
+
+  useEffect(() => {
+    if (!uiPulse) return;
+    setPulsing(true);
+    const timer = window.setTimeout(() => setPulsing(false), 700);
+    return () => clearTimeout(timer);
+  }, [uiPulse]);
+
   return (
-    <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+    <div
+      className={`bg-white rounded-2xl p-5 shadow-sm border border-gray-100 transition-shadow duration-500 ${
+        pulsing ? 'animate-[revealPulse_700ms_ease-out] ring-2 ring-hsbc-red/20' : ''
+      }`}
+    >
       <div className="flex items-start justify-between mb-4">
         <div>
           <h2 className="font-bold text-gray-900 text-lg">Your protection is active</h2>

@@ -9,7 +9,7 @@ export default function AllocationLegend({ allocation, compact = false }) {
             <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: c.color }} />
             {c.name}
           </span>
-          <span className="font-semibold text-gray-900 tabular-nums">
+          <span className="font-semibold text-gray-900 tabular-nums transition-all duration-700 ease-out">
             HKD {allocation[c.key]}
           </span>
         </li>

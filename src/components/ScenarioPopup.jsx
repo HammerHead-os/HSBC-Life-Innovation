@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useLocation } from 'react-router-dom';
 import {
   X,
   AlertTriangle,
@@ -16,52 +15,48 @@ import { useProtection } from '../context/ProtectionContext';
 
 const VARIANT_STYLES = {
   hazard: {
-    panel: 'bg-gradient-to-br from-red-700 via-red-600 to-red-800 text-white border-red-900/30',
+    panel: 'bg-gradient-to-r from-red-800 via-red-700 to-red-800 text-white border-red-900/40 shadow-red-900/30',
     iconWrap: 'bg-white/15 ring-2 ring-white/25',
     icon: AlertTriangle,
     badge: 'Emergency alert',
-    backdrop: 'bg-black/60',
   },
   travel: {
-    panel: 'bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 text-white border-slate-700/40',
+    panel: 'bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white border-slate-600/50 shadow-slate-900/40',
     iconWrap: 'bg-white/10 ring-2 ring-white/20',
     icon: Plane,
     badge: 'Travel signal',
-    backdrop: 'bg-black/55',
   },
   checkpoint: {
-    panel: 'bg-gradient-to-br from-[#b8000e] via-hsbc-red to-[#8f0009] text-white border-red-900/30',
+    panel: 'bg-gradient-to-r from-[#b8000e] via-hsbc-red to-[#9a000c] text-white border-red-900/40 shadow-red-900/30',
     iconWrap: 'bg-white/15 ring-2 ring-white/25',
     icon: MapPin,
     badge: 'Location checkpoint',
-    backdrop: 'bg-black/55',
   },
   mobility: {
-    panel: 'bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white border-gray-700/40',
+    panel: 'bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white border-gray-600/40 shadow-gray-900/40',
     iconWrap: 'bg-white/10 ring-2 ring-white/20',
     icon: Bike,
     badge: 'Mobility signal',
-    backdrop: 'bg-black/50',
   },
   default: {
-    panel: 'bg-white text-gray-900 border-gray-200',
+    panel: 'bg-white text-gray-900 border-hsbc-red/30 shadow-hsbc-red/15',
     iconWrap: 'bg-red-50 ring-2 ring-red-100',
     icon: Shield,
     badge: 'AI reallocation',
-    backdrop: 'bg-black/45',
   },
 };
 
 export default function ScenarioPopup() {
   const { user } = useAuth();
-  const location = useLocation();
   const { popupSignal, popupContent } = useProtection();
   const [open, setOpen] = useState(false);
   const [popup, setPopup] = useState(null);
   const timerRef = useRef(null);
   const lastSignal = useRef(0);
 
-  const isAppRoute = location.pathname !== '/login';
+  const close = useCallback(() => {
+    setOpen(false);
+  }, []);
 
   useEffect(() => {
     if (popupSignal === 0 || popupSignal === lastSignal.current) return;
@@ -69,17 +64,20 @@ export default function ScenarioPopup() {
 
     const next = popupContent;
     if (!next) return;
-    setPopup({ ...next, time: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) });
+    setPopup({
+      ...next,
+      time: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }),
+    });
     setOpen(true);
 
     clearTimeout(timerRef.current);
-    const duration = next.variant === 'hazard' ? 9000 : 7000;
-    timerRef.current = setTimeout(() => setOpen(false), duration);
+    const duration = next.variant === 'hazard' ? 8000 : 6000;
+    timerRef.current = setTimeout(close, duration);
 
     return () => clearTimeout(timerRef.current);
-  }, [popupSignal, popupContent]);
+  }, [popupSignal, popupContent, close]);
 
-  if (!user || !isAppRoute || !open || !popup) return null;
+  if (!user || !open || !popup) return null;
 
   const style = VARIANT_STYLES[popup.variant] ?? VARIANT_STYLES.default;
   const Icon = style.icon;
@@ -87,69 +85,51 @@ export default function ScenarioPopup() {
 
   return createPortal(
     <div
-      className={`fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-8 ${style.backdrop} animate-[fadeIn_0.25s_ease]`}
-      role="alertdialog"
+      className="fixed top-0 inset-x-0 z-[9999] px-3 pt-3 sm:pt-4 pointer-events-none"
+      role="status"
       aria-live="assertive"
-      aria-modal="true"
       aria-label={popup.title}
     >
-      <button
-        type="button"
-        className="absolute inset-0 cursor-default"
-        aria-label="Dismiss alert"
-        onClick={() => setOpen(false)}
-      />
-
       <div
-        className={`relative w-full max-w-lg rounded-3xl border shadow-2xl p-6 sm:p-8 animate-[scaleInAlert_0.35s_ease] ${style.panel}`}
+        className={`pointer-events-auto mx-auto w-full max-w-lg rounded-2xl border-2 shadow-[0_12px_40px_rgba(0,0,0,0.35)] p-4 sm:p-5 animate-[slideDownBanner_0.45s_ease-out] ${style.panel}`}
       >
-        <button
-          type="button"
-          onClick={() => setOpen(false)}
-          className={`absolute top-4 right-4 p-2 rounded-xl transition-colors ${
-            isLight ? 'text-white/70 hover:text-white hover:bg-white/10' : 'text-gray-400 hover:text-hsbc-red hover:bg-red-50'
-          }`}
-          aria-label="Close alert"
-        >
-          <X className="w-5 h-5" />
-        </button>
-
-        <div className="flex flex-col items-center text-center">
-          <div className={`w-20 h-20 rounded-2xl flex items-center justify-center mb-5 ${style.iconWrap}`}>
-            <Icon className={`w-10 h-10 ${isLight ? 'text-white' : 'text-hsbc-red'}`} />
+        <div className="flex items-start gap-3">
+          <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${style.iconWrap}`}>
+            <Icon className={`w-5 h-5 ${isLight ? 'text-white' : 'text-hsbc-red'}`} />
           </div>
 
-          <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider mb-3 ${
-            isLight ? 'bg-white/15 text-white/90' : 'bg-red-50 text-hsbc-red'
-          }`}>
-            <Bell className="w-3.5 h-3.5" />
-            {style.badge}
-            <span className="opacity-70">· {popup.time}</span>
-          </div>
+          <div className="flex-1 min-w-0">
+            <div className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider mb-1 ${
+              isLight ? 'bg-white/15 text-white/90' : 'bg-red-50 text-hsbc-red'
+            }`}>
+              <Bell className="w-3 h-3" />
+              {style.badge}
+              <span className="opacity-70">· {popup.time}</span>
+            </div>
 
-          <h2 className="text-2xl sm:text-3xl font-bold leading-tight mb-3">
-            {popup.title}
-          </h2>
+            <h2 className="font-bold text-base sm:text-lg leading-snug">
+              {popup.title}
+            </h2>
 
-          <p className={`text-base sm:text-lg leading-relaxed max-w-md ${isLight ? 'text-white/90' : 'text-gray-600'}`}>
-            {popup.body}
-          </p>
+            <p className={`text-sm leading-relaxed mt-0.5 ${isLight ? 'text-white/90' : 'text-gray-600'}`}>
+              {popup.body}
+            </p>
 
-          <div className={`mt-6 flex items-center gap-2 text-sm font-semibold ${isLight ? 'text-white/85' : 'text-hsbc-red'}`}>
-            <Sparkles className="w-4 h-4" />
-            {popup.footer ?? 'Coverage reallocated automatically'}
+            <p className={`flex items-center gap-1.5 text-xs font-semibold mt-2 ${isLight ? 'text-white/85' : 'text-hsbc-red'}`}>
+              <Sparkles className="w-3.5 h-3.5 shrink-0" />
+              {popup.footer ?? 'Coverage reallocated automatically'}
+            </p>
           </div>
 
           <button
             type="button"
-            onClick={() => setOpen(false)}
-            className={`mt-6 w-full sm:w-auto px-8 py-3 rounded-xl font-bold text-sm transition-colors ${
-              isLight
-                ? 'bg-white text-hsbc-red hover:bg-red-50'
-                : 'bg-hsbc-red text-white hover:bg-hsbc-red-dark'
+            onClick={close}
+            className={`p-1.5 rounded-lg shrink-0 transition-colors ${
+              isLight ? 'text-white/70 hover:text-white hover:bg-white/10' : 'text-gray-400 hover:text-hsbc-red hover:bg-red-50'
             }`}
+            aria-label="Dismiss alert"
           >
-            Got it
+            <X className="w-4 h-4" />
           </button>
         </div>
       </div>

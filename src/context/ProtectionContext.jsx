@@ -14,10 +14,12 @@ import {
   saveTravelFlags,
   isTravelSignal,
 } from '../data/travelSignals';
+import { PENDING_TAP_KEY } from '../utils/pendingTap';
 
 const ProtectionContext = createContext(null);
 const STORAGE_KEY = 'mpf-protection';
 export const EXTERNAL_SIGNAL_KEY = 'mpf-external-signal';
+const PROCESSED_SIGNAL_KEY = 'mpf-signal-processed-at';
 
 export function formatAllocationTime(date = new Date()) {
   return date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
@@ -32,6 +34,25 @@ function loadProtection() {
     return null;
   } catch {
     return null;
+  }
+}
+
+function consumeExternalSignal(raw, onSignal) {
+  if (!raw) return;
+  try {
+    const payload = JSON.parse(raw);
+    const id = payload?.scenarioId;
+    if (!id || (!SCENARIOS[id] && !isTravelSignal(id))) return;
+
+    const at = Number(payload.at) || 0;
+    const lastProcessed = Number(sessionStorage.getItem(PROCESSED_SIGNAL_KEY) || 0);
+    if (at && at <= lastProcessed) return;
+
+    if (at) sessionStorage.setItem(PROCESSED_SIGNAL_KEY, String(at));
+    localStorage.removeItem(EXTERNAL_SIGNAL_KEY);
+    onSignal(id);
+  } catch {
+    // ignore
   }
 }
 
@@ -51,6 +72,7 @@ export function ProtectionProvider({ children }) {
   const [travelFlags, setTravelFlags] = useState(loadTravelFlags);
   const [popupContent, setPopupContent] = useState(null);
   const [popupSignal, setPopupSignal] = useState(0);
+  const [uiPulse, setUiPulse] = useState(0);
 
   const scenario = SCENARIOS[scenarioId];
   const allocation = scenario.allocation;
@@ -60,7 +82,11 @@ export function ProtectionProvider({ children }) {
     setPopupSignal((n) => n + 1);
   }, []);
 
-  const commitScenario = useCallback((id) => {
+  const pulseUi = useCallback(() => {
+    setUiPulse((n) => n + 1);
+  }, []);
+
+  const applyScenario = useCallback((id) => {
     const time = formatAllocationTime();
     const next = SCENARIOS[id];
     const settings = loadSettings();
@@ -76,17 +102,21 @@ export function ProtectionProvider({ children }) {
         ...prev.map((n) => ({ ...n, read: true })),
       ]);
     }
-    showPopup(getScenarioPopup(next));
-  }, [showPopup]);
+  }, []);
+
+  const commitScenario = useCallback((id) => {
+    applyScenario(id);
+    showPopup(getScenarioPopup(SCENARIOS[id]));
+    window.setTimeout(() => pulseUi(), 100);
+  }, [applyScenario, showPopup, pulseUi]);
 
   const setScenarioId = useCallback((id) => {
-    if (!SCENARIOS[id]) return;
-
     if (isTravelSignal(id)) {
       const signal = TRAVEL_SIGNALS[id];
+      const flags = loadTravelFlags();
 
       if (signal.type === 'ticket') {
-        const nextFlags = { ...travelFlags, [signal.flag]: true };
+        const nextFlags = { ...flags, [signal.flag]: true };
         setTravelFlags(nextFlags);
         saveTravelFlags(nextFlags);
         showPopup(signal.popup);
@@ -94,11 +124,11 @@ export function ProtectionProvider({ children }) {
       }
 
       if (signal.type === 'checkpoint') {
-        if (!travelFlags[signal.requires]) {
+        if (!flags[signal.requires]) {
           showPopup(signal.blockedPopup);
           return;
         }
-        const nextFlags = { ...travelFlags, [signal.requires]: false };
+        const nextFlags = { ...flags, [signal.requires]: false };
         setTravelFlags(nextFlags);
         saveTravelFlags(nextFlags);
         commitScenario(signal.applies);
@@ -106,8 +136,9 @@ export function ProtectionProvider({ children }) {
       }
     }
 
+    if (!SCENARIOS[id]) return;
     commitScenario(id);
-  }, [travelFlags, showPopup, commitScenario]);
+  }, [showPopup, commitScenario]);
 
   useEffect(() => {
     localStorage.setItem(
@@ -116,25 +147,15 @@ export function ProtectionProvider({ children }) {
     );
   }, [scenarioId, allocatedAt, insights, notifications]);
 
-  // Listen for external signals sent from a separate "console" page (same origin).
+  // External signals from signal console (other tab) — consume once, never replay on refresh.
   useEffect(() => {
-    const applySignal = (raw) => {
-      try {
-        if (!raw) return;
-        const payload = JSON.parse(raw);
-        const id = payload?.scenarioId;
-        if (!id || !SCENARIOS[id]) return;
-        setScenarioId(id);
-      } catch {
-        // ignore
-      }
-    };
+    const apply = (id) => setScenarioId(id);
 
-    applySignal(localStorage.getItem(EXTERNAL_SIGNAL_KEY));
+    consumeExternalSignal(localStorage.getItem(EXTERNAL_SIGNAL_KEY), apply);
 
     const onStorage = (e) => {
       if (e.key !== EXTERNAL_SIGNAL_KEY) return;
-      applySignal(e.newValue);
+      consumeExternalSignal(e.newValue, apply);
     };
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
@@ -145,6 +166,10 @@ export function ProtectionProvider({ children }) {
     const clearedFlags = { flightTicket: false, hsrTicket: false };
     setTravelFlags(clearedFlags);
     saveTravelFlags(clearedFlags);
+    localStorage.removeItem(EXTERNAL_SIGNAL_KEY);
+    sessionStorage.removeItem(PROCESSED_SIGNAL_KEY);
+    sessionStorage.removeItem(PENDING_TAP_KEY);
+    setUiPulse(0);
     setScenarioIdState('tokyo');
     setAllocatedAt(time);
     setInsights(buildInitialInsights('tokyo', time));
@@ -172,9 +197,11 @@ export function ProtectionProvider({ children }) {
       travelFlags,
       popupContent,
       popupSignal,
+      uiPulse,
+      pulseUi,
       refreshData,
     }),
-    [scenarioId, scenario, allocation, allocatedAt, insights, notifications, travelFlags, popupContent, popupSignal, setScenarioId, refreshData],
+    [scenarioId, scenario, allocation, allocatedAt, insights, notifications, travelFlags, popupContent, popupSignal, uiPulse, pulseUi, setScenarioId, refreshData],
   );
 
   return (

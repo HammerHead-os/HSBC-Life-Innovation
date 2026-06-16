@@ -1,22 +1,34 @@
-import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useProtection } from '../context/ProtectionContext';
 import { HsbcLogo } from '../components/QuickActions';
+import { PENDING_TAP_KEY } from '../utils/pendingTap';
 
 export default function LoginPage() {
   const { isAuthenticated, login } = useAuth();
+  const { setScenarioId } = useProtection();
   const navigate = useNavigate();
   const [name, setName] = useState('');
 
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    const pending = sessionStorage.getItem(PENDING_TAP_KEY);
+    if (pending) {
+      sessionStorage.removeItem(PENDING_TAP_KEY);
+      setScenarioId(pending);
+    }
+    navigate('/', { replace: true });
+  }, [isAuthenticated, setScenarioId, navigate]);
+
   if (isAuthenticated) {
-    return <Navigate to="/" replace />;
+    return null;
   }
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!name.trim()) return;
     login(name);
-    navigate('/', { replace: true });
   };
 
   return (

@@ -8,8 +8,9 @@ import { useProtection } from '../context/ProtectionContext';
 import { getChartData } from '../data/constants';
 
 export default function HomePage({ variant = 'mobile' }) {
-  const { scenario, allocation, allocatedAt } = useProtection();
+  const { scenario, allocation, allocatedAt, uiPulse } = useProtection();
   const chartData = getChartData(allocation);
+  const chartKey = `${allocatedAt}-${uiPulse}`;
   const chartSize = variant === 'web'
     ? { size: 180, inner: 58, outer: 82 }
     : { size: 150, inner: 48, outer: 68 };
@@ -23,7 +24,7 @@ export default function HomePage({ variant = 'mobile' }) {
             <ProtectionCard
               allocation={allocation}
               allocatedAt={allocatedAt}
-              chart={<DonutChart data={chartData} {...chartSize} />}
+              chart={<DonutChart key={chartKey} data={chartData} {...chartSize} />}
               legend={<AllocationLegend allocation={allocation} />}
             />
             <AiBadge key={allocatedAt} time={allocatedAt} />
@@ -46,7 +47,7 @@ export default function HomePage({ variant = 'mobile' }) {
       <ProtectionCard
         allocation={allocation}
         allocatedAt={allocatedAt}
-        chart={<DonutChart data={chartData} {...chartSize} />}
+        chart={<DonutChart key={chartKey} data={chartData} {...chartSize} />}
         legend={<AllocationLegend allocation={allocation} compact />}
       />
       <AiBadge key={allocatedAt} time={allocatedAt} />

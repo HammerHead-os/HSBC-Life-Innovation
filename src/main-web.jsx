@@ -33,14 +33,7 @@ export default function WebApp() {
           <ScenarioPopup />
           <Routes>
             <Route path="/login" element={<LoginPage />} />
-            <Route
-              path="/tap/:scenarioId"
-              element={
-                <RequireAuth>
-                  <TapTriggerPage />
-                </RequireAuth>
-              }
-            />
+            <Route path="/tap/:scenarioId" element={<TapTriggerPage />} />
             <Route
               path="/"
               element={
