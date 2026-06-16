@@ -58,8 +58,6 @@ export default function FAQPage({ wide = false }) {
     [query],
   );
 
-  const hardCount = filtered.filter((item) => item.tags?.includes('hard')).length;
-
   return (
     <PageShell title="FAQ for Judges" backTo="/" wide={wide}>
       <p className="text-sm text-gray-500 mb-4">
@@ -87,12 +85,6 @@ export default function FAQPage({ wide = false }) {
           </button>
         )}
       </div>
-
-      <p className="text-xs text-gray-400 mb-3">
-        {filtered.length} question{filtered.length !== 1 ? 's' : ''}
-        {query ? ` matching “${query}”` : ''}
-        {!query && hardCount > 0 && ` · ${hardCount} marked hard`}
-      </p>
 
       {filtered.length === 0 ? (
         <div className="bg-white rounded-xl border border-gray-100 p-8 text-center">
