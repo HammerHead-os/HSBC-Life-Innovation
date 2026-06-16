@@ -14,6 +14,9 @@ import ProfilePage from './pages/ProfilePage';
 import ClaimsPage from './pages/ClaimsPage';
 import FamilyPage from './pages/FamilyPage';
 import SettingsPage from './pages/SettingsPage';
+import PlanBillingPage from './pages/PlanBillingPage';
+import CoverageFloorsPage from './pages/CoverageFloorsPage';
+import PrivacyPage from './pages/PrivacyPage';
 import DetailsPage from './pages/DetailsPage';
 import FAQPage from './pages/FAQPage';
 import './index.css';
@@ -43,6 +46,9 @@ export default function WebApp() {
               <Route path="claims" element={<ClaimsPage wide />} />
               <Route path="family" element={<FamilyPage wide />} />
               <Route path="settings" element={<SettingsPage wide />} />
+              <Route path="plan" element={<PlanBillingPage wide />} />
+              <Route path="coverage-floors" element={<CoverageFloorsPage wide />} />
+              <Route path="privacy" element={<PrivacyPage wide />} />
               <Route path="details" element={<DetailsPage wide />} />
               <Route path="faq" element={<FAQPage wide />} />
             </Route>

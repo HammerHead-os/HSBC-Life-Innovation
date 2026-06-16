@@ -14,6 +14,9 @@ import ProfilePage from './pages/ProfilePage';
 import ClaimsPage from './pages/ClaimsPage';
 import FamilyPage from './pages/FamilyPage';
 import SettingsPage from './pages/SettingsPage';
+import PlanBillingPage from './pages/PlanBillingPage';
+import CoverageFloorsPage from './pages/CoverageFloorsPage';
+import PrivacyPage from './pages/PrivacyPage';
 import DetailsPage from './pages/DetailsPage';
 import FAQPage from './pages/FAQPage';
 import './index.css';
@@ -43,6 +46,9 @@ export default function MobileApp() {
               <Route path="claims" element={<ClaimsPage />} />
               <Route path="family" element={<FamilyPage />} />
               <Route path="settings" element={<SettingsPage />} />
+              <Route path="plan" element={<PlanBillingPage />} />
+              <Route path="coverage-floors" element={<CoverageFloorsPage />} />
+              <Route path="privacy" element={<PrivacyPage />} />
               <Route path="details" element={<DetailsPage />} />
               <Route path="faq" element={<FAQPage />} />
             </Route>

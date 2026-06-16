@@ -11,9 +11,9 @@ export default function ProfilePage({ variant = 'mobile' }) {
   const navigate = useNavigate();
 
   const items = [
-    { icon: CreditCard, label: 'Plan & billing', desc: `${user.plan} · HKD ${PREMIUM}/month`, to: '/settings' },
-    { icon: Sliders, label: 'Coverage floors', desc: 'Set personal minimums', to: '/settings' },
-    { icon: Shield, label: 'Privacy & data', desc: 'Location checkpoints · 24hr retention', to: '/settings' },
+    { icon: CreditCard, label: 'Plan & billing', desc: `${user.plan} · HKD ${PREMIUM}/month`, to: '/plan' },
+    { icon: Sliders, label: 'Coverage floors', desc: 'Set personal minimums', to: '/coverage-floors' },
+    { icon: Shield, label: 'Privacy & data', desc: 'Location checkpoints · 24hr retention', to: '/privacy' },
     { icon: HelpCircle, label: 'FAQ for judges', desc: 'Long-term vs short-term, and more', to: '/faq' },
   ];
 
