@@ -10,34 +10,37 @@ const CATEGORY_ICONS = {
   liability: Scale,
 };
 
-export default function InsightCard({ title, body, highlightCategory, variant = 'default' }) {
+export default function InsightCard({ title, body, highlightCategory, variant = 'default', layout = 'mobile' }) {
   const highlight = CATEGORIES.find((c) => c.key === highlightCategory);
   const CenterIcon = CATEGORY_ICONS[highlightCategory] || Info;
   const otherCategories = CATEGORIES.filter((c) => c.key !== highlightCategory);
+  const isWeb = layout === 'web';
 
   return (
-    <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 h-full">
-      <p className="text-xs font-bold text-hsbc-red uppercase tracking-wide mb-1">Today&apos;s insight</p>
-      <h3 className="font-bold text-gray-900 text-base mb-2">{title}</h3>
-      <div className="flex gap-3 items-start">
-        <p className="text-sm text-gray-600 leading-relaxed flex-1">{body}</p>
+    <div className={`bg-white rounded-2xl shadow-sm border border-gray-100 h-full ${isWeb ? 'p-5' : 'p-4'}`}>
+      <p className={`font-bold text-hsbc-red uppercase tracking-wide mb-1 ${isWeb ? 'text-sm' : 'text-xs'}`}>
+        Today&apos;s insight
+      </p>
+      <h3 className={`font-bold text-gray-900 mb-2 ${isWeb ? 'text-lg' : 'text-base'}`}>{title}</h3>
+      <div className="flex gap-4 items-start">
+        <p className={`text-gray-600 leading-relaxed flex-1 ${isWeb ? 'text-[15px]' : 'text-sm'}`}>{body}</p>
         {variant === 'network' ? (
-          <div className="relative w-24 h-24 shrink-0">
+          <div className={`relative shrink-0 ${isWeb ? 'w-28 h-28' : 'w-24 h-24'}`}>
             <div className="absolute inset-0 flex items-center justify-center">
               <div
-                className="w-12 h-12 rounded-full flex items-center justify-center shadow-md z-10"
+                className={`rounded-full flex items-center justify-center shadow-md z-10 ${isWeb ? 'w-14 h-14' : 'w-12 h-12'}`}
                 style={{ background: highlight?.color ?? '#DB0011' }}
                 title={highlight?.name}
               >
-                <CenterIcon className="w-6 h-6 text-white" />
+                <CenterIcon className={isWeb ? 'w-7 h-7 text-white' : 'w-6 h-6 text-white'} />
               </div>
             </div>
             {otherCategories.map((cat, i) => {
               const Ic = CATEGORY_ICONS[cat.key];
               const angle = (i / otherCategories.length) * Math.PI * 2 - Math.PI / 2;
-              const cx = 48;
-              const cy = 48;
-              const radius = 36;
+              const cx = isWeb ? 56 : 48;
+              const cy = isWeb ? 56 : 48;
+              const radius = isWeb ? 42 : 36;
               const x = cx + Math.cos(angle) * radius - 12;
               const y = cy + Math.sin(angle) * radius - 12;
               return (

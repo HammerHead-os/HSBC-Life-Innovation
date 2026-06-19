@@ -10,35 +10,32 @@ import { useProtection } from '../context/ProtectionContext';
 export default function HomePage({ variant = 'mobile' }) {
   const { scenario, allocatedAt, remoteSignalStatus } = useProtection();
   const chartSize = variant === 'web'
-    ? { size: 220, inner: 72, outer: 100 }
+    ? { size: 200, inner: 68, outer: 92 }
     : { size: 150, inner: 48, outer: 68 };
 
   if (variant === 'web') {
     return (
-      <div className="w-full space-y-6">
-        <div className="grid grid-cols-1 xl:grid-cols-[1fr_18rem] gap-6">
-          <ScenarioPanel />
-          <SignalRoomPanel compact remoteStatus={remoteSignalStatus} />
-        </div>
+      <div className="w-full space-y-4">
+        <ScenarioPanel
+          variant="web"
+          footer={<SignalRoomPanel compact remoteStatus={remoteSignalStatus} />}
+        />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-          <div className="lg:col-span-8 flex flex-col gap-3">
-            <ProtectionCard
-              layout="web"
-              allocatedAt={allocatedAt}
-              chart={<DonutChart {...chartSize} />}
-              legend={<AllocationLegend columns={2} />}
-            />
-            <AiBadge key={allocatedAt} time={allocatedAt} />
-          </div>
-          <div className="lg:col-span-4">
-            <InsightCard
-              title={scenario.insightTitle}
-              body={scenario.insight}
-              highlightCategory={scenario.highlightCategory}
-              variant="network"
-            />
-          </div>
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 items-stretch">
+          <ProtectionCard
+            layout="web"
+            allocatedAt={allocatedAt}
+            aiTime={allocatedAt}
+            chart={<DonutChart {...chartSize} />}
+            legend={<AllocationLegend columns={3} large />}
+          />
+          <InsightCard
+            layout="web"
+            title={scenario.insightTitle}
+            body={scenario.insight}
+            highlightCategory={scenario.highlightCategory}
+            variant="network"
+          />
         </div>
 
         <QuickActions large />

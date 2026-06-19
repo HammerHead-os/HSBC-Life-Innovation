@@ -1,23 +1,30 @@
 import { CATEGORIES, PREMIUM } from '../data/constants';
 import { useProtection } from '../context/ProtectionContext';
 
-export default function AllocationLegend({ compact = false, columns = 1 }) {
+export default function AllocationLegend({ compact = false, columns = 1, large = false }) {
   const { displayAllocation } = useProtection();
 
+  const gridClass =
+    columns === 3
+      ? 'grid grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-2.5'
+      : columns === 2
+        ? 'grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2'
+        : compact
+          ? 'space-y-1'
+          : 'space-y-1.5';
+
+  const spanClass =
+    columns === 3 ? 'lg:col-span-3' : columns === 2 ? 'sm:col-span-2' : '';
+
   return (
-    <ul
-      className={`text-sm ${
-        columns === 2
-          ? 'grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2'
-          : compact
-            ? 'space-y-1'
-            : 'space-y-1.5'
-      }`}
-    >
+    <ul className={`${large ? 'text-[15px]' : 'text-sm'} ${gridClass}`}>
       {CATEGORIES.map((c) => (
         <li key={c.key} className="flex items-center justify-between gap-3 min-w-0">
           <span className="flex items-center gap-2 text-gray-600 min-w-0">
-            <span className="w-2.5 h-2.5 rounded-full shrink-0" style={{ background: c.color }} />
+            <span
+              className={`rounded-full shrink-0 ${large ? 'w-3 h-3' : 'w-2.5 h-2.5'}`}
+              style={{ background: c.color }}
+            />
             {c.name}
           </span>
           <span className="font-semibold text-gray-900 tabular-nums shrink-0">
@@ -26,9 +33,7 @@ export default function AllocationLegend({ compact = false, columns = 1 }) {
         </li>
       ))}
       <li
-        className={`flex justify-between font-bold text-gray-900 ${
-          columns === 2 ? 'sm:col-span-2 pt-2 border-t border-gray-100' : 'pt-1 border-t border-gray-100'
-        }`}
+        className={`flex justify-between font-bold text-gray-900 pt-2 border-t border-gray-100 ${spanClass}`}
       >
         <span>Total</span>
         <span className="tabular-nums">HKD {PREMIUM}</span>

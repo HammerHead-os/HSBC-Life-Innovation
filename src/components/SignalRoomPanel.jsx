@@ -30,11 +30,11 @@ export default function SignalRoomPanel({
 
   if (compact) {
     return (
-      <div className="rounded-xl border border-gray-100 bg-gray-50/80 px-3 py-2 flex items-center gap-2 text-xs">
+      <div className="rounded-lg bg-gray-50/80 px-3 py-2 flex items-center gap-2 text-sm">
         {isOnline ? (
-          <Wifi className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+          <Wifi className="w-4 h-4 text-emerald-600 shrink-0" />
         ) : (
-          <WifiOff className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+          <WifiOff className="w-4 h-4 text-amber-600 shrink-0" />
         )}
         <span className="text-gray-600">{statusLabel}</span>
       </div>

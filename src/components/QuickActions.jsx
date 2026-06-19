@@ -12,15 +12,17 @@ const ACTIONS = [
 export default function QuickActions({ large = false }) {
   if (large) {
     return (
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 w-full">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 w-full">
         {ACTIONS.map(({ to, icon: Icon, label }) => (
           <SubPageLink
             key={to}
             to={to}
-            className="flex flex-col items-center justify-center gap-2 bg-white hover:bg-hsbc-red hover:border-hsbc-red transition-colors rounded-2xl p-5 border border-gray-200 shadow-sm group min-h-[7.5rem]"
+            className="flex flex-col items-center justify-center gap-2.5 bg-white hover:bg-hsbc-red hover:border-hsbc-red transition-colors rounded-2xl p-4 border border-gray-200 shadow-sm group min-h-[6.5rem]"
           >
-            <Icon className="w-7 h-7 text-hsbc-red group-hover:text-white transition-colors" />
-            <span className="text-sm font-semibold text-gray-800 group-hover:text-white transition-colors">{label}</span>
+            <Icon className="w-8 h-8 text-hsbc-red group-hover:text-white transition-colors" />
+            <span className="text-[15px] font-semibold text-gray-800 group-hover:text-white transition-colors text-center leading-tight">
+              {label}
+            </span>
           </SubPageLink>
         ))}
       </div>

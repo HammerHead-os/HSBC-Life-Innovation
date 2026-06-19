@@ -2,25 +2,34 @@ import { useProtection } from '../context/ProtectionContext';
 import { DEMO_SCENARIO_IDS, SCENARIOS } from '../data/constants';
 import { ScenarioPicker } from './SubPageHeader';
 
-export default function ScenarioPanel() {
+export default function ScenarioPanel({ variant = 'mobile', footer = null }) {
   const { scenario, scenarioId, setScenarioId } = useProtection();
   const scenarios = Object.fromEntries(DEMO_SCENARIO_IDS.map((id) => [id, SCENARIOS[id]]));
+  const isWeb = variant === 'web';
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 p-4 shadow-sm">
-      <p className="text-xs font-bold text-hsbc-red uppercase tracking-wide mb-1">
+    <div className={`bg-white rounded-2xl border border-gray-100 shadow-sm ${isWeb ? 'p-5' : 'p-4'}`}>
+      <p className={`font-bold text-hsbc-red uppercase tracking-wide mb-1 ${isWeb ? 'text-sm' : 'text-xs'}`}>
         Demo scenarios
       </p>
-      <p className="text-sm text-gray-600 mb-3">
+      <p className={`text-gray-600 mb-3 ${isWeb ? 'text-[15px] leading-snug' : 'text-sm'}`}>
         Select a situation below — AI reallocates coverage instantly.
         Flight &amp; HSR need <strong>ticket + gate</strong> (use NFC boxes or signal console).
       </p>
-      <ScenarioPicker scenarios={scenarios} current={scenarioId} onChange={setScenarioId} />
-      <p className="text-xs text-gray-500 mt-3 leading-relaxed">
-        <strong className="text-gray-700">{scenario.label}</strong>
+      <ScenarioPicker
+        scenarios={scenarios}
+        current={scenarioId}
+        onChange={setScenarioId}
+        size={isWeb ? 'large' : 'default'}
+      />
+      <p className={`text-gray-500 mt-3 leading-relaxed ${isWeb ? 'text-[15px]' : 'text-xs'}`}>
+        <strong className="text-gray-800">{scenario.label}</strong>
         {' — '}
         {scenario.insight}
       </p>
+      {footer && (
+        <div className="mt-3 pt-3 border-t border-gray-100">{footer}</div>
+      )}
     </div>
   );
 }

@@ -43,15 +43,19 @@ export function PageShell({ title, backTo = '/', children, wide = false }) {
   );
 }
 
-export function ScenarioPicker({ scenarios, current, onChange }) {
+export function ScenarioPicker({ scenarios, current, onChange, size = 'default' }) {
+  const large = size === 'large';
+
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className={`flex flex-wrap ${large ? 'gap-2.5' : 'gap-2'}`}>
       {Object.values(scenarios).map((s) => (
         <button
           key={s.id}
           type="button"
           onClick={() => onChange(s.id)}
-          className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
+          className={`rounded-full font-semibold transition-colors ${
+            large ? 'px-4 py-2 text-sm' : 'px-3 py-1.5 text-xs'
+          } ${
             current === s.id
               ? 'bg-hsbc-red text-white hover:bg-hsbc-red-dark'
               : 'bg-white border border-gray-200 text-gray-600 hover:border-hsbc-red hover:bg-red-50 hover:text-hsbc-red'
