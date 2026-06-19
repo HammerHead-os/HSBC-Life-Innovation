@@ -48,7 +48,7 @@ export function createAllocationNotification(scenario, allocatedAt) {
     id: `notif-${scenario.id}-${Date.now()}`,
     title: popup.title,
     body: `${popup.body} ${cat.charAt(0).toUpperCase() + cat.slice(1)} now HKD ${amount}.`,
-    time: 'Just now',
+    time: allocatedAt ? `Today at ${allocatedAt}` : 'Just now',
     type: popup.variant === 'hazard' ? 'alert' : popup.variant === 'travel' ? 'travel' : 'alert',
     read: false,
     source: 'ai',
