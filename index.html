@@ -147,5 +147,11 @@
     </div>
 
     <p class="footer">HSBC Life Insurance Innovation Competition · Demo</p>
+    <script>
+      // Poster QR lands here — send phones straight to the mobile app.
+      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        window.location.replace('mobile.html');
+      }
+    </script>
   </body>
 </html>

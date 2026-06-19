@@ -4,10 +4,11 @@ import ProtectionCard from '../components/ProtectionCard';
 import InsightCard, { AiBadge } from '../components/InsightCard';
 import QuickActions from '../components/QuickActions';
 import ScenarioPanel from '../components/ScenarioPanel';
+import SignalRoomPanel from '../components/SignalRoomPanel';
 import { useProtection } from '../context/ProtectionContext';
 
 export default function HomePage({ variant = 'mobile' }) {
-  const { scenario, allocatedAt } = useProtection();
+  const { scenario, allocatedAt, remoteSignalStatus } = useProtection();
   const chartSize = variant === 'web'
     ? { size: 180, inner: 58, outer: 82 }
     : { size: 150, inner: 48, outer: 68 };
@@ -39,6 +40,7 @@ export default function HomePage({ variant = 'mobile' }) {
 
   return (
     <>
+      <SignalRoomPanel compact remoteStatus={remoteSignalStatus} />
       <ScenarioPanel />
       <ProtectionCard
         allocatedAt={allocatedAt}

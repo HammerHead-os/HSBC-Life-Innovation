@@ -5,6 +5,8 @@ import './index.css';
 import { SCENARIOS } from './data/constants';
 import { EXTERNAL_SIGNAL_KEY } from './context/ProtectionContext';
 import { getTapUrl } from './utils/tapUrl';
+import { getSignalRoom, sendRemoteSignal } from './utils/signalSync';
+import SignalRoomPanel from './components/SignalRoomPanel';
 
 const GROUPS = [
   {
@@ -44,12 +46,13 @@ function writeExternalSignal(scenarioId) {
   return payload;
 }
 
-function Button({ onClick, children, className = '' }) {
+function Button({ onClick, children, className = '', disabled = false }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      className={`inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 bg-white hover:bg-red-50 hover:border-hsbc-red/30 transition-colors text-sm font-semibold text-gray-800 ${className}`}
+      disabled={disabled}
+      className={`inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 bg-white hover:bg-red-50 hover:border-hsbc-red/30 transition-colors text-sm font-semibold text-gray-800 disabled:opacity-50 disabled:pointer-events-none ${className}`}
     >
       {children}
     </button>
@@ -62,12 +65,29 @@ function copy(text) {
 
 function App() {
   const [toast, setToast] = useState(null);
+  const [sending, setSending] = useState(null);
   const page = 'mobile';
 
   const tapUrls = useMemo(() => {
     const ids = GROUPS.flatMap((g) => g.items.map((i) => i.id));
     return Object.fromEntries(ids.map((id) => [id, getTapUrl(id, page)]));
   }, [page]);
+
+  const sendSignal = async (item) => {
+    writeExternalSignal(item.id);
+    setSending(item.id);
+    try {
+      await sendRemoteSignal(getSignalRoom(), item.id);
+      setToast(`Signal sent: ${item.label}`);
+    } catch {
+      setToast(`Phone not reachable — poster QR → Mobile App, keep open`);
+    } finally {
+      setSending(null);
+      setTimeout(() => setToast(null), 3500);
+    }
+  };
+
+  const hazardIds = new Set(['tornado', 'fire', 'black_rain']);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -76,8 +96,8 @@ function App() {
           <p className="text-xs font-bold text-hsbc-red uppercase tracking-wide mb-1">Signals Console</p>
           <h1 className="text-xl font-bold text-gray-900">Send live signals to the app</h1>
           <p className="text-sm text-gray-600 mt-2 leading-relaxed">
-            This page is separate from the app. Use it to trigger scenarios via <strong>external signals</strong>
-            (same-origin localStorage), or to copy <strong>NFC tag URLs</strong> (open-on-tap).
+            Sends live signals to phones opened from the <strong>poster QR link</strong>.
+            Hazard alerts need no NFC — mobility taps still support NFC URLs.
           </p>
           <div className="flex gap-2 flex-wrap mt-4">
             <a
@@ -94,6 +114,8 @@ function App() {
             </a>
           </div>
         </div>
+
+        <SignalRoomPanel variant="console" />
 
         {GROUPS.map((group) => (
           <div key={group.title} className="bg-white rounded-2xl border border-gray-100 p-5">
@@ -120,33 +142,36 @@ function App() {
 
                     <div className="flex flex-wrap gap-2 mt-3">
                       <Button
-                        onClick={() => {
-                          writeExternalSignal(item.id);
-                          setToast(`Signal sent: ${item.label}`);
-                          setTimeout(() => setToast(null), 2000);
-                        }}
+                        onClick={() => sendSignal(item)}
+                        disabled={sending === item.id}
                         className="border-hsbc-red/30"
                       >
-                        Send signal
+                        {sending === item.id ? 'Sending…' : 'Send signal'}
                       </Button>
-                      <Button
-                        onClick={() => {
-                          copy(url);
-                          setToast('NFC URL copied');
-                          setTimeout(() => setToast(null), 2000);
-                        }}
-                      >
-                        Copy NFC URL <Copy className="w-4 h-4 text-gray-500" />
-                      </Button>
-                      <a
-                        href={url}
-                        className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition-colors text-sm font-semibold text-gray-800"
-                      >
-                        Test open <ExternalLink className="w-4 h-4 text-gray-500" />
-                      </a>
+                      {!hazardIds.has(item.id) && (
+                        <>
+                          <Button
+                            onClick={() => {
+                              copy(url);
+                              setToast('NFC URL copied');
+                              setTimeout(() => setToast(null), 2000);
+                            }}
+                          >
+                            Copy NFC URL <Copy className="w-4 h-4 text-gray-500" />
+                          </Button>
+                          <a
+                            href={url}
+                            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition-colors text-sm font-semibold text-gray-800"
+                          >
+                            Test open <ExternalLink className="w-4 h-4 text-gray-500" />
+                          </a>
+                        </>
+                      )}
                     </div>
 
-                    <p className="text-[11px] text-gray-400 mt-3 break-all font-mono">{url}</p>
+                    {!hazardIds.has(item.id) && (
+                      <p className="text-[11px] text-gray-400 mt-3 break-all font-mono">{url}</p>
+                    )}
                   </div>
                 );
               })}
@@ -155,7 +180,7 @@ function App() {
         ))}
 
         <div className="text-xs text-gray-400 text-center pb-6">
-          Tip: for NFC tags, write the URL record. For the external console, keep the app open in another tab/window.
+          Friend scans poster QR → taps Mobile App → keeps it open · you hit Send signal here
         </div>
       </div>
 

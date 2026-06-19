@@ -1,5 +1,7 @@
 import { ChevronRight, CreditCard, Sliders, Shield } from 'lucide-react';
 import { PageShell, SubPageLink } from '../components/SubPageHeader';
+import SignalRoomPanel from '../components/SignalRoomPanel';
+import { useProtection } from '../context/ProtectionContext';
 
 const SECTIONS = [
   { icon: CreditCard, label: 'Plan & billing', desc: 'Premium, payment method, what\'s included', to: '/plan' },
@@ -8,8 +10,13 @@ const SECTIONS = [
 ];
 
 export default function SettingsPage({ wide = false }) {
+  const { remoteSignalStatus } = useProtection();
+
   return (
     <PageShell title="Settings" backTo="/profile" wide={wide}>
+      <div className="space-y-4 mb-4">
+        <SignalRoomPanel remoteStatus={remoteSignalStatus} />
+      </div>
       <div className="bg-white rounded-xl border border-gray-100 divide-y divide-gray-50">
         {SECTIONS.map(({ icon: Icon, label, desc, to }) => (
           <SubPageLink key={to} to={to} className="flex items-center gap-4 px-4 py-4 hover:bg-red-50 transition-colors">

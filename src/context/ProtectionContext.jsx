@@ -16,6 +16,7 @@ import {
 } from '../data/travelSignals';
 import { PENDING_TAP_KEY } from '../utils/pendingTap';
 import { easeInOutQuart } from '../utils/easing';
+import { getSignalRoom, subscribeRemoteSignals } from '../utils/signalSync';
 
 const ProtectionContext = createContext(null);
 const STORAGE_KEY = 'mpf-protection';
@@ -39,20 +40,24 @@ function loadProtection() {
   }
 }
 
+function consumeSignalPayload(payload, onSignal) {
+  if (!payload) return;
+  const id = payload?.scenarioId;
+  if (!id || (!SCENARIOS[id] && !isTravelSignal(id))) return;
+
+  const at = Number(payload.at) || 0;
+  const lastProcessed = Number(sessionStorage.getItem(PROCESSED_SIGNAL_KEY) || 0);
+  if (at && at <= lastProcessed) return;
+
+  if (at) sessionStorage.setItem(PROCESSED_SIGNAL_KEY, String(at));
+  localStorage.removeItem(EXTERNAL_SIGNAL_KEY);
+  onSignal(id);
+}
+
 function consumeExternalSignal(raw, onSignal) {
   if (!raw) return;
   try {
-    const payload = JSON.parse(raw);
-    const id = payload?.scenarioId;
-    if (!id || (!SCENARIOS[id] && !isTravelSignal(id))) return;
-
-    const at = Number(payload.at) || 0;
-    const lastProcessed = Number(sessionStorage.getItem(PROCESSED_SIGNAL_KEY) || 0);
-    if (at && at <= lastProcessed) return;
-
-    if (at) sessionStorage.setItem(PROCESSED_SIGNAL_KEY, String(at));
-    localStorage.removeItem(EXTERNAL_SIGNAL_KEY);
-    onSignal(id);
+    consumeSignalPayload(JSON.parse(raw), onSignal);
   } catch {
     // ignore
   }
@@ -74,6 +79,7 @@ export function ProtectionProvider({ children }) {
   const [travelFlags, setTravelFlags] = useState(loadTravelFlags);
   const [popupContent, setPopupContent] = useState(null);
   const [popupSignal, setPopupSignal] = useState(0);
+  const [remoteSignalStatus, setRemoteSignalStatus] = useState('connecting');
   const [displayAllocation, setDisplayAllocation] = useState(
     () => SCENARIOS[initialScenario].allocation,
   );
@@ -182,7 +188,7 @@ export function ProtectionProvider({ children }) {
     );
   }, [scenarioId, allocatedAt, insights, notifications]);
 
-  // External signals from signal console (other tab) — consume once, never replay on refresh.
+  // External signals — same-device localStorage + cross-device room relay.
   useEffect(() => {
     const apply = (id) => setScenarioId(id);
 
@@ -194,6 +200,16 @@ export function ProtectionProvider({ children }) {
     };
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
+  }, [setScenarioId]);
+
+  useEffect(() => {
+    const apply = (payload) => consumeSignalPayload(payload, setScenarioId);
+
+    const stop = subscribeRemoteSignals(getSignalRoom(), apply, (status) => {
+      setRemoteSignalStatus(status === 'ready' ? 'ready' : status === 'error' ? 'error' : 'connecting');
+    });
+
+    return stop;
   }, [setScenarioId]);
 
   const refreshData = useCallback(() => {
@@ -235,9 +251,10 @@ export function ProtectionProvider({ children }) {
       travelFlags,
       popupContent,
       popupSignal,
+      remoteSignalStatus,
       refreshData,
     }),
-    [scenarioId, scenario, allocation, displayAllocation, allocatedAt, insights, notifications, travelFlags, popupContent, popupSignal, setScenarioId, refreshData],
+    [scenarioId, scenario, allocation, displayAllocation, allocatedAt, insights, notifications, travelFlags, popupContent, popupSignal, remoteSignalStatus, setScenarioId, refreshData],
   );
 
   return (
