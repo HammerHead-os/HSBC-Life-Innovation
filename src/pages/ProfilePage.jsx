@@ -28,7 +28,7 @@ export default function ProfilePage({ variant = 'mobile' }) {
   };
 
   return (
-    <div className={`space-y-4 ${variant === 'web' ? 'max-w-2xl' : ''}`}>
+    <div className={`space-y-4 ${variant === 'web' ? 'w-full max-w-none' : ''}`}>
       <div className="bg-white rounded-2xl p-6 border border-gray-100 flex items-center gap-4">
         <div className="w-16 h-16 rounded-full bg-hsbc-red text-white flex items-center justify-center text-2xl font-bold">
           {user.name[0]}

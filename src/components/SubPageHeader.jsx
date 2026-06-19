@@ -36,9 +36,9 @@ export default function SubPageHeader({ title, backTo = '/' }) {
 
 export function PageShell({ title, backTo = '/', children, wide = false }) {
   return (
-    <div className={`min-h-screen bg-gray-50 ${wide ? '' : 'max-w-md mx-auto'}`}>
+    <div className={`min-h-full bg-gray-50 ${wide ? 'w-full' : 'max-w-md mx-auto'}`}>
       <SubPageHeader title={title} backTo={backTo} />
-      <div className={`p-4 space-y-4 ${wide ? 'max-w-4xl mx-auto' : ''}`}>{children}</div>
+      <div className={`p-4 space-y-4 ${wide ? 'px-8 w-full max-w-none' : ''}`}>{children}</div>
     </div>
   );
 }

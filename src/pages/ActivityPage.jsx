@@ -6,7 +6,7 @@ export default function ActivityPage({ variant = 'mobile' }) {
   const { setScenarioId } = useProtection();
 
   return (
-    <div className={variant === 'web' ? 'max-w-3xl' : ''}>
+    <div className={variant === 'web' ? 'w-full' : ''}>
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
         <div className="px-4 py-3 border-b border-gray-100 flex items-center gap-2">
           <Activity className="w-5 h-5 text-hsbc-red" />

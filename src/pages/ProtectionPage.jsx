@@ -6,7 +6,7 @@ export default function ProtectionPage({ variant = 'mobile' }) {
   const { displayAllocation, scenario } = useProtection();
 
   return (
-    <div className={`space-y-4 ${variant === 'web' ? 'max-w-4xl' : ''}`}>
+    <div className={`space-y-4 ${variant === 'web' ? 'w-full' : ''}`}>
       <div className="bg-white rounded-2xl p-4 border border-gray-100">
         <h2 className="font-bold text-gray-900 mb-1">Current mode</h2>
         <p className="text-sm text-hsbc-red font-semibold">{scenario.label}</p>
@@ -18,7 +18,7 @@ export default function ProtectionPage({ variant = 'mobile' }) {
           <h2 className="font-bold text-gray-900">Category breakdown</h2>
           <p className="text-xs text-gray-500">Payout cap = allocation × multiplier</p>
         </div>
-        <div className={`${variant === 'web' ? 'grid md:grid-cols-2' : ''} divide-y md:divide-y-0 md:gap-px md:bg-gray-100`}>
+        <div className={`${variant === 'web' ? 'grid md:grid-cols-2 xl:grid-cols-3' : ''} divide-y md:divide-y-0 md:gap-px md:bg-gray-100`}>
           {CATEGORIES.map((cat) => {
             const amount = displayAllocation[cat.key];
             const cap = getCoverageCap(cat.key, Math.round(amount));

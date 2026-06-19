@@ -5,7 +5,7 @@ export default function InsightsPage({ variant = 'mobile' }) {
   const { insights, setScenarioId } = useProtection();
 
   return (
-    <div className={`space-y-3 ${variant === 'web' ? 'max-w-3xl' : ''}`}>
+    <div className={`space-y-3 ${variant === 'web' ? 'w-full' : ''}`}>
       <p className="text-sm text-gray-600 px-1">
         Live AI reallocations and HSBC Life news — updated as soon as coverage shifts.
       </p>

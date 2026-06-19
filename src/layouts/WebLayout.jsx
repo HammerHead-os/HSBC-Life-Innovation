@@ -27,14 +27,6 @@ export default function WebLayout() {
     navigate('/login', { replace: true });
   };
 
-  if (isSubPage) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Outlet />
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen flex bg-gray-50">
       <aside className="w-56 bg-white border-r border-gray-200 flex flex-col shrink-0 fixed h-full z-40">
@@ -77,26 +69,28 @@ export default function WebLayout() {
         </div>
       </aside>
 
-      <div className="flex-1 ml-56">
-        <div
-          className="h-52 bg-cover bg-no-repeat relative"
-          style={webHeaderStyle}
-        >
-          <div className="absolute inset-0 flex items-end justify-between p-8">
-            <h1 className="text-white text-3xl font-bold drop-shadow-md">Good morning, {user.name} 👋</h1>
-            <div className="flex items-center gap-4">
-              <NotificationBell light />
-              <SubPageLink
-                to="/profile"
-                className="w-10 h-10 rounded-full bg-white/20 border-2 border-white flex items-center justify-center text-white font-bold hover:bg-white hover:text-hsbc-red transition-colors"
-                aria-label="Profile"
-              >
-                {user.name[0]}
-              </SubPageLink>
+      <div className="flex-1 ml-56 min-w-0 flex flex-col min-h-screen">
+        {!isSubPage && (
+          <div
+            className="h-52 bg-cover bg-no-repeat relative shrink-0"
+            style={webHeaderStyle}
+          >
+            <div className="absolute inset-0 flex items-end justify-between p-8">
+              <h1 className="text-white text-3xl font-bold drop-shadow-md">Good morning, {user.name} 👋</h1>
+              <div className="flex items-center gap-4">
+                <NotificationBell light />
+                <SubPageLink
+                  to="/profile"
+                  className="w-10 h-10 rounded-full bg-white/20 border-2 border-white flex items-center justify-center text-white font-bold hover:bg-white hover:text-hsbc-red transition-colors"
+                  aria-label="Profile"
+                >
+                  {user.name[0]}
+                </SubPageLink>
+              </div>
             </div>
           </div>
-        </div>
-        <main className="p-8 -mt-6 relative z-10 max-w-6xl">
+        )}
+        <main className={`flex-1 w-full relative z-10 ${isSubPage ? '' : 'p-8 -mt-6'}`}>
           <Outlet />
         </main>
       </div>
