@@ -1,4 +1,4 @@
-import { ChevronRight, CreditCard, Sliders, Shield } from 'lucide-react';
+import { ChevronRight, CreditCard, Radio, Sliders, Shield } from 'lucide-react';
 import { PageShell, SubPageLink } from '../components/SubPageHeader';
 import SignalRoomPanel from '../components/SignalRoomPanel';
 import { useProtection } from '../context/ProtectionContext';
@@ -6,6 +6,7 @@ import { useProtection } from '../context/ProtectionContext';
 const SECTIONS = [
   { icon: CreditCard, label: 'Plan & billing', desc: 'Premium, payment method, what\'s included', to: '/plan' },
   { icon: Sliders, label: 'Coverage floors', desc: 'Personal minimums per category', to: '/coverage-floors' },
+  { icon: Radio, label: 'Triggers', desc: 'Real-world signals that move coverage & claims', to: '/triggers' },
   { icon: Shield, label: 'Privacy & data', desc: 'Permissions, retention, compliance', to: '/privacy' },
 ];
 

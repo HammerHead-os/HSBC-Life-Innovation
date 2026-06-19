@@ -17,6 +17,7 @@ import SettingsPage from './pages/SettingsPage';
 import PlanBillingPage from './pages/PlanBillingPage';
 import CoverageFloorsPage from './pages/CoverageFloorsPage';
 import PrivacyPage from './pages/PrivacyPage';
+import TriggersPage from './pages/TriggersPage';
 import DetailsPage from './pages/DetailsPage';
 import FAQPage from './pages/FAQPage';
 import TapTriggerPage from './pages/TapTriggerPage';
@@ -52,6 +53,7 @@ export default function MobileApp() {
               <Route path="settings" element={<SettingsPage />} />
               <Route path="plan" element={<PlanBillingPage />} />
               <Route path="coverage-floors" element={<CoverageFloorsPage />} />
+              <Route path="triggers" element={<TriggersPage />} />
               <Route path="privacy" element={<PrivacyPage />} />
               <Route path="details" element={<DetailsPage />} />
               <Route path="faq" element={<FAQPage />} />

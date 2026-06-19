@@ -14,7 +14,7 @@ const NAV = [
   { to: '/profile', icon: User, label: 'Profile' },
 ];
 
-const SUB_PAGES = ['/claims', '/family', '/settings', '/plan', '/coverage-floors', '/privacy', '/details', '/faq'];
+const SUB_PAGES = ['/claims', '/family', '/settings', '/plan', '/coverage-floors', '/triggers', '/privacy', '/details', '/faq'];
 
 export default function WebLayout() {
   const location = useLocation();
