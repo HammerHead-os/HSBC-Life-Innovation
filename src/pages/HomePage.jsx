@@ -10,29 +10,37 @@ import { useProtection } from '../context/ProtectionContext';
 export default function HomePage({ variant = 'mobile' }) {
   const { scenario, allocatedAt, remoteSignalStatus } = useProtection();
   const chartSize = variant === 'web'
-    ? { size: 180, inner: 58, outer: 82 }
+    ? { size: 220, inner: 72, outer: 100 }
     : { size: 150, inner: 48, outer: 68 };
 
   if (variant === 'web') {
     return (
-      <div className="space-y-6 w-full">
-        <ScenarioPanel />
-        <div className="grid xl:grid-cols-3 gap-6">
-          <div className="lg:col-span-2">
+      <div className="w-full space-y-6">
+        <div className="grid grid-cols-1 xl:grid-cols-[1fr_18rem] gap-6">
+          <ScenarioPanel />
+          <SignalRoomPanel compact remoteStatus={remoteSignalStatus} />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          <div className="lg:col-span-8 flex flex-col gap-3">
             <ProtectionCard
+              layout="web"
               allocatedAt={allocatedAt}
               chart={<DonutChart {...chartSize} />}
-              legend={<AllocationLegend />}
+              legend={<AllocationLegend columns={2} />}
             />
             <AiBadge key={allocatedAt} time={allocatedAt} />
           </div>
-          <InsightCard
-            title={scenario.insightTitle}
-            body={scenario.insight}
-            highlightCategory={scenario.highlightCategory}
-            variant="network"
-          />
+          <div className="lg:col-span-4">
+            <InsightCard
+              title={scenario.insightTitle}
+              body={scenario.insight}
+              highlightCategory={scenario.highlightCategory}
+              variant="network"
+            />
+          </div>
         </div>
+
         <QuickActions large />
       </div>
     );

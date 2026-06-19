@@ -6,6 +6,7 @@ export const mobileHeaderStyle = {
 };
 
 export const webHeaderStyle = {
-  backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.4) 100%), url(${HK_SKYLINE_BG})`,
+  backgroundImage: `linear-gradient(to right, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.15) 60%, rgba(0,0,0,0.35) 100%), url(${HK_SKYLINE_BG})`,
   backgroundPosition: 'center 30%',
+  backgroundSize: 'cover',
 };

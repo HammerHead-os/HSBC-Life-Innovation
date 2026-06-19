@@ -28,12 +28,12 @@ export default function WebLayout() {
   };
 
   return (
-    <div className="min-h-screen flex bg-gray-50">
-      <aside className="w-56 bg-white border-r border-gray-200 flex flex-col shrink-0 fixed h-full z-40">
+    <div className="min-h-screen w-full grid grid-cols-[15rem_minmax(0,1fr)] bg-gray-100">
+      <aside className="bg-white border-r border-gray-200 flex flex-col sticky top-0 h-screen z-40">
         <div className="p-5 border-b border-gray-100">
           <HsbcLogo />
         </div>
-        <nav className="flex-1 p-3 space-y-1">
+        <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
           {NAV.map(({ to, end, icon: Icon, label }) => (
             <NavLink
               key={to}
@@ -47,7 +47,7 @@ export default function WebLayout() {
                 }`
               }
             >
-              <Icon className="w-5 h-5" />
+              <Icon className="w-5 h-5 shrink-0" />
               {label}
             </NavLink>
           ))}
@@ -57,26 +57,30 @@ export default function WebLayout() {
             to="/faq"
             className="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 w-full hover:bg-red-50 hover:text-hsbc-red rounded-lg transition-colors"
           >
-            <HelpCircle className="w-5 h-5" /> FAQ for judges
+            <HelpCircle className="w-5 h-5 shrink-0" /> FAQ for judges
           </SubPageLink>
           <button
             type="button"
             onClick={handleLogout}
             className="flex items-center gap-3 px-3 py-2 text-sm text-gray-600 w-full hover:bg-red-50 hover:text-hsbc-red rounded-lg transition-colors"
           >
-            <LogOut className="w-5 h-5" /> Log out
+            <LogOut className="w-5 h-5 shrink-0" /> Log out
           </button>
         </div>
       </aside>
 
-      <div className="flex-1 ml-56 min-w-0 flex flex-col min-h-screen">
+      <div className="min-w-0 flex flex-col min-h-screen">
         {!isSubPage && (
           <div
-            className="h-52 bg-cover bg-no-repeat relative shrink-0"
+            className="h-44 w-full bg-cover bg-center relative shrink-0"
             style={webHeaderStyle}
           >
-            <div className="absolute inset-0 flex items-end justify-between p-8">
-              <h1 className="text-white text-3xl font-bold drop-shadow-md">Good morning, {user.name} 👋</h1>
+            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-transparent" />
+            <div className="relative h-full flex items-end justify-between px-8 pb-6">
+              <div>
+                <p className="text-white/80 text-sm font-medium mb-1">Micro-Protection Fluid</p>
+                <h1 className="text-white text-3xl font-bold drop-shadow-md">Good morning, {user.name} 👋</h1>
+              </div>
               <div className="flex items-center gap-4">
                 <NotificationBell light />
                 <SubPageLink
@@ -90,7 +94,7 @@ export default function WebLayout() {
             </div>
           </div>
         )}
-        <main className={`flex-1 w-full relative z-10 ${isSubPage ? '' : 'p-8 -mt-6'}`}>
+        <main className={`flex-1 w-full min-w-0 ${isSubPage ? 'bg-gray-50' : 'px-8 py-6 -mt-4'}`}>
           <Outlet />
         </main>
       </div>
