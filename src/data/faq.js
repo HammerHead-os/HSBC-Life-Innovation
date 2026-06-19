@@ -12,243 +12,633 @@ export function faqAnswerText(blocks) {
 
 export const FAQ_ITEMS = [
   {
-    question: 'How do we invest in long term vs short term?',
+    question: 'How does the AI decide when to reallocate coverage?',
     answer: [
-      'Micro-Protection Fluid separates the two: a fixed HKD 200/month premium is the long-term commitment (predictable revenue, customer retention), while AI micro-reallocations handle short-term risk matching in real time.',
-      'Long-term value comes from data flywheels and lifetime customer relationships. Short-term value comes from daily engagement and parametric payouts.',
-      'We invest in both — the product is sticky because users see tangible value every day.',
+      'It reads merchant category codes and card authorisation data in real time - for example, an airline code triggers increased travel coverage instantly, without customer input.',
     ],
-    tags: ['strategy', 'business model'],
+    tags: ['tech'],
   },
   {
-    question: 'How is this different from traditional bundled insurance?',
+    question: 'What happens if the AI makes the wrong call?',
     answer: [
-      'Traditional policies lock coverage at purchase.',
-      'Our ETF-style model lets the same premium fluidly shift across six categories — Life, Health, Travel, Property, Cyber, and Liability — based on detected life signals (payments, calendar, weather) without changing the monthly cost.',
+      'Every reallocation operates within floor-and-ceiling guardrails, guaranteeing minimum coverage in every category regardless of AI decisions. Phase 1 also uses manual oversight before full autonomy kicks in.',
     ],
-    tags: ['product', 'comparison'],
+    tags: ['tech'],
   },
   {
-    question: 'What data do you use, and is it privacy-safe?',
+    question: 'How is this different from on-demand insurance products already on the market?',
     answer: [
-      'We use HSBC transaction metadata, calendar events, location checkpoints, and public weather APIs — never continuous GPS.',
-      'Data is processed on-device where possible and retained for 24 hours only.',
-      'Users set personal coverage floors so AI cannot drop protection below their comfort level.',
+      'Most on-demand products require manual activation. Ours is fully automatic, triggered by actual spending behaviour - the customer never needs to think about it.',
     ],
-    tags: ['privacy', 'data'],
+    tags: ['tech'],
   },
   {
-    question: 'How does the AI decide allocation?',
+    question: 'How do you handle cross-border regulatory differences between Hong Kong, Shenzhen, and Macau?',
     answer: [
-      'A rules-plus-ML engine scores risk signals per category, respects user-defined floors and ceilings, and rebalances within the HKD 200 budget.',
-      'Life cover stays at its floor (HKD 90). The remaining HKD 110 flexes across the other five categories based on the current scenario.',
+      'We launch Hong Kong-only first, using parametric insurance structures that do not require claims adjusters. GBA expansion follows regulatory sandbox engagement through HSBC\'s existing Wealth Management Connect framework.',
     ],
-    tags: ['AI', 'technical'],
+    tags: ['tech'],
   },
   {
-    question: 'What is the business model and unit economics?',
+    question: 'What\'s your data privacy position when using transaction data?',
     answer: [
-      'HKD 200/month flat premium with lower claims leakage thanks to parametric triggers and real-time risk matching.',
-      'Reduced adverse selection (coverage follows actual behaviour), lower distribution cost via HSBC app integration, and upsell paths to premium tiers and family plans.',
+      'Fully opt-in, with a live transparency dashboard showing customers exactly what triggers what coverage. Designed to be PDPO and CCPA compliant from day one.',
     ],
-    tags: ['business model', 'economics'],
+    tags: ['privacy'],
   },
   {
-    question: 'How do location checkpoints work?',
+    question: 'Can this actually be profitable at $20 per micro-event?',
     answer: [
-      'When enabled, your phone sends a single location ping only when you arrive at a registered venue — airport gates, West Kowloon Station, partner gyms, etc.',
-      'We never track you continuously or store GPS trails. The checkpoint confirms you are physically at risk (e.g. on a climbing wall, not just paying a gym fee).',
-      'Data is deleted within 24 hours and is PDPO-compliant.',
+      'Near-zero marginal servicing cost through agentic AI means gross margins exceed 85% at launch, scaling above 90% by Year 3.',
     ],
-    tags: ['privacy', 'technical'],
+    tags: ['payouts'],
   },
   {
-    question: 'How do claims work?',
+    question: 'What stops HSBC\'s existing insurance partners from feeling cannibalised?',
     answer: [
-      'Parametric claims auto-trigger from verified signals (e.g. flight delay, typhoon signal).',
-      'Standard claims use photo upload and AI triage — average payout time under 5 minutes in our demo.',
-      'No forms for parametric events.',
+      'Micro Protection Fluid is additive - it sits alongside existing life policies and is explicitly designed to increase wallet share, not replace core products.',
     ],
-    tags: ['claims', 'operations'],
+    tags: ['payouts'],
   },
   {
-    question: 'How do you prevent moral hazard if users know coverage shifts before risky behaviour?',
+    question: 'How do you validate the 90% customer preference claim?',
     answer: [
-      'Three mitigations:',
-      [
-        'Floors are user-set minimums, not maximums — users cannot dial up liability to HKD 90 on demand before a Keeta shift. Boosts are capped by category ceilings and the HKD 200 pool.',
-        'Allocation reacts to verified signals (merchant MCC, checkpoint geofence, HKO API) — not self-reported intent.',
-        'Parametric payouts require independent verification, so gaming the UI does not trigger cash.',
-      ],
-      'We model elasticity in pricing tiers for users who repeatedly max-risk categories.',
+      'That figure is a projected pilot outcome based on comparable embedded insurance adoption studies - we would present it transparently as a hypothesis to be validated in Phase 1.',
     ],
-    tags: ['actuarial', 'risk', 'hard'],
+    tags: ['payouts'],
   },
   {
-    question: 'What happens when correlated risks hit multiple categories at once — e.g. T10 typhoon while the user is on a flight?',
+    question: 'How exactly does the AI \'read\' card authorisation data in real time?',
     answer: [
-      'Correlated scenarios are explicitly modelled in the allocation engine. Property and travel may both rise, but the HKD 200 hard budget forces trade-offs — we do not pretend unlimited cover.',
-      'Life floor (HKD 90) is sacred. Remaining HKD 110 is optimised via a correlation matrix trained on HK historical events (typhoons × travel disruption, etc.).',
-      'Reinsurance treaties cover tail correlation beyond parametric caps.',
-      'Judges should note: fluid allocation makes correlation visible to the user instead of hiding it in fine print.',
+      'When a customer taps their HSBC card, the authorisation request - which includes merchant category code, location, and transaction amount - is processed before settlement. Our system intercepts that signal to trigger coverage reallocation within the same second, before the transaction even clears.',
     ],
-    tags: ['actuarial', 'risk', 'hard'],
+    tags: ['tech'],
   },
   {
-    question: 'How does a HKD 200/month pool satisfy Insurance Authority reserving and RBC requirements?',
+    question: 'What is a merchant category code and why does it matter?',
     answer: [
-      'The HKD 200 is the customer-facing premium unit, not the statutory capital backing.',
-      'HSBC Life holds reserves at the product-factory level using GL30/RBC frameworks: best-estimate liabilities plus risk margin per category. Parametric products carry lower reserving uncertainty than indemnity lines.',
-      'Micro-Protection Fluid is positioned as a rider/micro-policy wrapper atop existing licensed entities — not an unlicensed pool.',
-      'Unit economics are stress-tested at portfolio level, not per HKD 200 slice.',
+      'It is a four-digit code assigned to every merchant by card networks that classifies the type of business. An airline gets a different code than a gym or a restaurant. This lets our AI automatically understand what the customer is doing without them typing anything.',
     ],
-    tags: ['regulatory', 'actuarial', 'hard'],
+    tags: ['tech'],
   },
   {
-    question: 'Why wouldn’t savvy users exploit personal floors to create “free optionality” on risk?',
+    question: 'What happens to coverage when someone pays in cash?',
     answer: [
-      'Floors are downward protection, not upward leverage. A user who sets Health floor at HKD 70 permanently reduces flexibility in other categories — opportunity cost is real within the HKD 200 budget.',
-      'Actuarial pricing adjusts at renewal if floor settings predict higher expected loss ratio (similar to excess choices in motor insurance).',
-      'Cold-start users get conservative defaults. Floor edits require cooling-off before they affect parametric eligibility.',
+      'Cash transactions produce no card signal, so the AI defaults to the customer\'s established baseline coverage. This is a known limitation we address through supplementary signals like GPS check-ins and calendar data in later phases.',
     ],
-    tags: ['actuarial', 'adverse selection', 'hard'],
+    tags: ['tech'],
   },
   {
-    question: 'How do you defend against adversarial or spoofed signals?',
+    question: 'How do weather APIs and flight status data actually feed into coverage decisions?',
     answer: [
-      'Signal hierarchy:',
-      [
-        'Tier-1 (bank MCC, HKO API, airline PNR) is trusted.',
-        'Tier-2 (calendar, checkpoints) requires corroboration.',
-        'Tier-3 (user taps) is demo-only.',
-      ],
-      'Checkpoints use server-side geofence validation with device attestation where available — spoofed GPS on jailbroken devices fails cross-check against payment timing.',
-      'Anomaly detection flags impossible sequences (e.g. Guangzhou XRL tap 10 minutes after Tokyo flight without transit time). Fraudulent parametric claims feed a feedback loop to suspend auto-payout for that signal class.',
+      'These are secondary triggers. If a typhoon signal is raised in Hong Kong, for example, the system can automatically elevate property and travel delay coverage for all affected customers simultaneously - without individual action required.',
     ],
-    tags: ['security', 'technical', 'hard'],
+    tags: ['tech'],
   },
   {
-    question: 'Is dynamic reallocation unilateral contract modification under Hong Kong law?',
+    question: 'How fast is \'sub-second\'? What\'s the actual latency?',
     answer: [
-      'No — the customer contract specifies fluid allocation within disclosed floors/ceilings and category definitions at inception. This is product design, not mid-term alteration of sum insured.',
-      'IA guidance on index-linked and parametric products supports pre-agreed adjustment mechanisms when transparent.',
-      'Every reallocation is logged, push-notified, and reversible via floor settings. Legal counsel reviewed against Policy Owners’ Protection Scheme disclosure requirements.',
+      'Card authorisation windows are typically 1-2 seconds. Our target is to complete reallocation within that window, meaning coverage shifts before the transaction even completes. Exact latency figures will be validated during Phase 1 sandbox testing.',
     ],
-    tags: ['regulatory', 'legal', 'hard'],
+    tags: ['tech'],
   },
   {
-    question: 'What is the cold-start problem for a new user with no transaction history?',
+    question: 'What if two conflicting triggers fire at the same time - say, a gym visit during a typhoon?',
     answer: [
-      'Day 0: population prior from HSBC segment (age, Premier tier, district) seeds allocation — conservative, life-heavy.',
-      'Week 1: broad floors, low boost amplitude.',
-      'Month 1: once ≥15 verified signals, personal model activates. Users see “learning your patterns” in-app.',
-      'We do not require 12 months of history like traditional underwriting — but we also do not over-promise precision on day one.',
-      'Cross-sell from existing HSBC policies can import declared exposures (home district, declared travel frequency).',
+      'The AI applies a priority hierarchy, elevating the highest-risk signal first while maintaining all other floors. Both gym and weather coverage would be elevated simultaneously within their respective ceilings.',
     ],
-    tags: ['AI', 'technical', 'hard'],
+    tags: ['tech'],
   },
   {
-    question: 'How do category multipliers (e.g. Liability ×1000) map to real payout limits?',
+    question: 'How do you prevent the AI from being gamed - for example, someone briefly triggering an airline code to inflate travel coverage?',
     answer: [
-      'Multipliers translate premium slice → nominal coverage cap for UI and parametric triggers, not unbounded liability.',
-      'Example: Liability at HKD 25/month × 1000 = HKD 25,000 nominal cap — still subject to sub-limits per event, jurisdiction, and aggregate annual limit in policy wording.',
-      'The demo simplifies display; production binds caps to reinsurance treaties.',
-      'Judges asking “is HKD 5 cyber meaningful?” — it is micro-cover for credential stuffing / card fraud parametrics, not enterprise cyber.',
+      'Reallocations are tied to actual spending patterns over time, not single transactions. Anomalous spikes trigger a review flag rather than immediate full reallocation. Guardrail floors and ceilings also limit how much any single trigger can shift.',
     ],
-    tags: ['actuarial', 'product', 'hard'],
+    tags: ['tech'],
   },
   {
-    question: 'Does this cannibalise existing HSBC Life whole-of-life or CI products?',
+    question: 'Is this a supervised or unsupervised AI model?',
     answer: [
-      'Positioned as entry wedge for under-insured millennials, not replacement for HKD 2M CI policies.',
-      'Life floor at HKD 90 is term-style micro-cover. Upsell path surfaces when AI detects persistent under-allocation in health or property vs peer cohort.',
-      'Internal modelling shows 68% of target users hold no standalone travel or cyber — greenfield, not cannibalisation.',
-      'Commission structure aligns agents to refer upmarket after Fluid engagement.',
+      'It is a supervised model in Phase 1, operating within human-defined rules and guardrails. Full agentic autonomy is introduced progressively in Phase 3 after regulatory sign-off and pilot validation.',
     ],
-    tags: ['strategy', 'business model', 'hard'],
+    tags: ['tech'],
   },
   {
-    question: 'What is your reinsurance strategy for tail events exceeding parametric caps?',
+    question: 'What model architecture powers the reallocation engine?',
     answer: [
-      'Per-category quota share + typhoon aggregate XL for property parametrics. Aviation delay basket treaty for travel. Cyber ceded to specialist ILS-backed panel.',
-      'HKD 200 premium pool is retail-facing; tail risk sits with HSBC Life’s existing reinsurance programme.',
-      'Correlation across categories in one user is capped by aggregate event limit (e.g. max HKD 50k total parametric payout per calendar year in base tier).',
+      'At this stage we are not prescribing a specific architecture - the focus is on the data pipeline and decision logic. The model selection will be determined during technical build in partnership with HSBC\'s internal AI and data science teams.',
     ],
-    tags: ['actuarial', 'reinsurance', 'hard'],
+    tags: ['tech'],
   },
   {
-    question: 'How do you explain allocation decisions to users — can they appeal a rebalance?',
+    question: 'How does the system handle merchant code misclassification?',
     answer: [
-      'Every rebalance generates a plain-language insight card citing trigger signal(s).',
-      'Users can:',
-      [
-        'Raise floors.',
-        'Snooze a category for 24h.',
-        'Escalate to human review if allocation contradicts verified signal (bug, not disagreement).',
-      ],
-      'We do not expose SHAP values in v1 — regulatory simplicity — but maintain audit logs for IA inspection.',
-      'Appeal SLA: 48h for disputed parametric denial.',
+      'Misclassification is a known industry challenge - roughly 10-15% of merchants carry incorrect codes. Our fallback is baseline coverage, and we layer in supplementary signals to cross-validate. Phase 1 will generate real-world data to refine classification accuracy.',
     ],
-    tags: ['AI', 'operations', 'hard'],
+    tags: ['tech'],
   },
   {
-    question: 'How does the model handle distribution shift — e.g. post-pandemic travel patterns or climate volatility?',
+    question: 'How do you actually make money at $20 per micro-event?',
     answer: [
-      'Monthly recalibration on rolling 90-day HK cohort data. Structural breaks (e.g. new typhoon naming, flight route changes) trigger manual actuarial review.',
-      'Model versioning with A/B on 5% shadow traffic before full rollout.',
-      'Climate: HKO signal thresholds are exogenous — we do not predict typhoons, we react to official signals.',
-      'Travel priors overweighted to Greater Bay Area mobility patterns for our launch demographic.',
+      'Near-zero marginal cost per transaction - no agents, no underwriters, no claims adjusters in the loop. The agentic AI handles reallocation automatically, meaning gross margins exceed 85% from launch and scale above 90% by Year 3.',
     ],
-    tags: ['AI', 'actuarial', 'hard'],
+    tags: ['payouts'],
   },
   {
-    question: 'Cross-subsidy: do low-risk WFH users subsidise high-risk gig-economy riders?',
+    question: 'What\'s the revenue model - is it the fixed monthly premium or the micro-boost fees?',
     answer: [
-      'At HKD 200 flat premium, mild cross-subsidy exists by design — same as any pooled product.',
-      'Mitigation: segment-adjusted pricing at renewal (occupation flag from HSBC KYC, delivery-app MCC frequency).',
-      'Optional “activity mode” top-up for gig workers (+HKD 40/month) pre-allocates liability/health.',
-      'Transparency: users see peer cohort comparison in insights. Regulators care about fairness — we disclose pooling in KFS.',
+      'Both. The fixed monthly premium is the core recurring revenue stream. Micro-boosts are optional add-ons that generate incremental revenue when customers choose to temporarily elevate coverage beyond their ceiling.',
     ],
-    tags: ['actuarial', 'economics', 'hard'],
+    tags: ['payouts'],
   },
   {
-    question: 'PIPL cross-border transfer: where is inference run if signals originate in mainland China?',
+    question: 'What\'s your customer acquisition cost?',
     answer: [
-      'Guangzhou XRL scenario triggers involve cross-border data.',
-      'Architecture: on-device scoring for location/checkpoint; only derived risk scores (not raw GPS) sync to HK-hosted VPC.',
-      'PIPL standard contract clauses with mainland partner venues; no personal data stored in mainland for HK policyholders.',
-      'IA and CAC compliance review required before GBA marketing — MVP is HK-only with cross-border commute as use case, not cross-border data residency.',
+      'Effectively zero for existing HSBC customers - the product launches as an in-app toggle upgrade, requiring no separate marketing funnel or sales agent. This is one of the strongest commercial advantages of the model.',
     ],
-    tags: ['regulatory', 'privacy', 'hard'],
+    tags: ['payouts'],
   },
   {
-    question: 'Stress test: user triggers climbing checkpoint, Keeta delivery, and T8 typhoon within 2 hours — what breaks?',
+    question: 'What is your projected break-even point?',
     answer: [
-      'Engine processes signals chronologically. HKD 200 budget applies to final state after dampening (max +15/category per hour).',
-      'Typhoon dominates property/travel. Keeta liability boost may be partially crowded out — user sees trade-off in notification.',
-      'Parametric claims queue independently per event. No double-payout for same underlying peril.',
-      'System does not crash — worst case is sub-optimal allocation until next signal; logged for actuarial review if frequency exceeds 0.3% MAU.',
+      'With near-zero marginal cost and a built-in distribution channel of 41 million HSBC customers, break-even is achievable within the first year at even modest adoption rates of 5-8%.',
     ],
-    tags: ['technical', 'risk', 'hard'],
+    tags: ['payouts'],
   },
   {
-    question: 'Why should the Insurance Authority treat this as insurance, not a gambling or derivative product?',
+    question: 'How sensitive is the model to low adoption rates?',
     answer: [
-      'Insurable interest in life, health, property, and liability. Indemnity/parametric structures tied to fortuitous events. Licensed insurer as counterparty. No speculative payoff unrelated to loss.',
-      'Index-linked mechanisms have IA precedent. Legal opinion confirms not a CIS or derivative under SFO.',
-      'Customer protection via POS, cooling-off, and complaints channel identical to core HSBC Life products.',
+      'Because there is no traditional acquisition cost or underwriting overhead, the model remains viable at low adoption. Even 1% of HSBC\'s Hong Kong retail base represents a meaningful revenue pool.',
     ],
-    tags: ['regulatory', 'legal', 'hard'],
+    tags: ['payouts'],
   },
   {
-    question: 'What is your competitive moat vs Alipay/WeChat embedded insurtech?',
+    question: 'Could this cannibalise HSBC Life\'s existing long-term policy revenue?',
     answer: [
-      'Trust + balance sheet: HSBC Life claims-paying ability vs startup MGA wrappers.',
-      'Signal depth: unique bank MCC + Premier relationship data, not just payment rail. Regulatory licence already in hand.',
-      'Cross-product: mortgage, wealth, and protection in one app.',
-      'Embedded players lack life-floor discipline and reinsurance depth for correlated HK catastrophes.',
-      'Moat erodes without speed — 18-month first-mover window in HK Premier segment.',
+      'No - it is explicitly designed to be additive. Micro Protection Fluid targets micro and short-term risk moments that existing policies do not cover. Cross-sell data from comparable embedded products suggests it actually increases uptake of long-term policies by 15-20%.',
     ],
-    tags: ['strategy', 'competition', 'hard'],
+    tags: ['payouts'],
+  },
+  {
+    question: 'Why would HSBC Life take a revenue share risk on unproven AI-driven claims?',
+    answer: [
+      'The parametric structure of micro-events means payouts are pre-defined and algorithmic - there is no subjective claims assessment. This dramatically reduces loss ratio uncertainty compared to traditional insurance.',
+    ],
+    tags: ['payouts'],
+  },
+  {
+    question: 'What\'s your reinsurance strategy?',
+    answer: [
+      'We project a 15% saving on reinsurance costs due to smarter, real-time risk segmentation. By accurately matching premiums to actual risk exposure, we reduce the adverse selection problem that drives reinsurance costs up.',
+    ],
+    tags: ['payouts'],
+  },
+  {
+    question: 'How do you price the floor-and-ceiling guardrails actuarially?',
+    answer: [
+      'Floors are set conservatively based on historical claims data. Ceilings are calibrated to maximum realistic exposure per category. The AI operates within a pre-validated actuarial range, not in open-ended territory.',
+    ],
+    tags: ['payouts'],
+  },
+  {
+    question: 'What happens financially if a major catastrophic event hits the GBA simultaneously?',
+    answer: [
+      'All customers\' coverage would elevate simultaneously, creating a correlated claims spike. This is mitigated through reinsurance, the parametric payout structure, and the fact that per-event payouts are capped by ceiling limits.',
+    ],
+    tags: ['payouts'],
+  },
+  {
+    question: 'Is this product legal under current Hong Kong insurance regulations?',
+    answer: [
+      'Parametric insurance - where payouts are triggered by predefined events rather than assessed losses - is already permitted under HKIA guidelines. We are launching within this framework first, before seeking broader regulatory approval for the full agentic model.',
+    ],
+    tags: ['payouts'],
+  },
+  {
+    question: 'How do you get regulatory approval for AI-driven insurance decisions?',
+    answer: [
+      'We engage HKIA proactively from Phase 1, using the pilot data to build a regulatory evidence base. HSBC\'s existing relationships and Wealth Management Connect sandbox experience give us a credible path to approval.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What happens if a customer disputes an AI-driven coverage decision?',
+    answer: [
+      'Every reallocation is logged with a full audit trail. Customers can view exactly what triggered each change in their app dashboard, and a human override option is always available. Disputes escalate to HSBC Life\'s standard complaints process.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'How does this comply with PDPO - Hong Kong\'s Personal Data Privacy Ordinance?',
+    answer: [
+      'The product is opt-in only, with granular customer consent controls. Transaction data is processed within HSBC\'s existing data infrastructure, which is already PDPO compliant. No third-party data sharing occurs.',
+    ],
+    tags: ['privacy'],
+  },
+  {
+    question: 'What about mainland China data regulations - PIPL - for GBA customers?',
+    answer: [
+      'Cross-border data flow between Hong Kong and mainland China is subject to PIPL. Our GBA expansion strategy uses HSBC\'s existing Wealth Management Connect infrastructure, which has already navigated this regulatory pathway.',
+    ],
+    tags: ['privacy'],
+  },
+  {
+    question: 'Could regulators shut this down mid-operation?',
+    answer: [
+      'This is a genuine risk, which is why Phase 1 is Hong Kong-only and uses existing parametric insurance frameworks. We are not waiting for GBA regulatory approval before generating revenue and evidence.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'How do you handle sanctions or compliance screening across GBA jurisdictions?',
+    answer: [
+      'HSBC\'s existing KYC and compliance infrastructure handles this at the customer level. Micro Protection Fluid sits on top of that infrastructure and inherits those controls automatically.',
+    ],
+    tags: ['privacy'],
+  },
+  {
+    question: 'Will customers actually trust an AI to manage their insurance coverage?',
+    answer: [
+      'Trust is built through transparency - the live allocation dashboard shows customers exactly where their premium sits at any moment. The 90-day free trial for premier customers is designed specifically to build this trust before commercial commitment.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What if a customer doesn\'t want AI making these decisions for them?',
+    answer: [
+      'They can set personal floor preferences that lock certain categories at higher levels, effectively overriding the AI in areas they care about most. Full manual control is always an option.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'How do you handle customers who are not digitally savvy?',
+    answer: [
+      'HSBC Life agents are incentivised with referral commissions to onboard customers personally. The product is designed to be zero-interaction after setup - which actually makes it more accessible, not less, for less digitally confident users.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What happens if a customer misses a micro-boost notification and ends up underinsured?',
+    answer: [
+      'Baseline coverage is always maintained - the floor model guarantees this. The micro-boost is an enhancement, not a requirement. Customers are never left with zero coverage in any category.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'How do you communicate coverage changes to customers in real time without overwhelming them?',
+    answer: [
+      'Notifications are batched and summarised rather than fired for every micro-transaction. The in-app Risk Map gives a live visual overview without requiring customers to read individual alerts.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What happens to coverage during roaming - say, a customer\'s phone is off in Shenzhen?',
+    answer: [
+      'Coverage reallocation continues based on card authorisation data regardless of phone status. The customer\'s most recently active profile is maintained until new signals arrive.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'How does this genuinely address financial inclusion rather than just targeting affluent HSBC customers?',
+    answer: [
+      'The $20 micro-event price point is deliberately low - far below traditional insurance minimums. The gig and mobile workforce targeted earns $120k-$200k HKD annually, a segment historically underserved by traditional insurers.',
+    ],
+    tags: ['payouts'],
+  },
+  {
+    question: 'Which specific UN Sustainable Development Goals does this address?',
+    answer: [
+      'SDG 1.4 - access to financial services and economic resources - and SDG 3.8 - financial protection against health-related risks. Both are directly addressed by closing the protection gap for mobile and gig workers.',
+    ],
+    tags: ['payouts'],
+  },
+  {
+    question: 'How do you measure ESG impact - what are your metrics?',
+    answer: [
+      'Key metrics include reduction in underinsurance events, number of gig workers covered for the first time, and reduction in out-of-pocket emergency spending. These will be tracked and reported from Phase 1 onwards.',
+    ],
+    tags: ['payouts'],
+  },
+  {
+    question: 'Isn\'t AI-driven insurance inherently exclusionary - what about customers with thin spending histories?',
+    answer: [
+      'New customers default to a conservative balanced baseline rather than a personalised one. As spending history builds over 90 days, the AI progressively personalises allocation. No customer is disadvantaged by a lack of history.',
+    ],
+    tags: ['privacy'],
+  },
+  {
+    question: 'What is the carbon footprint of running this AI infrastructure at scale?',
+    answer: [
+      'This is a fair challenge. We would commit to running on HSBC\'s existing cloud infrastructure, which operates under HSBC\'s net-zero commitments, rather than building standalone compute infrastructure.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'Why hasn\'t anyone done this before?',
+    answer: [
+      'The convergence of real-time card authorisation access, agentic AI capability, and regulatory appetite for parametric insurance is genuinely new. Most insurers do not have direct access to card data - HSBC does, which is a structural advantage few competitors can replicate.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What stops a competitor like AXA or AIA from copying this immediately?',
+    answer: [
+      'The moat is HSBC\'s proprietary transaction data from 41 million customers and the existing app distribution channel. A competitor would need to build equivalent data infrastructure and customer trust from scratch - a multi-year undertaking.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'Is HSBC Life the right entity to own this, or should it sit in HSBC\'s banking arm?',
+    answer: [
+      'It sits at the intersection of both - the banking arm provides the data and distribution, while HSBC Life provides the insurance licence and actuarial framework. A joint ownership model with clear revenue attribution is the most logical structure.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What\'s your exit or scale strategy if this becomes a standalone product?',
+    answer: [
+      'The product is designed to remain embedded within HSBC\'s ecosystem rather than spun out. Its value compounds within HSBC - increasing customer retention, cross-sell, and data richness - rather than as a standalone entity.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'How does this fit into HSBC\'s broader AI strategy?',
+    answer: [
+      'It is directly aligned with HSBC\'s stated AI strategy of agentic systems operating within human-defined guardrails. It is not a pilot experiment - it is designed as a scalable, production-grade deployment of that strategy.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'Could this be white-labelled and sold to other banks or insurers?',
+    answer: [
+      'Potentially in Phase 4 and beyond. The core engine - real-time card data plus agentic reallocation - is portable to any bank with direct card authorisation access. However, our immediate focus is proving the model within HSBC first.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What\'s your worst-case scenario and how do you survive it?',
+    answer: [
+      'Regulatory rejection of the GBA expansion. Mitigation: Hong Kong-only parametric insurance generates standalone revenue from day one, meaning the business case holds even without GBA approval.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What if HSBC\'s card authorisation data pipeline goes down?',
+    answer: [
+      'Fallback to baseline coverage automatically. No customer is ever left uncovered - they simply revert to their standard allocation until the data feed is restored.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What if the AI systematically underestimates risk for a specific customer segment?',
+    answer: [
+      'Phase 1 manual guardrails and human review catch systemic errors before full agentic deployment. Actuarial review of loss ratios by segment is built into the quarterly operating cadence.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What\'s your liability position if a customer suffers a loss during an AI reallocation error?',
+    answer: [
+      'The floor model guarantees minimum coverage in every category at all times. Any loss occurring above the floor but below an expected ceiling would be assessed under HSBC Life\'s standard claims process with human review.',
+    ],
+    tags: ['payouts'],
+  },
+  {
+    question: 'What if customers start making decisions specifically designed to game the AI triggers?',
+    answer: [
+      'Anomaly detection flags unusual patterns for human review. The system is designed to respond to genuine lifestyle signals, not individual transactions in isolation, making gaming significantly harder than it appears.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'Who builds this - does HSBC Life have the internal capability?',
+    answer: [
+      'The core engine leverages HSBC\'s existing card infrastructure and AI teams. Phase 1 requires integration work rather than greenfield build. External partnerships for specific AI components would be evaluated during technical scoping.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What\'s the critical path - what could delay this most?',
+    answer: [
+      'Regulatory approval for the agentic reallocation model is the longest lead-time item. Everything else - technical build, app integration, customer onboarding - can proceed in parallel.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'Why should we trust a student team to have designed something HSBC\'s own teams haven\'t?',
+    answer: [
+      'We are not claiming to have built it - we\'ve identified the opportunity, validated it against HSBC\'s existing infrastructure, and designed a commercially viable framework. The execution belongs to HSBC\'s teams. Our value is the strategic insight and the blueprint.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What have you assumed that could be wrong?',
+    answer: [
+      'Three key assumptions: that card authorisation data is accessible in real time at the application layer, that parametric insurance structures will satisfy HKIA requirements, and that 5-8% adoption is achievable in Year 1. All three are validated hypotheses, not confirmed facts, and Phase 1 is designed specifically to test them.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'How do you get Didi, Uber, and Trip.com to actually integrate with you?',
+    answer: [
+      'These partnerships are distribution channels for triggering shields, not data-sharing agreements. The trigger comes from HSBC\'s own card data when a customer pays via these platforms - no formal partnership is required to launch.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What\'s in it for the partners - why would Didi or Trip.com cooperate?',
+    answer: [
+      'Co-branded micro-insurance shields offer partners a value-added service for their users at zero cost to them. It increases platform stickiness and positions them as customer-centric - a meaningful incentive in competitive GBA markets.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What if a partner platform doesn\'t accept HSBC cards?',
+    answer: [
+      'The system falls back to baseline coverage. However, HSBC cards have extremely high acceptance rates across GBA platforms, making this an edge case rather than a structural gap.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'How did you arrive at $200/month as the fixed premium?',
+    answer: [
+      'It reflects the mid-range spending profile of our target segment - urban GBA professionals earning $120k-$200k HKD annually. It is positioned competitively against the combined cost of multiple traditional policies covering the same categories.',
+    ],
+    tags: ['payouts'],
+  },
+  {
+    question: 'How do you set the floors and ceilings actuarially - what data underpins them?',
+    answer: [
+      'They are calibrated using HSBC\'s historical claims data by customer segment and merchant category. Floors represent the minimum statistically meaningful coverage level; ceilings cap exposure at actuarially defensible maximums.',
+    ],
+    tags: ['payouts'],
+  },
+  {
+    question: 'What\'s your loss ratio assumption and how sensitive is profitability to it?',
+    answer: [
+      'We project a 20-point improvement in loss ratio versus traditional products, based on Straits Research 2025 data on AI-driven underwriting. A 10-point swing in loss ratio would reduce Year 1 revenue by approximately 15% - still profitable.',
+    ],
+    tags: ['payouts'],
+  },
+  {
+    question: 'How do you handle adverse selection - won\'t higher-risk customers opt in disproportionately?',
+    answer: [
+      'The fixed premium structure means customers cannot select into higher coverage - the AI determines allocation, not the customer. This structurally reduces adverse selection compared to traditional voluntary top-up products.',
+    ],
+    tags: ['payouts'],
+  },
+  {
+    question: 'What currency risk exists for GBA customers paying in RMB versus HKD?',
+    answer: [
+      'Premiums are denominated in HKD for Hong Kong customers. Cross-border RMB pricing for mainland GBA customers will be determined during Phase 2 in consultation with HSBC\'s treasury and FX teams.',
+    ],
+    tags: ['payouts'],
+  },
+  {
+    question: 'Who owns the insights derived from customer spending behaviour - HSBC or the customer?',
+    answer: [
+      'HSBC owns the data infrastructure; customers own their personal data under PDPO. Insights derived at an aggregate level belong to HSBC. Individual-level insights are used solely to power that customer\'s own coverage - never sold or shared.',
+    ],
+    tags: ['privacy'],
+  },
+  {
+    question: 'Could this data be used against customers - for example, to deny future coverage based on lifestyle?',
+    answer: [
+      'Explicitly prohibited by design. The data is used solely for real-time reallocation within a fixed premium - not for underwriting decisions, policy renewals, or coverage denial. This distinction is critical and must be communicated clearly to customers.',
+    ],
+    tags: ['privacy'],
+  },
+  {
+    question: 'What algorithmic bias risks exist - could certain demographics be systematically under-covered?',
+    answer: [
+      'A genuine risk. If historical spending data reflects existing inequalities - for example, lower card usage among older demographics - the AI could perpetuate those gaps. We mitigate this through regular bias audits by customer segment and conservative default baselines for thin-data profiles.',
+    ],
+    tags: ['privacy'],
+  },
+  {
+    question: 'How do you ensure the AI remains explainable to regulators - not just a black box?',
+    answer: [
+      'Every reallocation decision is logged with the specific trigger, merchant code, and allocation change. Regulators can audit the full decision trail. We are committed to explainable AI as a non-negotiable design principle, not an afterthought.',
+    ],
+    tags: ['privacy'],
+  },
+  {
+    question: 'Will customers actually feel insured if they can\'t see a policy document?',
+    answer: [
+      'This is a real psychological barrier. The in-app Risk Map is designed specifically to make coverage feel tangible and visible - showing live allocation in colour is more intuitive than a policy document most customers never read.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What happens when a customer has a bad claims experience - how does that affect trust in the whole AI model?',
+    answer: [
+      'A single bad experience could disproportionately damage trust in AI-driven insurance. This is why Phase 1 maintains human claims oversight, and why the transparency dashboard is central - customers need to understand why a decision was made before they accept it.',
+    ],
+    tags: ['payouts'],
+  },
+  {
+    question: 'How do you handle customers who are emotionally attached to traditional insurance as a symbol of security?',
+    answer: [
+      'We do not replace traditional policies - we sit alongside them. The messaging is additive: "your existing coverage stays, this just fills the gaps dynamically." This reduces the psychological barrier to adoption significantly.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What about customers who travel internationally outside the GBA - does coverage follow them?',
+    answer: [
+      'Phase 1 covers Hong Kong and GBA. International travel triggers the baseline travel coverage floor. Full international extension is a Phase 3 feature, dependent on regulatory sign-off in each jurisdiction.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'Are there any existing products globally that resemble this - and what can we learn from their failures?',
+    answer: [
+      'Lemonade and Metromile in the US have pioneered AI-driven and usage-based insurance respectively. Metromile was acquired by Lemonade in 2022 partly due to thin margins on pure pay-per-mile models. Our fixed premium structure avoids this margin vulnerability while retaining the personalisation benefit.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What about embedded insurance players like Cover Genius or Bolttech - are they competitors?',
+    answer: [
+      'They are distribution-layer competitors, not product competitors. They embed third-party insurance into platforms. Our model keeps HSBC as both insurer and distributor, which preserves margin and customer relationship ownership - a fundamentally different and stronger position.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'Could a BigTech player like Alibaba or Tencent replicate this faster using their own payment data?',
+    answer: [
+      'Theoretically yes - Alipay and WeChat Pay have comparable transaction data. However, they lack insurance licences in Hong Kong and face significant regulatory barriers. HSBC\'s licensed, regulated position is a structural advantage BigTech cannot shortcut.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'Where does this product go in five to ten years?',
+    answer: [
+      'The long-term vision is a fully autonomous insurance layer embedded in everyday life - invisible, automatic, and perfectly matched to individual risk at every moment. Phase 3 is the foundation; the ten-year horizon is an industry-wide shift away from annual policy cycles entirely.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'Could Micro Protection Fluid eventually replace traditional life insurance products?',
+    answer: [
+      'No - and that is intentional. Life insurance addresses long-term accumulation and mortality risk, which requires permanence and long-term commitment. Micro Protection Fluid addresses short-term, dynamic risk moments. They are complementary, not substitutable.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What does success look like in three years - beyond the financial metrics?',
+    answer: [
+      'A generation of GBA customers who have never filed a claim they were not covered for, because their insurance moved before the risk did. That behavioural shift - from reactive to proactive protection - is the real measure of success.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'If this works in GBA, which market do you expand to next and why?',
+    answer: [
+      'Southeast Asia - specifically Singapore, Indonesia, and Vietnam - where gig economy penetration is high, insurance penetration is low, and HSBC has existing retail banking infrastructure. The same card authorisation model is directly portable.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What does the competitive landscape look like if every major bank copies this model in three years?',
+    answer: [
+      'First-mover advantage compounds through data. Three years of real-world reallocation data trains a significantly more accurate model than any competitor starting from scratch. The product improves faster than competitors can catch up.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'How did your team come up with this idea - what was the insight moment?',
+    answer: [
+      'Be ready with a genuine, human story here. Judges respond to authenticity. If there is a real moment of frustration with static insurance in the team\'s personal experience, lead with that.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What would you do differently if you had another month to develop this?',
+    answer: [
+      'A strong answer shows intellectual honesty. Consider: deeper actuarial modelling of the floor-and-ceiling system, primary customer research with actual GBA gig workers, and a technical feasibility session with HSBC\'s card infrastructure team.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'If HSBC gave you $1 million tomorrow to start, what\'s the first thing you spend it on?',
+    answer: [
+      'Regulatory counsel and a technical feasibility audit of the card authorisation data pipeline - because those are the two longest lead-time items and everything else depends on them.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What\'s the one thing that could kill this idea entirely?',
+    answer: [
+      'If HSBC\'s card authorisation data is not accessible at the application layer in real time, the core trigger mechanism does not work. That is the single most critical technical assumption to validate before any other work proceeds.',
+    ],
+    tags: ['tech'],
+  },
+  {
+    question: 'What feedback have you received on this idea that made you rethink something?',
+    answer: [
+      'Shows coachability and intellectual rigour - two qualities senior judges at this level actively look for. Be honest about a real assumption you reconsidered during development.',
+    ],
+    tags: ['tech'],
   },
 ];

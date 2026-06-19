@@ -62,7 +62,7 @@ export default function FAQPage({ wide = false }) {
   return (
     <PageShell title="FAQ for Judges" backTo="/" wide={wide}>
       <p className="text-sm text-gray-500 mb-4">
-        Tough questions on regulation, actuarial science, AI, and unit economics — search or tap to expand.
+        Judge Q&amp;A — search by topic: tech, privacy, or payouts.
       </p>
 
       <div className="relative mb-4">
@@ -71,7 +71,7 @@ export default function FAQPage({ wide = false }) {
           type="search"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search e.g. moral hazard, RBC, PIPL, reinsurance…"
+          placeholder="Search e.g. HKO, moral hazard, Keeta, reinsurance, PIPL…"
           className="w-full pl-10 pr-10 py-3 rounded-xl border border-gray-200 text-sm focus:outline-none focus:border-hsbc-red focus:ring-2 focus:ring-hsbc-red/20"
           aria-label="Search FAQ"
         />
