@@ -1,143 +1,153 @@
-/** Real-world data sources that drive allocation and parametric / standard claims. */
+/**
+ * Live demo triggers — matches scenarios in the app and signals console.
+ * Booth NFC taps simulate these real-world feeds.
+ */
 export const TRIGGER_GROUPS = [
   {
-    category: 'Life',
-    color: '#DB0011',
-    summary: 'Fixed HKD 90 allocation. Payout only on verified mortality events.',
+    title: 'HKO weather & hazard alerts',
+    summary: 'Hong Kong Observatory open API and civil emergency feeds. Parametric — no claim form.',
     triggers: [
       {
-        label: 'Death certificate',
-        detail: 'Certified copy from the Hong Kong Death Registry or hospital mortuary. Beneficiary payout follows policy schedule — no self-reporting.',
-      },
-      {
-        label: 'Terminal illness (accelerated benefit)',
-        detail: 'Specialist physician certification with ≤12 months life expectancy, reviewed by HSBC Life medical board.',
-      },
-    ],
-  },
-  {
-    category: 'Health',
-    color: '#E8A0A8',
-    summary: 'Boosts when medical or high-injury activity risk is verified — not from a gym membership payment alone.',
-    triggers: [
-      {
-        label: 'Hospital or clinic visit',
-        detail: 'eHealth Authority (eHA) discharge summary or itemised clinic invoice submitted via the app. AI triage matches MCC and diagnosis codes.',
-      },
-      {
-        label: 'Sports & adventure activity',
-        detail: 'Verified venue check-in at a registered partner (e.g. Kai Tak Climbing Centre) plus an active session booking — confirms you are on-site, not just paying a monthly gym fee.',
-      },
-      {
-        label: 'Physiotherapy / rehab',
-        detail: 'Referral letter from a registered practitioner and treatment receipts for injury claims linked to a covered activity window.',
-      },
-    ],
-  },
-  {
-    category: 'Travel',
-    color: '#3D3D3D',
-    summary: 'Reallocation when you are actually in transit. Claims use airline, rail, and airport authority feeds.',
-    triggers: [
-      {
-        label: 'Flight booking + airport gate',
-        detail: 'Card transaction at an airline or OTA (MCC 4511) registers intent. Full travel boost activates when boarding is confirmed via airport gate scan or airline departure API.',
-      },
-      {
-        label: 'Flight delay (parametric)',
-        detail: 'Airline or OAG feed shows arrival delay ≥3 hours on a covered sector. Payout auto-triggers — no claim form.',
-      },
-      {
-        label: 'Baggage loss or damage',
-        detail: 'Property Irregularity Report (PIR) from the airport authority plus airline confirmation of mishandled baggage.',
-      },
-      {
-        label: 'HSR cross-border trip',
-        detail: 'Ticket purchase on your HSBC card, then immigration exit record at West Kowloon Station — both required before the Guangzhou travel profile applies.',
-      },
-      {
-        label: 'Daily commute (bus / MTR)',
-        detail: 'Octopus or contactless tap matched to a transit merchant category. Short travel window only — not a standalone claim trigger.',
-      },
-    ],
-  },
-  {
-    category: 'Property',
-    color: '#5B7FA5',
-    summary: 'Parametric weather payouts and standard claims backed by official reports.',
-    triggers: [
-      {
-        label: 'HKO typhoon signal T8+',
-        detail: 'Hong Kong Observatory open API — Signal 8, 9, or 10 confirmed. Parametric property payout in minutes; allocation shifts automatically.',
+        label: 'Typhoon Signal T8 / T10',
+        source: 'HKO API',
+        scenario: 'typhoon',
+        detail: 'Official typhoon warning issued. Property cover jumps, travel drops. Parametric payout auto-triggers at T8+.',
+        shifts: 'Property ↑ · Travel ↓',
       },
       {
         label: 'Black rainstorm warning',
-        detail: 'HKO Black Rainstorm Signal via government open data feed. Triggers flood-risk allocation boost and eligible parametric cover.',
+        source: 'HKO API',
+        scenario: 'black_rain',
+        detail: 'Black Rainstorm Signal from government open data. Flood-risk property boost; travel reduced while roads are disrupted.',
+        shifts: 'Property ↑ · Travel ↓',
       },
       {
-        label: 'Theft or burglary',
-        detail: 'Hong Kong Police Force report (RC number) plus photos of forced entry and an inventory of stolen items. AI cross-checks against claim history.',
+        label: 'Tornado / severe wind warning',
+        source: 'HKO API',
+        scenario: 'tornado',
+        detail: 'Severe wind alert on the HKO feed. Same property-heavy profile as extreme weather events.',
+        shifts: 'Property ↑ · Travel ↓',
       },
       {
         label: 'Fire or civil emergency nearby',
-        detail: 'Fire Services Department bulletin or GEO incident feed within your registered home radius. Temporary property and health boost for 24 hours.',
-      },
-      {
-        label: 'Water damage',
-        detail: 'Photos, plumber invoice, and — for building-wide incidents — management office incident log or FSD attendance record.',
-      },
-    ],
-  },
-  {
-    category: 'Cyber',
-    color: '#C4926A',
-    summary: 'Fraud and breach events verified through bank and government channels.',
-    triggers: [
-      {
-        label: 'Unauthorised card transaction',
-        detail: 'HSBC fraud-monitoring alert plus your confirmation in-app. Reversal reference from the card disputes team required before payout.',
-      },
-      {
-        label: 'Phishing or account takeover',
-        detail: 'Report filed with HSBC fraud desk and, where applicable, Hong Kong Police Cyber Security and Technology Crime Bureau (CSTCB).',
-      },
-      {
-        label: 'Data breach affecting you',
-        detail: 'Notification from hkCERT, a breached merchant on the PDPO register, or a bank letter confirming your credentials were exposed.',
-      },
-      {
-        label: 'Identity theft',
-        detail: 'Police report, credit-bureau fraud flag, and evidence of accounts opened in your name without consent.',
+        source: 'FSD / GEO feed',
+        scenario: 'fire',
+        detail: 'Fire Services or GEO incident bulletin within your home radius. Property and health boosted for 24 hours.',
+        shifts: 'Property ↑ · Health ↑',
       },
     ],
   },
   {
-    category: 'Liability',
-    color: '#6B9E8A',
-    summary: 'Third-party harm or gig-economy exposure — always needs an official incident record.',
+    title: 'Card + verified location (two-step)',
+    summary: 'HSBC card registers travel intent. A one-time location checkpoint confirms you are actually en route.',
     triggers: [
       {
-        label: 'Delivery or gig shift',
-        detail: 'Platform shift activation (Keeta, Foodpanda courier API) combined with on-road time. Boosts liability cover for the active window only.',
+        label: 'Flight booked on HSBC card',
+        source: 'Card MCC 4511',
+        scenario: 'flight_card',
+        detail: 'Airline or OTA charge detected. Intent logged — allocation does not change until the airport gate checkpoint fires.',
+        shifts: 'Intent only — waiting for gate',
       },
       {
-        label: 'Bike or e-scooter rental',
-        detail: 'Rental-platform unlock event plus route start. Injury claims need A&E or clinic records and a police report if a third party is involved.',
+        label: 'Airport gate checkpoint',
+        source: 'Airport geofence',
+        scenario: 'flight_gate → tokyo',
+        detail: 'One-time ping at HKIA departure gate. Requires ticket on file. Unlocks full Tokyo travel profile.',
+        shifts: 'Travel ↑ · Health ↑',
       },
       {
-        label: 'Third-party property damage',
-        detail: 'Police report, photos, and repair quote — or a signed admission of liability from the responsible party.',
+        label: 'HSR ticket purchased',
+        source: 'Card MCC 4112',
+        scenario: 'hsr_card',
+        detail: 'High-speed rail ticket on your HSBC card. Intent logged — boost waits for West Kowloon station gate.',
+        shifts: 'Intent only — waiting for gate',
       },
       {
-        label: 'Personal injury to others',
-        detail: 'Incident report, witness statements where available, and medical bills issued to the injured party.',
+        label: 'West Kowloon station gate',
+        source: 'Station geofence',
+        scenario: 'hsr_gate → guangzhou',
+        detail: 'One-time checkpoint at West Kowloon XRL. Requires HSR ticket on file. Unlocks Guangzhou cross-border profile.',
+        shifts: 'Travel ↑ · Property ↓',
+      },
+    ],
+  },
+  {
+    title: 'Mobility & transit taps',
+    summary: 'Octopus, contactless, and rental-platform unlock events. Short risk windows while you are moving.',
+    triggers: [
+      {
+        label: 'HelloRide bike unlock',
+        source: 'Rental platform API',
+        scenario: 'helloride',
+        detail: 'Shared-bike unlock from the operator feed. Liability and health cover scale for the ride window.',
+        shifts: 'Liability ↑ · Health ↑',
+      },
+      {
+        label: 'Bus ride (Octopus tap)',
+        source: 'Octopus transit MCC',
+        scenario: 'bus',
+        detail: 'Bus merchant category on your card or Octopus. Short travel and liability window for the journey.',
+        shifts: 'Travel ↑ · Liability ↑',
+      },
+      {
+        label: 'MTR gate tap (contactless)',
+        source: 'MTR / Octopus feed',
+        scenario: 'mtr_gate',
+        detail: 'MTR gate contactless tap. Commute risk window — travel and liability boosted until trip ends.',
+        shifts: 'Travel ↑ · Liability ↑',
+      },
+    ],
+  },
+  {
+    title: 'Gig work & activity checkpoints',
+    summary: 'Food-delivery shift status and partner-venue check-ins. Payment alone is not enough — the platform or venue confirms real risk.',
+    triggers: [
+      {
+        label: 'Food delivery shift started',
+        source: 'Delivery app API',
+        scenario: 'keeta',
+        detail:
+          'Keeta is a food-delivery platform (like Deliveroo). In the Alex demo he does courier shifts for extra income. When he clocks in, the app’s shift-start API tells HSBC Life he is on the road — liability and health cover scale for that delivery window.',
+        shifts: 'Liability ↑ · Health ↑',
+      },
+      {
+        label: 'Kai Tak Climbing Centre checkpoint',
+        source: 'Partner venue geofence',
+        scenario: 'climbing',
+        detail: 'One-time ping at the registered climbing venue. Gym membership payment does not trigger this — only verified on-site arrival.',
+        shifts: 'Health ↑ · Liability ↑',
+      },
+    ],
+  },
+  {
+    title: 'Cyber (HSBC card feed)',
+    summary: 'No booth NFC for this one — it runs quietly in the background from your existing HSBC relationship. Stays at the HKD 5 floor until a bank signal fires.',
+    triggers: [
+      {
+        label: 'Unauthorised card transaction flagged',
+        source: 'HSBC fraud monitoring',
+        scenario: null,
+        detail:
+          'Real-time fraud engine spots a suspicious charge on your HSBC card. Cyber allocation bumps up and the transaction is blocked — micro-cover for card fraud and credential theft, not enterprise cyber insurance.',
+        shifts: 'Cyber ↑',
+      },
+      {
+        label: 'Low mobility / at-home day',
+        source: 'Transaction + calendar pattern',
+        scenario: null,
+        detail:
+          'No travel, commute, or gig shift detected — you are mostly at home and online. The AI shifts pool weight toward cyber and property (more screen time, more home exposure). This is why cyber sits higher on a normal WFH day in the product story.',
+        shifts: 'Cyber ↑ · Property ↑ · Travel ↓',
       },
     ],
   },
 ];
 
 export const TRIGGER_NOTES = [
-  'Parametric triggers (HKO signals, flight delay feeds) pay automatically — no form required.',
-  'Standard claims need uploaded documents; AI triage targets under 5 minutes for straightforward cases.',
-  'Impossible sequences (e.g. Guangzhou checkpoint minutes after a Tokyo flight) are flagged and held for review.',
+  'Weather triggers come from the HKO open API — the demo signals console simulates a live hazard broadcast.',
+  'Location checkpoints are one-time venue pings (airport gate, West Kowloon Station, Kai Tak) — never continuous GPS.',
+  'Card + location pairs need both steps: ticket on file first, then the gate checkpoint, before allocation changes.',
+  'Keeta = food-delivery gig work in the Alex scenario. Shift-start is the trigger, not a random app install.',
+  'Cyber has no NFC box — it moves from HSBC fraud alerts or when the AI sees a low-mobility, at-home day.',
+  'Life stays fixed at HKD 90. The AI only moves the remaining HKD 110 pool across the other five categories.',
 ];

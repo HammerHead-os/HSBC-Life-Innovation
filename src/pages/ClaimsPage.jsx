@@ -1,8 +1,14 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { CheckCircle2, X } from 'lucide-react';
+import { CheckCircle2, Sparkles, X, Zap } from 'lucide-react';
 import { PageShell } from '../components/SubPageHeader';
-import { CLAIMS, CATEGORIES } from '../data/constants';
+import { CATEGORIES } from '../data/constants';
+import {
+  addClaim,
+  createManualClaim,
+  loadClaims,
+  updateClaimStatus,
+} from '../utils/claimsStore';
 
 const CLAIM_CATEGORIES = CATEGORIES.filter((c) => !c.fixed);
 
@@ -48,9 +54,12 @@ function ClaimFormModal({ open, onClose, onSubmit }) {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-          <h2 id="claim-form-title" className="font-bold text-gray-900 text-lg">
-            File a new claim
-          </h2>
+          <div>
+            <h2 id="claim-form-title" className="font-bold text-gray-900 text-lg">
+              Report something we missed
+            </h2>
+            <p className="text-xs text-gray-500 mt-0.5">Rare — most payouts trigger automatically</p>
+          </div>
           <button
             type="button"
             onClick={handleClose}
@@ -88,7 +97,7 @@ function ClaimFormModal({ open, onClose, onSubmit }) {
               id="claim-desc"
               value={form.desc}
               onChange={(e) => setForm((f) => ({ ...f, desc: e.target.value }))}
-              placeholder="e.g. Flight delay — CX500"
+              placeholder="Brief description — AI will pull matching records"
               rows={3}
               required
               className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-hsbc-red focus:ring-2 focus:ring-hsbc-red/20 outline-none transition text-gray-900 resize-none"
@@ -97,7 +106,7 @@ function ClaimFormModal({ open, onClose, onSubmit }) {
 
           <div>
             <label htmlFor="claim-amount" className="block text-sm font-medium text-gray-700 mb-1.5">
-              Claim amount (HKD)
+              Estimated amount (HKD)
             </label>
             <input
               id="claim-amount"
@@ -106,7 +115,7 @@ function ClaimFormModal({ open, onClose, onSubmit }) {
               step="1"
               value={form.amount}
               onChange={(e) => setForm((f) => ({ ...f, amount: e.target.value }))}
-              placeholder="e.g. 480"
+              placeholder="AI will verify against records"
               required
               className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-hsbc-red focus:ring-2 focus:ring-hsbc-red/20 outline-none transition text-gray-900"
             />
@@ -126,15 +135,11 @@ function ClaimFormModal({ open, onClose, onSubmit }) {
             />
           </div>
 
-          <p className="text-xs text-gray-500 leading-relaxed">
-            Parametric events (e.g. typhoon T8+) may auto-pay. Standard claims are triaged by AI — demo payouts in under 5 minutes.
-          </p>
-
           <button
             type="submit"
             className="w-full py-3 bg-hsbc-red text-white font-semibold rounded-xl hover:bg-hsbc-red-dark transition-colors"
           >
-            Submit claim
+            Submit for AI triage
           </button>
         </form>
       </div>
@@ -143,56 +148,86 @@ function ClaimFormModal({ open, onClose, onSubmit }) {
   );
 }
 
-function formatClaimDate(isoDate) {
-  const d = new Date(isoDate + 'T12:00:00');
-  return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+function StatusBadge({ status, automatic }) {
+  if (automatic) {
+    return (
+      <span className="flex items-center gap-1 text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+        <Zap className="w-3.5 h-3.5" /> Auto-paid
+      </span>
+    );
+  }
+  if (status === 'Paid') {
+    return (
+      <span className="flex items-center gap-1 text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">
+        <CheckCircle2 className="w-3.5 h-3.5" /> Paid
+      </span>
+    );
+  }
+  return (
+    <span className="flex items-center gap-1 text-xs font-semibold text-blue-700 bg-blue-50 px-2 py-1 rounded-full">
+      <Sparkles className="w-3.5 h-3.5" /> {status}
+    </span>
+  );
 }
 
 export default function ClaimsPage({ wide = false }) {
-  const [claims, setClaims] = useState(CLAIMS);
+  const [claims, setClaims] = useState(loadClaims);
   const [formOpen, setFormOpen] = useState(false);
   const [toast, setToast] = useState(null);
 
-  const handleSubmit = ({ category, desc, amount, date }) => {
-    const id = `CLM-${2400 + claims.length}`;
-    const newClaim = {
-      id,
-      date: formatClaimDate(date),
-      category,
-      amount,
-      status: 'Submitted',
-      desc,
+  const refreshClaims = useCallback(() => setClaims(loadClaims()), []);
+
+  useEffect(() => {
+    const onChange = (e) => {
+      refreshClaims();
+      if (e.detail?.automatic) {
+        setToast(`Auto-paid: ${e.detail.desc}`);
+        setTimeout(() => setToast(null), 4000);
+      }
     };
-    setClaims((prev) => [newClaim, ...prev]);
+    window.addEventListener('mpf-claims-change', onChange);
+    return () => window.removeEventListener('mpf-claims-change', onChange);
+  }, [refreshClaims]);
+
+  const handleSubmit = ({ category, desc, amount, date }) => {
+    const claim = createManualClaim({ category, desc, amount, date });
+    addClaim(claim);
+    setClaims(loadClaims());
     setFormOpen(false);
-    setToast('Claim submitted — AI triage in progress');
+    setToast('AI triage running — payout in seconds…');
     setTimeout(() => setToast(null), 3500);
+
+    setTimeout(() => {
+      updateClaimStatus(claim.id, 'Paid');
+      setClaims(loadClaims());
+      window.dispatchEvent(new CustomEvent('mpf-claims-change'));
+      setToast('Paid automatically — records verified');
+      setTimeout(() => setToast(null), 3500);
+    }, 2500);
   };
+
+  const autoCount = claims.filter((c) => c.automatic).length;
 
   return (
     <PageShell title="Claims" backTo="/" wide={wide}>
       <div className="bg-emerald-50 rounded-xl p-4 border border-emerald-100 mb-2">
-        <p className="text-sm text-emerald-800">
-          Parametric claims (e.g. typhoon T8+) pay out automatically in minutes. Standard claims use MIN(actual loss, allocation × multiplier).
-        </p>
+        <div className="flex items-start gap-2">
+          <Zap className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+          <p className="text-sm text-emerald-800 leading-relaxed">
+            <strong>Parametric payouts are automatic.</strong> HKO signals, flight delays, and fraud alerts pay out
+            in minutes with no form. {autoCount > 0 && `${autoCount} auto-paid this session.`}
+          </p>
+        </div>
       </div>
       <div className="space-y-3">
         {claims.map((c) => (
           <div key={c.id} className="bg-white rounded-xl p-4 border border-gray-100">
-            <div className="flex justify-between items-start">
+            <div className="flex justify-between items-start gap-2">
               <div>
                 <p className="font-bold text-gray-900">{c.desc}</p>
                 <p className="text-xs text-gray-500 mt-1">{c.id} · {c.category}</p>
               </div>
-              <span
-                className={`flex items-center gap-1 text-xs font-semibold px-2 py-1 rounded-full ${
-                  c.status === 'Paid'
-                    ? 'text-emerald-600 bg-emerald-50'
-                    : 'text-amber-700 bg-amber-50'
-                }`}
-              >
-                <CheckCircle2 className="w-3.5 h-3.5" /> {c.status}
-              </span>
+              <StatusBadge status={c.status} automatic={c.automatic} />
             </div>
             <div className="flex justify-between mt-3 pt-3 border-t border-gray-50">
               <span className="text-sm text-gray-500">{c.date}</span>
@@ -204,9 +239,9 @@ export default function ClaimsPage({ wide = false }) {
       <button
         type="button"
         onClick={() => setFormOpen(true)}
-        className="w-full py-3 bg-hsbc-red text-white font-semibold rounded-xl hover:bg-hsbc-red-dark transition-colors"
+        className="w-full py-3 border border-gray-200 bg-white text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors text-sm"
       >
-        File a new claim
+        Report something we missed
       </button>
 
       <ClaimFormModal
@@ -216,7 +251,7 @@ export default function ClaimsPage({ wide = false }) {
       />
 
       {toast && (
-        <div className="fixed bottom-20 sm:bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm px-4 py-2 rounded-xl shadow-lg z-50">
+        <div className="fixed bottom-20 sm:bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm px-4 py-2 rounded-xl shadow-lg z-50 max-w-[90vw] text-center">
           {toast}
         </div>
       )}
