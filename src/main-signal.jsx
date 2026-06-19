@@ -1,11 +1,11 @@
-import { StrictMode, useMemo, useState } from 'react';
+import { StrictMode, useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Copy, ExternalLink, Flame, Wind, CloudRain, Bike, Bus, Train, Ticket, MapPin } from 'lucide-react';
 import './index.css';
 import { SCENARIOS } from './data/constants';
 import { EXTERNAL_SIGNAL_KEY } from './context/ProtectionContext';
 import { getTapUrl } from './utils/tapUrl';
-import { getSignalRoom, sendRemoteSignal } from './utils/signalSync';
+import { getSignalRoom, sendRemoteSignal, startSignalHub } from './utils/signalSync';
 import SignalRoomPanel from './components/SignalRoomPanel';
 
 const GROUPS = [
@@ -66,7 +66,17 @@ function copy(text) {
 function App() {
   const [toast, setToast] = useState(null);
   const [sending, setSending] = useState(null);
+  const [hubStatus, setHubStatus] = useState('connecting');
+  const [phoneCount, setPhoneCount] = useState(0);
   const page = 'mobile';
+
+  useEffect(() => {
+    const stop = startSignalHub((status, count = 0) => {
+      setHubStatus(status);
+      setPhoneCount(count);
+    });
+    return stop;
+  }, []);
 
   const tapUrls = useMemo(() => {
     const ids = GROUPS.flatMap((g) => g.items.map((i) => i.id));
@@ -79,8 +89,8 @@ function App() {
     try {
       await sendRemoteSignal(getSignalRoom(), item.id);
       setToast(`Signal sent: ${item.label}`);
-    } catch {
-      setToast(`Phone not reachable — poster QR → Mobile App, keep open`);
+    } catch (err) {
+      setToast(err?.message || 'No phone connected — poster QR → Mobile App, keep open');
     } finally {
       setSending(null);
       setTimeout(() => setToast(null), 3500);
@@ -115,7 +125,7 @@ function App() {
           </div>
         </div>
 
-        <SignalRoomPanel variant="console" />
+        <SignalRoomPanel variant="console" hubStatus={hubStatus} phoneCount={phoneCount} />
 
         {GROUPS.map((group) => (
           <div key={group.title} className="bg-white rounded-2xl border border-gray-100 p-5">
@@ -180,7 +190,7 @@ function App() {
         ))}
 
         <div className="text-xs text-gray-400 text-center pb-6">
-          Friend scans poster QR → taps Mobile App → keeps it open · you hit Send signal here
+          Keep signal console open · friend scans poster QR → Mobile App → log in · wait for “1 phone connected”
         </div>
       </div>
 

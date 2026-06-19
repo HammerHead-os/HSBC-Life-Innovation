@@ -17,24 +17,122 @@ export function initRoomFromUrl() {
   return POSTER_ROOM;
 }
 
-/** Phone / web app — stay open as the listener for the poster demo. */
-export function subscribeRemoteSignals(_room, onPayload, onStatus) {
-  const peer = new Peer(peerIdForRoom(), { debug: 0 });
+let hubPeer = null;
+let hubConnections = new Set();
+let hubReady = false;
 
-  peer.on('open', () => onStatus?.('ready'));
-  peer.on('connection', (conn) => {
-    conn.on('data', (data) => {
-      if (data?.scenarioId) onPayload(data);
+/** Signals console — host the fixed peer so phones connect outbound (more reliable on mobile). */
+export function startSignalHub(onStatus) {
+  if (hubPeer) {
+    onStatus?.(hubReady ? 'ready' : 'connecting', hubConnections.size);
+    return stopSignalHub;
+  }
+
+  hubPeer = new Peer(peerIdForRoom(), { debug: 0 });
+
+  hubPeer.on('open', () => {
+    hubReady = true;
+    onStatus?.('ready', hubConnections.size);
+  });
+
+  hubPeer.on('connection', (conn) => {
+    hubConnections.add(conn);
+    onStatus?.('ready', hubConnections.size);
+
+    conn.on('close', () => {
+      hubConnections.delete(conn);
+      onStatus?.('ready', hubConnections.size);
+    });
+    conn.on('error', () => {
+      hubConnections.delete(conn);
+      onStatus?.('ready', hubConnections.size);
     });
   });
-  peer.on('error', (err) => onStatus?.('error', err));
+
+  hubPeer.on('error', () => {
+    hubReady = false;
+    onStatus?.('error', hubConnections.size);
+  });
+
+  hubPeer.on('disconnected', () => {
+    hubReady = false;
+    if (hubPeer && !hubPeer.destroyed) hubPeer.reconnect();
+  });
+
+  return stopSignalHub;
+}
+
+function stopSignalHub() {
+  hubConnections.forEach((conn) => conn.close());
+  hubConnections.clear();
+  hubPeer?.destroy();
+  hubPeer = null;
+  hubReady = false;
+}
+
+export function getHubPhoneCount() {
+  return hubConnections.size;
+}
+
+/** Phone / web app — connect to the presenter's signal hub and listen. */
+export function subscribeRemoteSignals(_room, onPayload, onStatus) {
+  let destroyed = false;
+  let peer = null;
+  let conn = null;
+  let retryTimer = null;
+
+  const cleanupPeer = () => {
+    conn = null;
+    peer?.destroy();
+    peer = null;
+  };
+
+  const scheduleRetry = () => {
+    if (destroyed) return;
+    clearTimeout(retryTimer);
+    cleanupPeer();
+    onStatus?.('connecting');
+    retryTimer = setTimeout(connect, 2000);
+  };
+
+  const connect = () => {
+    if (destroyed) return;
+    onStatus?.('connecting');
+
+    peer = new Peer({ debug: 0 });
+
+    peer.on('open', () => {
+      if (destroyed) return;
+      conn = peer.connect(peerIdForRoom(), { reliable: true });
+      conn.on('open', () => onStatus?.('ready'));
+      conn.on('data', (data) => {
+        if (data?.scenarioId) onPayload(data);
+      });
+      conn.on('close', scheduleRetry);
+      conn.on('error', scheduleRetry);
+    });
+
+    peer.on('error', () => {
+      onStatus?.('error');
+      scheduleRetry();
+    });
+
+    peer.on('disconnected', () => {
+      if (!destroyed && peer && !peer.destroyed) peer.reconnect();
+    });
+  };
+
+  connect();
 
   return () => {
-    peer.destroy();
+    destroyed = true;
+    clearTimeout(retryTimer);
+    conn?.close();
+    cleanupPeer();
   };
 }
 
-/** Signals console — push a scenario to phones opened from the poster QR. */
+/** Signals console — push a scenario to connected phones. */
 export function sendRemoteSignal(_room, scenarioId) {
   const payload = {
     scenarioId,
@@ -42,35 +140,19 @@ export function sendRemoteSignal(_room, scenarioId) {
     source: 'signal-console',
   };
 
-  return new Promise((resolve, reject) => {
-    const peer = new Peer({ debug: 0 });
-    let settled = false;
+  if (!hubPeer || !hubReady) {
+    return Promise.reject(new Error('Signal hub not ready — reload this page'));
+  }
 
-    const finish = (fn, value) => {
-      if (settled) return;
-      settled = true;
-      clearTimeout(timeout);
-      peer.destroy();
-      fn(value);
-    };
-
-    const timeout = setTimeout(
-      () =>
-        finish(
-          reject,
-          new Error('Phone not reachable — ask them to open Mobile App from the poster QR and keep it open'),
-        ),
-      8000,
+  if (hubConnections.size === 0) {
+    return Promise.reject(
+      new Error('No phone connected — friend opens poster QR → Mobile App → log in and keep open'),
     );
+  }
 
-    peer.on('open', () => {
-      const conn = peer.connect(peerIdForRoom(), { reliable: true });
-      conn.on('open', () => {
-        conn.send(payload);
-        setTimeout(() => finish(resolve, payload), 400);
-      });
-      conn.on('error', (err) => finish(reject, err));
-    });
-    peer.on('error', (err) => finish(reject, err));
+  hubConnections.forEach((conn) => {
+    if (conn.open) conn.send(payload);
   });
+
+  return Promise.resolve(payload);
 }
