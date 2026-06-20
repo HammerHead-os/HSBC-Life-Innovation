@@ -64,6 +64,15 @@
     }
 
     sessionStorage.setItem(PENDING_KEY, tap);
+    try {
+      const raw = localStorage.getItem('mpf-protection');
+      if (raw) {
+        const data = JSON.parse(raw);
+        if (data.scenarioId) sessionStorage.setItem('mpf-anim-from', data.scenarioId);
+      }
+    } catch (_) {
+      // ignore
+    }
     location.replace(basePath() + 'mobile.html');
   }
 

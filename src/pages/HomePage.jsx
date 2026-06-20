@@ -8,7 +8,7 @@ import SignalRoomPanel from '../components/SignalRoomPanel';
 import { useProtection } from '../context/ProtectionContext';
 
 export default function HomePage({ variant = 'mobile' }) {
-  const { scenario, allocatedAt, remoteSignalStatus } = useProtection();
+  const { scenario, allocatedAt, remoteSignalStatus, isAnimating } = useProtection();
   const chartSize = variant === 'web'
     ? { size: 200, inner: 68, outer: 92 }
     : { size: 150, inner: 48, outer: 68 };
@@ -26,6 +26,7 @@ export default function HomePage({ variant = 'mobile' }) {
             layout="web"
             allocatedAt={allocatedAt}
             aiTime={allocatedAt}
+            animating={isAnimating}
             chart={<DonutChart {...chartSize} />}
             legend={<AllocationLegend columns={3} large />}
           />
@@ -49,6 +50,7 @@ export default function HomePage({ variant = 'mobile' }) {
       <ScenarioPanel />
       <ProtectionCard
         allocatedAt={allocatedAt}
+        animating={isAnimating}
         chart={<DonutChart {...chartSize} />}
         legend={<AllocationLegend compact />}
       />

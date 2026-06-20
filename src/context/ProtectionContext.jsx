@@ -82,10 +82,14 @@ export function ProtectionProvider({ children }) {
   const [popupContent, setPopupContent] = useState(null);
   const [popupSignal, setPopupSignal] = useState(0);
   const [remoteSignalStatus, setRemoteSignalStatus] = useState('connecting');
-  const [displayAllocation, setDisplayAllocation] = useState(
-    () => SCENARIOS[initialScenario].allocation,
-  );
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [displayAllocation, setDisplayAllocation] = useState(() => {
+    const fromId = sessionStorage.getItem('mpf-anim-from');
+    if (fromId && SCENARIOS[fromId]) return { ...SCENARIOS[fromId].allocation };
+    return { ...SCENARIOS[initialScenario].allocation };
+  });
   const displayRef = useRef(displayAllocation);
+  const pendingApplyRef = useRef(null);
 
   const scenario = SCENARIOS[scenarioId];
   const allocation = scenario.allocation;
@@ -95,13 +99,35 @@ export function ProtectionProvider({ children }) {
     const to = allocation;
     const from = { ...displayRef.current };
     const unchanged = CATEGORIES.every((c) => Math.abs(from[c.key] - to[c.key]) < 0.01);
-    if (unchanged) return;
+    if (unchanged) {
+      setIsAnimating(false);
+      return;
+    }
 
+    setIsAnimating(true);
     const start = performance.now();
+    let pauseStart = null;
+    let totalPaused = 0;
     let frame;
 
+    const onVisibility = () => {
+      if (document.hidden) {
+        pauseStart = performance.now();
+      } else if (pauseStart !== null) {
+        totalPaused += performance.now() - pauseStart;
+        pauseStart = null;
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+
     const tick = (now) => {
-      const progress = Math.min((now - start) / ALLOC_ANIM_MS, 1);
+      if (pauseStart !== null) {
+        frame = requestAnimationFrame(tick);
+        return;
+      }
+
+      const elapsed = now - start - totalPaused;
+      const progress = Math.min(elapsed / ALLOC_ANIM_MS, 1);
       const eased = easeInOutQuart(progress);
       const next = {};
 
@@ -118,11 +144,16 @@ export function ProtectionProvider({ children }) {
       } else {
         displayRef.current = { ...to };
         setDisplayAllocation(to);
+        setIsAnimating(false);
       }
     };
 
     frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
+    return () => {
+      cancelAnimationFrame(frame);
+      document.removeEventListener('visibilitychange', onVisibility);
+      setIsAnimating(false);
+    };
   }, [allocation]);
 
   const showPopup = useCallback((content) => {
@@ -150,14 +181,16 @@ export function ProtectionProvider({ children }) {
 
   const commitScenario = useCallback((id) => {
     applyScenario(id);
-    showPopup(getScenarioPopup(SCENARIOS[id]));
+    window.setTimeout(() => {
+      showPopup(getScenarioPopup(SCENARIOS[id]));
+    }, ALLOC_ANIM_MS);
     const autoClaim = maybeAutoParametricClaim(id);
     if (autoClaim) {
       window.dispatchEvent(new CustomEvent('mpf-claims-change', { detail: autoClaim }));
     }
   }, [applyScenario, showPopup]);
 
-  const setScenarioId = useCallback((id) => {
+  const runScenario = useCallback((id) => {
     if (isTravelSignal(id)) {
       const signal = TRAVEL_SIGNALS[id];
       const flags = loadTravelFlags();
@@ -186,6 +219,36 @@ export function ProtectionProvider({ children }) {
     if (!SCENARIOS[id]) return;
     commitScenario(id);
   }, [showPopup, commitScenario]);
+
+  const scheduleScenario = useCallback((id) => {
+    const run = () => runScenario(id);
+
+    if (document.hidden) {
+      pendingApplyRef.current = id;
+      return;
+    }
+
+    requestAnimationFrame(() => requestAnimationFrame(run));
+  }, [runScenario]);
+
+  const setScenarioId = useCallback((id) => {
+    scheduleScenario(id);
+  }, [scheduleScenario]);
+
+  useEffect(() => {
+    sessionStorage.removeItem('mpf-anim-from');
+  }, []);
+
+  useEffect(() => {
+    const onVisibility = () => {
+      if (document.hidden || !pendingApplyRef.current) return;
+      const id = pendingApplyRef.current;
+      pendingApplyRef.current = null;
+      requestAnimationFrame(() => requestAnimationFrame(() => runScenario(id)));
+    };
+    document.addEventListener('visibilitychange', onVisibility);
+    return () => document.removeEventListener('visibilitychange', onVisibility);
+  }, [runScenario]);
 
   useEffect(() => {
     localStorage.setItem(
@@ -261,9 +324,10 @@ export function ProtectionProvider({ children }) {
       popupContent,
       popupSignal,
       remoteSignalStatus,
+      isAnimating,
       refreshData,
     }),
-    [scenarioId, scenario, allocation, displayAllocation, allocatedAt, insights, notifications, travelFlags, popupContent, popupSignal, remoteSignalStatus, setScenarioId, refreshData],
+    [scenarioId, scenario, allocation, displayAllocation, allocatedAt, insights, notifications, travelFlags, popupContent, popupSignal, remoteSignalStatus, isAnimating, setScenarioId, refreshData],
   );
 
   return (

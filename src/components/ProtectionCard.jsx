@@ -1,11 +1,13 @@
 import { CheckCircle2 } from 'lucide-react';
 import { SubPageLink } from './SubPageHeader';
 
-export default function ProtectionCard({ allocatedAt, aiTime, chart, legend, layout = 'mobile' }) {
+export default function ProtectionCard({ allocatedAt, aiTime, chart, legend, layout = 'mobile', animating = false }) {
   const isWeb = layout === 'web';
 
   return (
-    <div className={`bg-white rounded-2xl shadow-sm border border-gray-100 h-full ${isWeb ? 'p-5' : 'p-5'}`}>
+    <div className={`bg-white rounded-2xl shadow-sm border h-full transition-colors duration-500 ${isWeb ? 'p-5' : 'p-5'} ${
+      animating ? 'border-hsbc-red/40 ring-2 ring-hsbc-red/10' : 'border-gray-100'
+    }`}>
       <div className={`flex items-start justify-between ${isWeb ? 'mb-3' : 'mb-4'}`}>
         <div>
           <h2 className={`font-bold text-gray-900 ${isWeb ? 'text-xl' : 'text-lg'}`}>
@@ -45,10 +47,17 @@ export default function ProtectionCard({ allocatedAt, aiTime, chart, legend, lay
 
       {allocatedAt && (
         <div className={`text-gray-500 mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 ${isWeb ? 'text-sm' : 'text-xs'}`}>
-          <p className="flex items-center gap-1.5">
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            Last reallocation at {allocatedAt}
-          </p>
+          {animating ? (
+            <p className="flex items-center gap-1.5 text-hsbc-red font-semibold">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-hsbc-red animate-pulse" />
+              AI reallocating coverage…
+            </p>
+          ) : (
+            <p className="flex items-center gap-1.5">
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              Last reallocation at {allocatedAt}
+            </p>
+          )}
           {isWeb && aiTime && (
             <p className="flex items-center gap-1.5 text-gray-400">
               AI allocated today at {aiTime}
