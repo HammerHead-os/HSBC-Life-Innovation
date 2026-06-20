@@ -20,7 +20,6 @@ import PrivacyPage from './pages/PrivacyPage';
 import TriggersPage from './pages/TriggersPage';
 import DetailsPage from './pages/DetailsPage';
 import FAQPage from './pages/FAQPage';
-import TapTriggerPage from './pages/TapTriggerPage';
 import ScenarioPopup from './components/ScenarioPopup';
 import NfcTapBootstrap from './components/NfcTapBootstrap';
 import './index.css';
@@ -36,7 +35,6 @@ export default function MobileApp() {
           <NfcTapBootstrap />
           <Routes>
             <Route path="/login" element={<LoginPage />} />
-            <Route path="/tap/:scenarioId" element={<TapTriggerPage />} />
             <Route
               path="/"
               element={

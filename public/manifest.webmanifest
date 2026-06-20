@@ -4,6 +4,9 @@
   "start_url": "./mobile.html",
   "scope": "./",
   "display": "standalone",
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
   "background_color": "#ffffff",
   "theme_color": "#DB0011",
   "icons": [

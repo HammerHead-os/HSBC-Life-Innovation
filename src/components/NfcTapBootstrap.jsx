@@ -1,34 +1,34 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { useProtection } from '../context/ProtectionContext';
 import { SCENARIOS } from '../data/constants';
 import { isTravelSignal } from '../data/travelSignals';
 import { PENDING_TAP_KEY } from '../utils/pendingTap';
+import { useAuth } from '../context/AuthContext';
+import { useProtection } from '../context/ProtectionContext';
 
-/** Handles ?tap= on mobile.html so every NFC tag opens the same page. */
+const PRESENCE = 'mpf-app-presence';
+
+/** Keeps the app on Home — NFC taps update via localStorage, not router navigation. */
 export default function NfcTapBootstrap() {
-  const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
   const { setScenarioId } = useProtection();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const tap = params.get('tap');
-    if (!tap || (!SCENARIOS[tap] && !isTravelSignal(tap))) return;
+    const bc = new BroadcastChannel(PRESENCE);
+    bc.onmessage = (e) => {
+      if (e.data === 'ping') bc.postMessage('pong');
+    };
+    return () => bc.close();
+  }, []);
 
-    // Same URL in the address bar for every box tap.
-    window.history.replaceState({}, '', window.location.pathname);
+  useEffect(() => {
+    if (!isAuthenticated) return;
 
-    if (!isAuthenticated) {
-      sessionStorage.setItem(PENDING_TAP_KEY, tap);
-      navigate('/login', { replace: true });
-      return;
-    }
+    const pending = sessionStorage.getItem(PENDING_TAP_KEY);
+    if (!pending || (!SCENARIOS[pending] && !isTravelSignal(pending))) return;
 
-    setScenarioId(tap);
-    navigate('/', { replace: true });
-  }, [isAuthenticated, navigate, setScenarioId]);
+    sessionStorage.removeItem(PENDING_TAP_KEY);
+    setScenarioId(pending);
+  }, [isAuthenticated, setScenarioId]);
 
   return null;
 }

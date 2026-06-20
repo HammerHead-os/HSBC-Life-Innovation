@@ -13,6 +13,7 @@ export default defineConfig({
         mobile: resolve(__dirname, 'mobile.html'),
         web: resolve(__dirname, 'web.html'),
         signal: resolve(__dirname, 'signal.html'),
+        tap: resolve(__dirname, 'tap.html'),
       },
     },
   },

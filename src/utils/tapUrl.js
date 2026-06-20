@@ -10,7 +10,7 @@ function siteBase() {
   return `${LIVE_ORIGIN}${LIVE_BASE}`;
 }
 
-/** One page for all NFC boxes — only ?tap= changes (hidden on most phones). */
+/** Tiny bridge page — pings the open app tab instead of reloading mobile.html. */
 export function getTapUrl(scenarioId) {
-  return `${siteBase()}mobile.html?tap=${encodeURIComponent(scenarioId)}`;
+  return `${siteBase()}tap.html?tap=${encodeURIComponent(scenarioId)}`;
 }

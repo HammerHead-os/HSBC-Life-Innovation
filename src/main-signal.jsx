@@ -106,7 +106,7 @@ function App() {
           <h1 className="text-xl font-bold text-gray-900">Send live signals to the app</h1>
           <p className="text-sm text-gray-600 mt-2 leading-relaxed">
             Sends live signals to phones opened from the <strong>poster QR link</strong>.
-            Hazard alerts need no NFC — mobility taps open the same app page each time.
+            Hazard alerts need no NFC — box taps ping the open app tab without reloading it.
           </p>
           <div className="flex gap-2 flex-wrap mt-4">
             <a
