@@ -22,6 +22,7 @@ import DetailsPage from './pages/DetailsPage';
 import FAQPage from './pages/FAQPage';
 import TapTriggerPage from './pages/TapTriggerPage';
 import ScenarioPopup from './components/ScenarioPopup';
+import NfcTapBootstrap from './components/NfcTapBootstrap';
 import './index.css';
 
 const BASE = '';
@@ -32,6 +33,7 @@ export default function MobileApp() {
       <ProtectionProvider>
         <HashRouter>
           <ScenarioPopup />
+          <NfcTapBootstrap />
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/tap/:scenarioId" element={<TapTriggerPage />} />

@@ -68,7 +68,6 @@ function App() {
   const [sending, setSending] = useState(null);
   const [hubStatus, setHubStatus] = useState('connecting');
   const [phoneCount, setPhoneCount] = useState(0);
-  const page = 'mobile';
 
   useEffect(() => {
     const stop = startSignalHub((status, count = 0) => {
@@ -80,8 +79,8 @@ function App() {
 
   const tapUrls = useMemo(() => {
     const ids = GROUPS.flatMap((g) => g.items.map((i) => i.id));
-    return Object.fromEntries(ids.map((id) => [id, getTapUrl(id, page)]));
-  }, [page]);
+    return Object.fromEntries(ids.map((id) => [id, getTapUrl(id)]));
+  }, []);
 
   const sendSignal = async (item) => {
     writeExternalSignal(item.id);
@@ -107,7 +106,7 @@ function App() {
           <h1 className="text-xl font-bold text-gray-900">Send live signals to the app</h1>
           <p className="text-sm text-gray-600 mt-2 leading-relaxed">
             Sends live signals to phones opened from the <strong>poster QR link</strong>.
-            Hazard alerts need no NFC — mobility taps still support NFC URLs.
+            Hazard alerts need no NFC — mobility taps open the same app page each time.
           </p>
           <div className="flex gap-2 flex-wrap mt-4">
             <a
