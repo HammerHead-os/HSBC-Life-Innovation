@@ -9,19 +9,26 @@
     <meta name="apple-mobile-web-app-title" content="MPF Demo" />
     <link rel="manifest" href="./manifest.webmanifest" />
     <title>Micro-Protection Fluid · Mobile | HSBC Life</title>
-    <script>
-      (function () {
-        var p = new URLSearchParams(location.search);
-        var tap = p.get('tap');
-        var hm = location.hash.match(/\/tap\/([^/?]+)/);
-        if (tap) sessionStorage.setItem('mpf-pending-tap', tap);
-        else if (hm) sessionStorage.setItem('mpf-pending-tap', hm[1]);
-        if (tap || hm) history.replaceState(null, '', location.pathname);
-      })();
-    </script>
+    <script src="./nfc-tap.js"></script>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main-mobile.jsx"></script>
+    <script type="module">
+      async function boot() {
+        const hasTap =
+          new URLSearchParams(location.search).get('tap') ||
+          /\/tap\/[^/?]+/.test(location.hash);
+
+        if (hasTap && window.__MPF_RUN_NFC_TAP__) {
+          await window.__MPF_RUN_NFC_TAP__();
+        }
+
+        if (!window.__MPF_SKIP_APP__) {
+          await import('/src/main-mobile.jsx');
+        }
+      }
+
+      boot();
+    </script>
   </body>
 </html>

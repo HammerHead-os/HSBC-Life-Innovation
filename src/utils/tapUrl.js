@@ -10,7 +10,7 @@ function siteBase() {
   return `${LIVE_ORIGIN}${LIVE_BASE}`;
 }
 
-/** Tiny bridge page — pings the open app tab instead of reloading mobile.html. */
+/** Opens mobile.html — if app is already open, signals it and snaps back automatically. */
 export function getTapUrl(scenarioId) {
-  return `${siteBase()}tap.html?tap=${encodeURIComponent(scenarioId)}`;
+  return `${siteBase()}mobile.html?tap=${encodeURIComponent(scenarioId)}`;
 }
