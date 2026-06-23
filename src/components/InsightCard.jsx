@@ -22,10 +22,10 @@ export default function InsightCard({ title, body, highlightCategory, variant = 
         Today&apos;s insight
       </p>
       <h3 className={`font-bold text-gray-900 mb-2 ${isWeb ? 'text-lg' : 'text-base'}`}>{title}</h3>
-      <div className="flex gap-4 items-start">
-        <p className={`text-gray-600 leading-relaxed flex-1 ${isWeb ? 'text-[15px]' : 'text-sm'}`}>{body}</p>
+      <div className={`flex gap-4 items-start ${isWeb ? 'flex-col sm:flex-row' : ''}`}>
+        <p className={`text-gray-600 leading-relaxed flex-1 min-w-0 ${isWeb ? 'text-[15px]' : 'text-sm'}`}>{body}</p>
         {variant === 'network' ? (
-          <div className={`relative shrink-0 ${isWeb ? 'w-28 h-28' : 'w-24 h-24'}`}>
+          <div className={`relative shrink-0 self-center sm:self-start ${isWeb ? 'w-32 h-32' : 'w-24 h-24'}`}>
             <div className="absolute inset-0 flex items-center justify-center">
               <div
                 className={`rounded-full flex items-center justify-center shadow-md z-10 ${isWeb ? 'w-14 h-14' : 'w-12 h-12'}`}
@@ -38,9 +38,9 @@ export default function InsightCard({ title, body, highlightCategory, variant = 
             {otherCategories.map((cat, i) => {
               const Ic = CATEGORY_ICONS[cat.key];
               const angle = (i / otherCategories.length) * Math.PI * 2 - Math.PI / 2;
-              const cx = isWeb ? 56 : 48;
-              const cy = isWeb ? 56 : 48;
-              const radius = isWeb ? 42 : 36;
+              const cx = isWeb ? 64 : 48;
+              const cy = isWeb ? 64 : 48;
+              const radius = isWeb ? 44 : 36;
               const x = cx + Math.cos(angle) * radius - 12;
               const y = cy + Math.sin(angle) * radius - 12;
               return (

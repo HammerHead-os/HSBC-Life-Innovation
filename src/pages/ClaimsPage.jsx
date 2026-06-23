@@ -56,7 +56,7 @@ function ClaimFormModal({ open, onClose, onSubmit }) {
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           <div>
             <h2 id="claim-form-title" className="font-bold text-gray-900 text-lg">
-              Report something we missed
+              Add a new claim
             </h2>
             <p className="text-xs text-gray-500 mt-0.5">Rare — most payouts trigger automatically</p>
           </div>
@@ -241,7 +241,7 @@ export default function ClaimsPage({ wide = false }) {
         onClick={() => setFormOpen(true)}
         className="w-full py-3 border border-gray-200 bg-white text-gray-700 font-semibold rounded-xl hover:bg-gray-50 transition-colors text-sm"
       >
-        Report something we missed
+        Add a new claim
       </button>
 
       <ClaimFormModal

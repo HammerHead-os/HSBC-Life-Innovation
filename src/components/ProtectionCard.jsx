@@ -1,7 +1,7 @@
 import { CheckCircle2 } from 'lucide-react';
 import { SubPageLink } from './SubPageHeader';
 
-export default function ProtectionCard({ allocatedAt, aiTime, chart, legend, layout = 'mobile', animating = false }) {
+export default function ProtectionCard({ allocatedAt, chart, legend, layout = 'mobile', animating = false }) {
   const isWeb = layout === 'web';
 
   return (
@@ -29,7 +29,7 @@ export default function ProtectionCard({ allocatedAt, aiTime, chart, legend, lay
       <div
         className={
           isWeb
-            ? 'flex flex-col sm:flex-row sm:items-center gap-5 w-full'
+            ? 'flex flex-col xl:flex-row xl:items-center gap-5 w-full'
             : 'flex items-center gap-4 flex-wrap'
         }
       >
@@ -46,7 +46,7 @@ export default function ProtectionCard({ allocatedAt, aiTime, chart, legend, lay
       </div>
 
       {allocatedAt && (
-        <div className={`text-gray-500 mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 ${isWeb ? 'text-sm' : 'text-xs'}`}>
+        <div className={`text-gray-500 mt-3 ${isWeb ? 'text-sm' : 'text-xs'}`}>
           {animating ? (
             <p className="flex items-center gap-1.5 text-hsbc-red font-semibold">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-hsbc-red animate-pulse" />
@@ -56,11 +56,6 @@ export default function ProtectionCard({ allocatedAt, aiTime, chart, legend, lay
             <p className="flex items-center gap-1.5">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
               Last reallocation at {allocatedAt}
-            </p>
-          )}
-          {isWeb && aiTime && (
-            <p className="flex items-center gap-1.5 text-gray-400">
-              AI allocated today at {aiTime}
             </p>
           )}
         </div>

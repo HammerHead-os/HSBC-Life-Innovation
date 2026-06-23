@@ -21,14 +21,13 @@ export default function HomePage({ variant = 'mobile' }) {
           footer={<SignalRoomPanel compact remoteStatus={remoteSignalStatus} />}
         />
 
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 items-stretch">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 items-start">
           <ProtectionCard
             layout="web"
             allocatedAt={allocatedAt}
-            aiTime={allocatedAt}
             animating={isAnimating}
             chart={<DonutChart {...chartSize} />}
-            legend={<AllocationLegend columns={3} large />}
+            legend={<AllocationLegend columns={2} large />}
           />
           <InsightCard
             layout="web"

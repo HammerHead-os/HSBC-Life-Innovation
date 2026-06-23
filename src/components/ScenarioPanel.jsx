@@ -22,13 +22,13 @@ export default function ScenarioPanel({ variant = 'mobile', footer = null }) {
         onChange={setScenarioId}
         size={isWeb ? 'large' : 'default'}
       />
-      <p className={`text-gray-500 mt-3 leading-relaxed ${isWeb ? 'text-[15px]' : 'text-xs'}`}>
+      <p className={`text-gray-500 mt-3 leading-relaxed break-words ${isWeb ? 'text-[15px]' : 'text-xs'}`}>
         <strong className="text-gray-800">{scenario.label}</strong>
         {' — '}
         {scenario.insight}
       </p>
       {footer && (
-        <div className="mt-3 pt-3 border-t border-gray-100">{footer}</div>
+        <div className="mt-4 pt-3 border-t border-gray-100">{footer}</div>
       )}
     </div>
   );

@@ -20,7 +20,7 @@ export default function QuickActions({ large = false }) {
             className="flex flex-col items-center justify-center gap-2.5 bg-white hover:bg-hsbc-red hover:border-hsbc-red transition-colors rounded-2xl p-4 border border-gray-200 shadow-sm group min-h-[6.5rem]"
           >
             <Icon className="w-8 h-8 text-hsbc-red group-hover:text-white transition-colors" />
-            <span className="text-[15px] font-semibold text-gray-800 group-hover:text-white transition-colors text-center leading-tight">
+            <span className="text-[15px] font-semibold text-gray-800 group-hover:text-white transition-colors text-center leading-snug px-1">
               {label}
             </span>
           </SubPageLink>

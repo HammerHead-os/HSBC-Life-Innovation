@@ -76,12 +76,12 @@ export default function WebLayout() {
             style={webHeaderStyle}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/30 to-transparent" />
-            <div className="relative h-full flex items-end justify-between px-5 pb-4">
-              <div>
+            <div className="relative h-full flex items-end justify-between gap-4 px-5 pb-4 min-w-0">
+              <div className="min-w-0">
                 <p className="text-white/80 text-[15px] font-medium mb-0.5">Micro-Protection Fluid</p>
-                <h1 className="text-white text-[1.75rem] font-bold drop-shadow-md">Good morning, {user.name} 👋</h1>
+                <h1 className="text-white text-[1.75rem] font-bold drop-shadow-md truncate">Good morning, {user.name} 👋</h1>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 shrink-0">
                 <NotificationBell light />
                 <SubPageLink
                   to="/profile"
@@ -94,7 +94,7 @@ export default function WebLayout() {
             </div>
           </div>
         )}
-        <main className={`flex-1 w-full min-w-0 ${isSubPage ? 'bg-gray-50' : 'px-5 py-4 -mt-3'}`}>
+        <main className={`flex-1 w-full min-w-0 relative z-10 ${isSubPage ? 'bg-gray-50' : 'px-5 pt-4 pb-6'}`}>
           <Outlet />
         </main>
       </div>
