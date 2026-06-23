@@ -60,12 +60,12 @@ const POPUP_COPY = {
   },
   bus: {
     title: 'Bus ride started',
-    body: 'Octopus tap detected — short travel window active.',
+    body: 'HSBC card tap at bus — short travel window active.',
     variant: 'mobility',
   },
   mtr_gate: {
     title: 'MTR gate tap',
-    body: 'Commute detected — travel & liability cover adjusted.',
+    body: 'HSBC card tap at MTR gate — travel & liability cover adjusted.',
     variant: 'mobility',
   },
   keeta: {

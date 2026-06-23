@@ -73,7 +73,7 @@ export const TRIGGER_GROUPS = [
   },
   {
     title: 'Mobility & transit taps',
-    summary: 'Octopus, contactless, and rental-platform unlock events. Short risk windows while you are moving.',
+    summary: 'HSBC card taps at bus and MTR, plus rental-platform unlock events. Short risk windows while you are moving.',
     triggers: [
       {
         label: 'HelloRide bike unlock',
@@ -83,17 +83,17 @@ export const TRIGGER_GROUPS = [
         shifts: 'Liability ↑ · Health ↑',
       },
       {
-        label: 'Bus ride (Octopus tap)',
-        source: 'Octopus transit MCC',
+        label: 'Credit tap at bus',
+        source: 'HSBC card · transit MCC',
         scenario: 'bus',
-        detail: 'Bus merchant category on your card or Octopus. Short travel and liability window for the journey.',
+        detail: 'HSBC card tap at the bus fare reader. Short travel and liability window for the journey.',
         shifts: 'Travel ↑ · Liability ↑',
       },
       {
-        label: 'MTR gate tap (contactless)',
-        source: 'MTR / Octopus feed',
+        label: 'Credit tap at MTR gate',
+        source: 'HSBC card · MTR feed',
         scenario: 'mtr_gate',
-        detail: 'MTR gate contactless tap. Commute risk window — travel and liability boosted until trip ends.',
+        detail: 'HSBC card tap at the MTR gate. Commute risk window — travel and liability boosted until trip ends.',
         shifts: 'Travel ↑ · Liability ↑',
       },
     ],

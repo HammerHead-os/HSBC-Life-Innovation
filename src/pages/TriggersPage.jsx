@@ -17,7 +17,7 @@ export default function TriggersPage({ wide = false }) {
         <h2 className="font-bold text-sm text-gray-900">Signals that move your HKD 200 pool</h2>
         <p className="text-xs text-gray-500 mt-1 leading-relaxed">
           These are the live triggers wired into the demo — HKO weather API, airport and station geofences,
-          Octopus transit, food-delivery shift status (Keeta), and partner venue check-ins. Booth NFC boxes
+          HSBC card taps at bus and MTR, food-delivery shift status (Keeta), and partner venue check-ins. Booth NFC boxes
           simulate most feeds; cyber runs from your HSBC card in the background.
         </p>
       </section>

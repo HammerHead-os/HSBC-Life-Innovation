@@ -1,11 +1,11 @@
 import { StrictMode, useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Copy, ExternalLink, Flame, Wind, CloudRain, Bike, Bus, Train, Ticket, MapPin } from 'lucide-react';
+import { Copy, ExternalLink, Flame, Wind, CloudRain, CloudLightning, Bike, Bus, Train, Ticket, MapPin } from 'lucide-react';
 import './index.css';
 import { SCENARIOS } from './data/constants';
 import { EXTERNAL_SIGNAL_KEY } from './context/ProtectionContext';
 import { getTapUrl } from './utils/tapUrl';
-import { getSignalRoom, sendRemoteSignal, startSignalHub } from './utils/signalSync';
+import { getSignalRoom, sendRemoteSignal, startSignalRelay } from './utils/signalSync';
 import SignalRoomPanel from './components/SignalRoomPanel';
 
 const GROUPS = [
@@ -13,8 +13,8 @@ const GROUPS = [
     title: 'Mobility boxes (NFC)',
     items: [
       { id: 'helloride', icon: Bike, label: 'HelloRide unlock' },
-      { id: 'bus', icon: Bus, label: 'Bus ride tap' },
-      { id: 'mtr_gate', icon: Train, label: 'MTR gate tap' },
+      { id: 'bus', icon: Bus, label: 'Credit tap at bus' },
+      { id: 'mtr_gate', icon: Train, label: 'Credit tap at MTR gate' },
     ],
   },
   {
@@ -29,9 +29,10 @@ const GROUPS = [
   {
     title: 'Hazard alerts (external signals)',
     items: [
-      { id: 'tornado', icon: Wind, label: 'Tornado warning' },
-      { id: 'fire', icon: Flame, label: 'Fire alert nearby' },
+      { id: 'typhoon', icon: CloudLightning, label: 'Typhoon Signal T8 / T10' },
       { id: 'black_rain', icon: CloudRain, label: 'Black rainstorm warning' },
+      { id: 'fire', icon: Flame, label: 'Fire alert nearby' },
+      { id: 'tornado', icon: Wind, label: 'Tornado warning' },
     ],
   },
 ];
@@ -66,14 +67,10 @@ function copy(text) {
 function App() {
   const [toast, setToast] = useState(null);
   const [sending, setSending] = useState(null);
-  const [hubStatus, setHubStatus] = useState('connecting');
-  const [phoneCount, setPhoneCount] = useState(0);
+  const [relay, setRelay] = useState({ broadcast: 'connecting', peer: 'connecting', phoneCount: 0 });
 
   useEffect(() => {
-    const stop = startSignalHub((status, count = 0) => {
-      setHubStatus(status);
-      setPhoneCount(count);
-    });
+    const stop = startSignalRelay(setRelay);
     return stop;
   }, []);
 
@@ -86,17 +83,23 @@ function App() {
     writeExternalSignal(item.id);
     setSending(item.id);
     try {
-      await sendRemoteSignal(getSignalRoom(), item.id);
-      setToast(`Signal sent: ${item.label}`);
+      const result = await sendRemoteSignal(getSignalRoom(), item.id);
+      const via =
+        result.broadcast && result.peer > 0
+          ? 'cloud + direct backup'
+          : result.broadcast
+            ? 'cloud relay'
+            : `direct backup (${result.peer})`;
+      setToast(`Signal sent via ${via}: ${item.label}`);
     } catch (err) {
-      setToast(err?.message || 'No phone connected — poster QR → Mobile App, keep open');
+      setToast(err?.message || 'Send failed — use Standby tap URL below');
     } finally {
       setSending(null);
       setTimeout(() => setToast(null), 3500);
     }
   };
 
-  const hazardIds = new Set(['tornado', 'fire', 'black_rain']);
+  const hazardIds = new Set(['typhoon', 'tornado', 'fire', 'black_rain']);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -105,8 +108,8 @@ function App() {
           <p className="text-xs font-bold text-hsbc-red uppercase tracking-wide mb-1">Signals Console</p>
           <h1 className="text-xl font-bold text-gray-900">Send live signals to the app</h1>
           <p className="text-sm text-gray-600 mt-2 leading-relaxed">
-            Sends live signals to phones opened from the <strong>poster QR link</strong>.
-            Hazard alerts need no NFC — keep the app open on Home, then tap a box.
+            Broadcasts live signals to <strong>every phone</strong> on the poster link — café Wi‑Fi, mobile data, or
+            mixed. Hazard alerts need no NFC. Keep Standby tap URLs ready if the venue blocks outbound connections.
           </p>
           <div className="flex gap-2 flex-wrap mt-4">
             <a
@@ -124,7 +127,7 @@ function App() {
           </div>
         </div>
 
-        <SignalRoomPanel variant="console" hubStatus={hubStatus} phoneCount={phoneCount} />
+        <SignalRoomPanel variant="console" relay={relay} />
 
         {GROUPS.map((group) => (
           <div key={group.title} className="bg-white rounded-2xl border border-gray-100 p-5">
@@ -157,30 +160,30 @@ function App() {
                       >
                         {sending === item.id ? 'Sending…' : 'Send signal'}
                       </Button>
+                      <Button
+                        onClick={() => {
+                          copy(url);
+                          setToast(hazardIds.has(item.id) ? 'Standby tap URL copied' : 'NFC URL copied');
+                          setTimeout(() => setToast(null), 2000);
+                        }}
+                      >
+                        {hazardIds.has(item.id) ? 'Copy standby URL' : 'Copy NFC URL'}{' '}
+                        <Copy className="w-4 h-4 text-gray-500" />
+                      </Button>
                       {!hazardIds.has(item.id) && (
-                        <>
-                          <Button
-                            onClick={() => {
-                              copy(url);
-                              setToast('NFC URL copied');
-                              setTimeout(() => setToast(null), 2000);
-                            }}
-                          >
-                            Copy NFC URL <Copy className="w-4 h-4 text-gray-500" />
-                          </Button>
-                          <a
-                            href={url}
-                            className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition-colors text-sm font-semibold text-gray-800"
-                          >
-                            Test open <ExternalLink className="w-4 h-4 text-gray-500" />
-                          </a>
-                        </>
+                        <a
+                          href={url}
+                          className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition-colors text-sm font-semibold text-gray-800"
+                        >
+                          Test open <ExternalLink className="w-4 h-4 text-gray-500" />
+                        </a>
                       )}
                     </div>
 
-                    {!hazardIds.has(item.id) && (
-                      <p className="text-[11px] text-gray-400 mt-3 break-all font-mono">{url}</p>
-                    )}
+                    <p className={`text-[11px] mt-3 break-all font-mono ${hazardIds.has(item.id) ? 'text-amber-600/80' : 'text-gray-400'}`}>
+                      {hazardIds.has(item.id) ? 'Standby: ' : ''}
+                      {url}
+                    </p>
                   </div>
                 );
               })}
@@ -189,7 +192,7 @@ function App() {
         ))}
 
         <div className="text-xs text-gray-400 text-center pb-6">
-          Keep signal console open · friend scans poster QR → Mobile App → log in · wait for “1 phone connected”
+          Wait for “Cloud relay live” · audience on poster QR → Mobile App → log in · Standby tap URLs if venue Wi‑Fi blocks relay
         </div>
       </div>
 

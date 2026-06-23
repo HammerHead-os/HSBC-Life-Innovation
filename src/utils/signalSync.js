@@ -1,4 +1,10 @@
 import Peer from 'peerjs';
+import {
+  isBroadcastReady,
+  publishBroadcast,
+  startBroadcastPublisher,
+  subscribeBroadcast,
+} from './signalBroadcast';
 
 /** Matches the printed poster QR — https://hammerhead-os.github.io/HSBC-Life-Innovation/ */
 export const POSTER_URL = 'https://hammerhead-os.github.io/HSBC-Life-Innovation/';
@@ -21,8 +27,37 @@ let hubPeer = null;
 let hubConnections = new Set();
 let hubReady = false;
 
-/** Signals console — host the fixed peer so phones connect outbound (more reliable on mobile). */
-export function startSignalHub(onStatus) {
+/** Signals console — cloud broadcast + optional direct peer backup. */
+export function startSignalRelay(onStatus) {
+  let broadcastStatus = 'connecting';
+  let peerStatus = 'connecting';
+  let phoneCount = 0;
+
+  const emit = () => {
+    onStatus?.({
+      broadcast: broadcastStatus,
+      peer: peerStatus,
+      phoneCount,
+    });
+  };
+
+  const stopBroadcast = startBroadcastPublisher(POSTER_ROOM, (status) => {
+    broadcastStatus = status;
+    emit();
+  });
+  const stopPeer = startSignalHub((status, count = 0) => {
+    peerStatus = status;
+    phoneCount = count;
+    emit();
+  });
+
+  return () => {
+    stopBroadcast();
+    stopPeer();
+  };
+}
+
+function startSignalHub(onStatus) {
   if (hubPeer) {
     onStatus?.(hubReady ? 'ready' : 'connecting', hubConnections.size);
     return stopSignalHub;
@@ -35,18 +70,18 @@ export function startSignalHub(onStatus) {
     onStatus?.('ready', hubConnections.size);
   });
 
-  hubPeer.on('connection', (conn) => {
-    hubConnections.add(conn);
+  const dropConn = (conn) => {
+    hubConnections.delete(conn);
     onStatus?.('ready', hubConnections.size);
+  };
 
-    conn.on('close', () => {
-      hubConnections.delete(conn);
+  hubPeer.on('connection', (conn) => {
+    conn.on('open', () => {
+      hubConnections.add(conn);
       onStatus?.('ready', hubConnections.size);
     });
-    conn.on('error', () => {
-      hubConnections.delete(conn);
-      onStatus?.('ready', hubConnections.size);
-    });
+    conn.on('close', () => dropConn(conn));
+    conn.on('error', () => dropConn(conn));
   });
 
   hubPeer.on('error', () => {
@@ -74,8 +109,39 @@ export function getHubPhoneCount() {
   return hubConnections.size;
 }
 
-/** Phone / web app — connect to the presenter's signal hub and listen. */
-export function subscribeRemoteSignals(_room, onPayload, onStatus) {
+function parseSignalPayload(data) {
+  if (!data) return null;
+  const payload = typeof data === 'string' ? JSON.parse(data) : data;
+  return payload?.scenarioId ? payload : null;
+}
+
+/** Phone / web app — cloud broadcast (primary) + direct peer (backup). */
+export function subscribeRemoteSignals(room, onPayload, onStatus) {
+  let broadcastStatus = 'connecting';
+  let peerStatus = 'connecting';
+
+  const emit = () => {
+    const ready = broadcastStatus === 'ready' || peerStatus === 'ready';
+    const error = broadcastStatus === 'error' && peerStatus === 'error';
+    onStatus?.(ready ? 'ready' : error ? 'error' : 'connecting');
+  };
+
+  const stopBroadcast = subscribeBroadcast(room, onPayload, (status) => {
+    broadcastStatus = status;
+    emit();
+  });
+  const stopPeer = subscribePeerSignals(onPayload, (status) => {
+    peerStatus = status;
+    emit();
+  });
+
+  return () => {
+    stopBroadcast();
+    stopPeer();
+  };
+}
+
+function subscribePeerSignals(onPayload, onStatus) {
   let destroyed = false;
   let peer = null;
   let conn = null;
@@ -104,9 +170,21 @@ export function subscribeRemoteSignals(_room, onPayload, onStatus) {
     peer.on('open', () => {
       if (destroyed) return;
       conn = peer.connect(peerIdForRoom(), { reliable: true });
-      conn.on('open', () => onStatus?.('ready'));
+      conn.on('open', () => {
+        onStatus?.('ready');
+        try {
+          conn.send({ type: 'hello', at: Date.now() });
+        } catch {
+          // hub only needs inbound; ignore
+        }
+      });
       conn.on('data', (data) => {
-        if (data?.scenarioId) onPayload(data);
+        try {
+          const payload = parseSignalPayload(data);
+          if (payload) onPayload(payload);
+        } catch {
+          // ignore malformed payloads
+        }
       });
       conn.on('close', scheduleRetry);
       conn.on('error', scheduleRetry);
@@ -124,35 +202,59 @@ export function subscribeRemoteSignals(_room, onPayload, onStatus) {
 
   connect();
 
+  const onVisibility = () => {
+    if (document.hidden || destroyed) return;
+    if (!conn?.open) scheduleRetry();
+  };
+  document.addEventListener('visibilitychange', onVisibility);
+
   return () => {
     destroyed = true;
+    document.removeEventListener('visibilitychange', onVisibility);
     clearTimeout(retryTimer);
     conn?.close();
     cleanupPeer();
   };
 }
 
-/** Signals console — push a scenario to connected phones. */
-export function sendRemoteSignal(_room, scenarioId) {
+/** Signals console — push a scenario to all connected phones. */
+export async function sendRemoteSignal(room, scenarioId) {
   const payload = {
     scenarioId,
     at: Date.now(),
     source: 'signal-console',
   };
 
-  if (!hubPeer || !hubReady) {
-    return Promise.reject(new Error('Signal hub not ready — reload this page'));
+  let broadcast = false;
+  let peer = 0;
+
+  if (isBroadcastReady()) {
+    try {
+      await publishBroadcast(room, payload);
+      broadcast = true;
+    } catch {
+      // fall through to peer backup
+    }
   }
 
-  if (hubConnections.size === 0) {
-    return Promise.reject(
-      new Error('No phone connected — friend opens poster QR → Mobile App → log in and keep open'),
-    );
+  if (hubPeer && hubReady) {
+    const openConnections = [...hubConnections].filter((conn) => conn.open);
+    openConnections.forEach((conn) => {
+      try {
+        conn.send(payload);
+        peer += 1;
+      } catch {
+        hubConnections.delete(conn);
+      }
+    });
   }
 
-  hubConnections.forEach((conn) => {
-    if (conn.open) conn.send(payload);
-  });
+  if (!broadcast && peer === 0) {
+    if (!isBroadcastReady() && (!hubPeer || !hubReady)) {
+      throw new Error('Relay not ready — reload signal console and check Wi‑Fi');
+    }
+    throw new Error('Send failed — use Standby tap URLs below or reload phones');
+  }
 
-  return Promise.resolve(payload);
+  return { payload, broadcast, peer };
 }

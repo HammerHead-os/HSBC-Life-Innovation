@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "lucide-react": "^1.18.0",
+    "mqtt": "^5.15.1",
     "peerjs": "^1.5.5",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",

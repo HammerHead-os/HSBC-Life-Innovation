@@ -1,31 +1,47 @@
-import { Wifi, WifiOff } from 'lucide-react';
+import { Radio, Wifi, WifiOff } from 'lucide-react';
 import { POSTER_URL } from '../utils/signalSync';
+
+function consoleLabel(relay) {
+  const { broadcast, peer, phoneCount = 0 } = relay ?? {};
+  if (broadcast === 'ready') {
+    return phoneCount > 0
+      ? `Cloud relay live · ${phoneCount} direct backup link${phoneCount === 1 ? '' : 's'}`
+      : 'Cloud relay live — broadcasts to every phone on the poster link';
+  }
+  if (peer === 'ready' && phoneCount > 0) {
+    return `Direct backup only (${phoneCount} phone${phoneCount === 1 ? '' : 's'}) — waiting for cloud relay…`;
+  }
+  if (peer === 'error' && broadcast === 'error') {
+    return 'Both relays down — reload console or use Standby tap URLs';
+  }
+  if (peer === 'error') {
+    return 'Hub busy — close other signal tabs; cloud relay still starting…';
+  }
+  return 'Starting cloud relay…';
+}
+
+function listenerLabel(remoteStatus) {
+  if (remoteStatus === 'ready') {
+    return 'Ready — live hazard alerts from presenter';
+  }
+  if (remoteStatus === 'error') {
+    return 'Reconnecting to presenter…';
+  }
+  return 'Connecting to live demo…';
+}
 
 export default function SignalRoomPanel({
   compact = false,
   remoteStatus = null,
   variant = 'listener',
-  hubStatus = null,
-  phoneCount = 0,
+  relay = null,
 }) {
   const statusLabel =
-    variant === 'console'
-      ? hubStatus === 'ready' && phoneCount > 0
-        ? `${phoneCount} phone${phoneCount === 1 ? '' : 's'} connected — ready to send`
-        : hubStatus === 'ready'
-          ? 'Hub ready — waiting for phone (poster QR → Mobile App → log in)'
-          : hubStatus === 'error'
-            ? 'Hub busy — close other signal tabs and reload'
-            : 'Starting signal hub…'
-      : remoteStatus === 'ready'
-        ? 'Ready — will receive live hazard alerts from presenter'
-        : remoteStatus === 'error'
-          ? 'Reconnecting to presenter…'
-          : 'Connecting to live demo…';
+    variant === 'console' ? consoleLabel(relay) : listenerLabel(remoteStatus);
 
   const isOnline =
     variant === 'console'
-      ? hubStatus === 'ready' && phoneCount > 0
+      ? relay?.broadcast === 'ready' || (relay?.peer === 'ready' && relay?.phoneCount > 0)
       : remoteStatus === 'ready';
 
   if (compact) {
@@ -52,10 +68,23 @@ export default function SignalRoomPanel({
         <span>{statusLabel}</span>
       </div>
       {variant === 'console' && (
-        <p className="text-[11px] text-gray-400 leading-relaxed">
-          Keep this page open. Friend scans poster QR →{' '}
-          <span className="font-mono break-all">{POSTER_URL}</span> → Mobile App → log in → keep open.
-        </p>
+        <>
+          <p className="text-[11px] text-gray-500 leading-relaxed">
+            <strong className="text-gray-700">Primary:</strong> cloud broadcast — works for unlimited phones on the
+            same café Wi‑Fi, mobile data, or a mix. No peer-to-peer needed.
+          </p>
+          <p className="text-[11px] text-gray-400 leading-relaxed">
+            <strong className="text-gray-500">Backup:</strong> direct peer link when cloud is blocked. Audience opens{' '}
+            <span className="font-mono break-all">{POSTER_URL}</span> → Mobile App → log in → keep Home open.
+          </p>
+          <p className="text-[11px] text-gray-400 leading-relaxed flex items-start gap-1.5">
+            <Radio className="w-3.5 h-3.5 shrink-0 mt-0.5 text-hsbc-red" />
+            <span>
+              <strong className="text-gray-500">Standby:</strong> if both fail, use the tap URLs in the hazard section —
+              each person scans or opens the link on their own phone (same as NFC).
+            </span>
+          </p>
+        </>
       )}
     </div>
   );

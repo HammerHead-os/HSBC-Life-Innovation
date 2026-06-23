@@ -78,9 +78,9 @@ export const SCENARIOS = {
   },
   bus: {
     id: 'bus',
-    label: 'Bus ride (Octopus tap)',
+    label: 'Credit tap at bus',
     icon: 'bus',
-    insight: 'Transit tap detected — short travel window activated. Travel and liability protection increased.',
+    insight: 'HSBC card tap at bus fare reader — short travel window activated. Travel and liability protection increased.',
     insightTitle: 'Transit window active',
     highlightCategory: 'travel',
     allocatedAt: '10:20',
@@ -88,9 +88,9 @@ export const SCENARIOS = {
   },
   mtr_gate: {
     id: 'mtr_gate',
-    label: 'MTR gate tap (contactless)',
+    label: 'Credit tap at MTR gate',
     icon: 'train',
-    insight: 'MTR gate tap detected — commute risk activated. Travel and liability protection increased.',
+    insight: 'HSBC card tap at MTR gate — commute risk activated. Travel and liability protection increased.',
     insightTitle: 'Commute window active',
     highlightCategory: 'travel',
     allocatedAt: '10:35',
