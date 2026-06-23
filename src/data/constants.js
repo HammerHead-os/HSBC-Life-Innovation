@@ -10,8 +10,22 @@ export const CATEGORIES = [
   { key: 'liability', name: 'Liability', color: '#6B9E8A', multiplier: 1000, floor: 5, max: 90 },
 ];
 
-// Keep the manual demo picker simple (booth-friendly) even if we add more scenarios for NFC / external signals.
-export const DEMO_SCENARIO_IDS = ['tokyo', 'keeta', 'guangzhou', 'typhoon', 'climbing'];
+// Manual demo picker — every NFC booth scenario except gate checkpoints (airport / HSR location only).
+export const DEMO_SCENARIO_IDS = [
+  'helloride',
+  'bus',
+  'mtr_gate',
+  'hsr_card',
+  'flight_card',
+  'typhoon',
+  'black_rain',
+  'fire',
+  'tornado',
+  'keeta',
+  'climbing',
+  'tokyo',
+  'guangzhou',
+];
 
 export const SCENARIOS = {
   tokyo: {

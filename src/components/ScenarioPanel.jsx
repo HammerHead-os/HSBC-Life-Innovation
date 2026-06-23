@@ -13,8 +13,8 @@ export default function ScenarioPanel({ variant = 'mobile', footer = null }) {
         Demo scenarios
       </p>
       <p className={`text-gray-600 mb-3 ${isWeb ? 'text-[15px] leading-snug' : 'text-sm'}`}>
-        Select a situation below — AI reallocates coverage instantly.
-        Flight &amp; HSR need <strong>ticket + gate</strong> (use NFC boxes or signal console).
+        Same options as the NFC booth — tap a pill to preview, or use the physical boxes.
+        Airport and HSR <strong>gate checkpoints</strong> are NFC-only (not listed here).
       </p>
       <ScenarioPicker
         scenarios={scenarios}
