@@ -60,7 +60,7 @@ export default function ProfilePage({ variant = 'mobile' }) {
         onClick={handleRefreshData}
         className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-hsbc-red/30 bg-red-50 text-hsbc-red text-sm font-medium hover:bg-hsbc-red hover:text-white transition-colors"
       >
-        <RotateCcw className="w-4 h-4" /> Refresh data
+        <RotateCcw className="w-4 h-4" /> Reset demo
       </button>
 
       <button

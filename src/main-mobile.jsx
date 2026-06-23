@@ -21,6 +21,7 @@ import TriggersPage from './pages/TriggersPage';
 import DetailsPage from './pages/DetailsPage';
 import FAQPage from './pages/FAQPage';
 import ScenarioPopup from './components/ScenarioPopup';
+import ParametricClaimToast from './components/ParametricClaimToast';
 import NfcTapBootstrap from './components/NfcTapBootstrap';
 import './index.css';
 
@@ -32,6 +33,7 @@ export default function MobileApp() {
       <ProtectionProvider>
         <HashRouter>
           <ScenarioPopup />
+          <ParametricClaimToast />
           <NfcTapBootstrap />
           <Routes>
             <Route path="/login" element={<LoginPage />} />

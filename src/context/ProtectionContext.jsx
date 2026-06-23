@@ -18,6 +18,7 @@ import { PENDING_TAP_KEY } from '../utils/pendingTap';
 import { easeInOutQuart } from '../utils/easing';
 import { getSignalRoom, subscribeRemoteSignals } from '../utils/signalSync';
 import { maybeAutoParametricClaim, clearAutoClaimFlags, saveClaims } from '../utils/claimsStore';
+import { prependActivity, resetActivityLog } from '../utils/activityStore';
 import { CLAIMS } from '../data/constants';
 
 const ProtectionContext = createContext(null);
@@ -181,6 +182,7 @@ export function ProtectionProvider({ children }) {
 
   const commitScenario = useCallback((id) => {
     applyScenario(id);
+    prependActivity(id);
     window.setTimeout(() => {
       showPopup(getScenarioPopup(SCENARIOS[id]));
     }, ALLOC_ANIM_MS);
@@ -199,6 +201,7 @@ export function ProtectionProvider({ children }) {
         const nextFlags = { ...flags, [signal.flag]: true };
         setTravelFlags(nextFlags);
         saveTravelFlags(nextFlags);
+        prependActivity(id);
         showPopup(signal.popup);
         return;
       }
@@ -290,6 +293,7 @@ export function ProtectionProvider({ children }) {
     sessionStorage.removeItem(PROCESSED_SIGNAL_KEY);
     sessionStorage.removeItem(PENDING_TAP_KEY);
     clearAutoClaimFlags();
+    resetActivityLog();
     saveClaims(CLAIMS);
     window.dispatchEvent(new CustomEvent('mpf-claims-change'));
     const resetAlloc = SCENARIOS.tokyo.allocation;

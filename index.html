@@ -108,6 +108,15 @@
         font-size: 0.75rem;
         color: #aaa;
         text-align: center;
+        line-height: 1.6;
+      }
+      .footer a {
+        color: #888;
+        text-decoration: none;
+      }
+      .footer a:hover {
+        color: #db0011;
+        text-decoration: underline;
       }
     </style>
   </head>
@@ -146,7 +155,10 @@
       </a>
     </div>
 
-    <p class="footer">HSBC Life Insurance Innovation Competition · Demo</p>
+    <p class="footer">
+      HSBC Life Insurance Innovation Competition · Demo<br />
+      <a href="signal.html">Presenter console</a> · live hazard signals &amp; NFC URLs
+    </p>
     <script>
       // Poster QR lands here — send phones straight to the mobile app.
       if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {

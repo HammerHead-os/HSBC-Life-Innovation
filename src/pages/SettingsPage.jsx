@@ -1,4 +1,5 @@
-import { ChevronRight, CreditCard, Radio, Sliders, Shield } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { ChevronRight, CreditCard, Radio, RotateCcw, Sliders, Shield } from 'lucide-react';
 import { PageShell, SubPageLink } from '../components/SubPageHeader';
 import SignalRoomPanel from '../components/SignalRoomPanel';
 import { useProtection } from '../context/ProtectionContext';
@@ -11,13 +12,28 @@ const SECTIONS = [
 ];
 
 export default function SettingsPage({ wide = false }) {
-  const { remoteSignalStatus } = useProtection();
+  const { remoteSignalStatus, refreshData } = useProtection();
+  const navigate = useNavigate();
+
+  const handleReset = () => {
+    refreshData();
+    navigate('/', { replace: true });
+  };
 
   return (
     <PageShell title="Settings" backTo="/profile" wide={wide}>
       <div className="space-y-4 mb-4">
         <SignalRoomPanel remoteStatus={remoteSignalStatus} />
       </div>
+
+      <button
+        type="button"
+        onClick={handleReset}
+        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-hsbc-red/30 bg-red-50 text-hsbc-red text-sm font-semibold hover:bg-hsbc-red hover:text-white transition-colors mb-4"
+      >
+        <RotateCcw className="w-4 h-4" /> Reset demo
+      </button>
+
       <div className="bg-white rounded-xl border border-gray-100 divide-y divide-gray-50">
         {SECTIONS.map(({ icon: Icon, label, desc, to }) => (
           <SubPageLink key={to} to={to} className="flex items-center gap-4 px-4 py-4 hover:bg-red-50 transition-colors">

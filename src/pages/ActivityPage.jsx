@@ -1,9 +1,19 @@
-import { ACTIVITY_LOG, SCENARIOS } from '../data/constants';
+import { useCallback, useEffect, useState } from 'react';
+import { SCENARIOS } from '../data/constants';
 import { useProtection } from '../context/ProtectionContext';
+import { loadActivityLog } from '../utils/activityStore';
 import { Activity } from 'lucide-react';
 
 export default function ActivityPage({ variant = 'mobile' }) {
   const { setScenarioId } = useProtection();
+  const [log, setLog] = useState(loadActivityLog);
+
+  const refresh = useCallback(() => setLog(loadActivityLog()), []);
+
+  useEffect(() => {
+    window.addEventListener('mpf-activity-change', refresh);
+    return () => window.removeEventListener('mpf-activity-change', refresh);
+  }, [refresh]);
 
   return (
     <div className={variant === 'web' ? 'w-full' : ''}>
@@ -13,8 +23,8 @@ export default function ActivityPage({ variant = 'mobile' }) {
           <h2 className="font-bold text-gray-900">Reallocation history</h2>
         </div>
         <ul className="divide-y divide-gray-50">
-          {ACTIVITY_LOG.map((item, i) => (
-            <li key={i}>
+          {log.map((item, i) => (
+            <li key={`${item.scenario}-${item.time}-${i}`}>
               <button
                 type="button"
                 onClick={() => setScenarioId(item.scenario)}
@@ -31,7 +41,7 @@ export default function ActivityPage({ variant = 'mobile' }) {
                   </div>
                 </div>
                 <p className="text-xs text-gray-400 mt-1">
-                  → {SCENARIOS[item.scenario]?.label}
+                  → {SCENARIOS[item.scenario]?.label ?? item.scenario}
                 </p>
               </button>
             </li>
