@@ -20,7 +20,10 @@ export default function ActivityPage({ variant = 'mobile' }) {
       <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
         <div className="px-4 py-3 border-b border-gray-100 flex items-center gap-2">
           <Activity className="w-5 h-5 text-hsbc-red" />
-          <h2 className="font-bold text-gray-900">Reallocation history</h2>
+          <div>
+            <h2 className="font-bold text-gray-900">Reallocation history</h2>
+            <p className="text-xs text-gray-500 mt-0.5">Live alerts when coverage shifts — NFC, signals, and scenarios</p>
+          </div>
         </div>
         <ul className="divide-y divide-gray-50">
           {log.map((item, i) => (

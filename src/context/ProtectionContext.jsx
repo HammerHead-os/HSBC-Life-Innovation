@@ -3,7 +3,6 @@ import { SCENARIOS, CATEGORIES } from '../data/constants';
 import {
   buildInitialInsights,
   buildInitialNotifications,
-  createAllocationInsight,
   createAllocationNotification,
 } from '../data/insights';
 import { getScenarioPopup } from '../data/scenarioPopups';
@@ -73,9 +72,7 @@ export function ProtectionProvider({ children }) {
 
   const [scenarioId, setScenarioIdState] = useState(initialScenario);
   const [allocatedAt, setAllocatedAt] = useState(initialTime);
-  const [insights, setInsights] = useState(
-    saved?.insights ?? buildInitialInsights(initialScenario, initialTime),
-  );
+  const [insights, setInsights] = useState(buildInitialInsights);
   const [notifications, setNotifications] = useState(
     saved?.notifications ?? buildInitialNotifications(initialScenario, initialTime),
   );
@@ -168,10 +165,6 @@ export function ProtectionProvider({ children }) {
     const settings = loadSettings();
     setScenarioIdState(id);
     setAllocatedAt(time);
-    setInsights((prev) => [
-      createAllocationInsight(next, time),
-      ...prev.filter((item) => item.source !== 'ai' || item.scenario !== id),
-    ]);
     if (settings.reallocationAlerts) {
       setNotifications((prev) => [
         createAllocationNotification(next, time),
@@ -256,9 +249,9 @@ export function ProtectionProvider({ children }) {
   useEffect(() => {
     localStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify({ scenarioId, allocatedAt, insights, notifications }),
+      JSON.stringify({ scenarioId, allocatedAt, notifications }),
     );
-  }, [scenarioId, allocatedAt, insights, notifications]);
+  }, [scenarioId, allocatedAt, notifications]);
 
   // External signals — same-device localStorage + cross-device room relay.
   useEffect(() => {
@@ -301,14 +294,13 @@ export function ProtectionProvider({ children }) {
     setDisplayAllocation({ ...resetAlloc });
     setScenarioIdState('tokyo');
     setAllocatedAt(time);
-    setInsights(buildInitialInsights('tokyo', time));
+    setInsights(buildInitialInsights());
     setNotifications(buildInitialNotifications('tokyo', time));
     localStorage.setItem(
       STORAGE_KEY,
       JSON.stringify({
         scenarioId: 'tokyo',
         allocatedAt: time,
-        insights: buildInitialInsights('tokyo', time),
         notifications: buildInitialNotifications('tokyo', time),
       }),
     );

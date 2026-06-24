@@ -1,4 +1,4 @@
-import { Bot, Heart, HeartPulse, Plane, Home, Shield, Scale, Info, TrendingUp, Zap } from 'lucide-react';
+import { Bot, Heart, HeartPulse, Plane, Home, Shield, Scale, Info, TrendingUp, Zap, Newspaper, BookOpen, BarChart3 } from 'lucide-react';
 import { CATEGORIES } from '../data/constants';
 
 const CATEGORY_ICONS = {
@@ -19,7 +19,7 @@ export default function InsightCard({ title, body, highlightCategory, variant = 
   return (
     <div className={`bg-white rounded-2xl shadow-sm border border-gray-100 h-full ${isWeb ? 'p-5' : 'p-4'}`}>
       <p className={`font-bold text-hsbc-red uppercase tracking-wide mb-1 ${isWeb ? 'text-sm' : 'text-xs'}`}>
-        Today&apos;s insight
+        Active coverage
       </p>
       <h3 className={`font-bold text-gray-900 mb-2 ${isWeb ? 'text-lg' : 'text-base'}`}>{title}</h3>
       <div className={`flex gap-4 items-start ${isWeb ? 'flex-col sm:flex-row' : ''}`}>
@@ -68,9 +68,31 @@ export default function InsightCard({ title, body, highlightCategory, variant = 
   );
 }
 
+const INSIGHT_ICONS = {
+  travel: Plane,
+  boost: Zap,
+  summary: TrendingUp,
+  news: Newspaper,
+  research: BookOpen,
+  product: Newspaper,
+  market: BarChart3,
+  guidance: Shield,
+  info: Info,
+  alert: Zap,
+};
+
+const SOURCE_LABELS = {
+  'hsbc-research': 'HSBC Life Research',
+  'hsbc-product': 'HSBC Life',
+  'hsbc-market': 'Market insight',
+  hsbc: 'HSBC Life',
+  ai: 'AI',
+  system: 'System',
+};
+
 export function InsightListItem({ title, body, time, type, source }) {
-  const TypeIcon = type === 'travel' ? Plane : type === 'boost' ? Zap : type === 'summary' ? TrendingUp : type === 'news' ? Info : Info;
-  const sourceLabel = source === 'hsbc' ? 'HSBC News' : source === 'ai' ? 'AI' : null;
+  const TypeIcon = INSIGHT_ICONS[type] ?? Info;
+  const sourceLabel = SOURCE_LABELS[source] ?? null;
 
   return (
     <div className="bg-white rounded-xl p-4 border border-gray-100 flex gap-3">

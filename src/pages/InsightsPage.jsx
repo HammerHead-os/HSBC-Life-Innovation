@@ -2,22 +2,18 @@ import { InsightListItem } from '../components/InsightCard';
 import { useProtection } from '../context/ProtectionContext';
 
 export default function InsightsPage({ variant = 'mobile' }) {
-  const { insights, setScenarioId } = useProtection();
+  const { insights } = useProtection();
 
   return (
     <div className={`space-y-3 ${variant === 'web' ? 'w-full' : ''}`}>
-      <p className="text-sm text-gray-600 px-1">
-        Live AI reallocations and HSBC Life news — updated as soon as coverage shifts.
+      <p className="text-sm text-gray-600 px-1 leading-relaxed">
+        Research, product perspective, and market context from HSBC Life — not live reallocation alerts.
+        For coverage shifts, see <strong className="text-gray-800">Activity</strong>.
       </p>
       {insights.map((item) => (
-        <button
-          key={item.id}
-          type="button"
-          onClick={() => item.scenario && setScenarioId(item.scenario)}
-          className={`w-full text-left rounded-xl transition-colors ${item.scenario ? 'hover:bg-red-50 cursor-pointer' : 'cursor-default'}`}
-        >
+        <div key={item.id} className="rounded-xl">
           <InsightListItem {...item} />
-        </button>
+        </div>
       ))}
     </div>
   );

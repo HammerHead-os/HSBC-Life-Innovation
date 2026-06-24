@@ -81,11 +81,11 @@ export default function NotificationBell({ light = false }) {
             })}
           </div>
           <Link
-            to="/insights"
+            to="/activity"
             onClick={() => setOpen(false)}
             className="block text-center text-xs font-semibold text-hsbc-red py-3 border-t border-gray-100 hover:bg-red-50 hover:text-hsbc-red-dark transition-colors"
           >
-            View all insights
+            View reallocation history
           </Link>
         </div>
       )}

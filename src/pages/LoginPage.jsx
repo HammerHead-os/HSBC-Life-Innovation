@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useProtection } from '../context/ProtectionContext';
 import { HsbcLogo } from '../components/QuickActions';
@@ -8,10 +8,20 @@ import { PENDING_TAP_KEY } from '../utils/pendingTap';
 import { USER } from '../data/constants';
 
 export default function LoginPage() {
-  const { isAuthenticated, login } = useAuth();
+  const { isAuthenticated, login, logout } = useAuth();
   const { setScenarioId } = useProtection();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [name, setName] = useState('');
+  const clearedSignIn = useRef(false);
+
+  // Landing-page “Web Dashboard” link uses ?signin=1 so booth laptops always see login.
+  useEffect(() => {
+    if (clearedSignIn.current || searchParams.get('signin') !== '1') return;
+    clearedSignIn.current = true;
+    logout();
+    setSearchParams({}, { replace: true });
+  }, [logout, searchParams, setSearchParams]);
 
   useEffect(() => {
     if (!isAuthenticated) return;

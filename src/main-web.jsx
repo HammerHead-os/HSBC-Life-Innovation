@@ -22,7 +22,6 @@ import DetailsPage from './pages/DetailsPage';
 import FAQPage from './pages/FAQPage';
 import TapTriggerPage from './pages/TapTriggerPage';
 import ScenarioPopup from './components/ScenarioPopup';
-import ParametricClaimToast from './components/ParametricClaimToast';
 import './index.css';
 
 const BASE = '';
@@ -33,7 +32,6 @@ export default function WebApp() {
       <ProtectionProvider>
         <HashRouter>
           <ScenarioPopup />
-          <ParametricClaimToast />
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/tap/:scenarioId" element={<TapTriggerPage />} />
