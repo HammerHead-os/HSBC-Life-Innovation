@@ -58,8 +58,8 @@ export default function SignalRoomPanel({
   }
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 p-4 space-y-2">
-      <div className="flex items-center gap-2 text-xs text-gray-600">
+    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+      <div className="flex items-center gap-2 text-sm font-medium text-gray-800">
         {isOnline ? (
           <Wifi className="w-4 h-4 text-emerald-600 shrink-0" />
         ) : (
@@ -68,23 +68,28 @@ export default function SignalRoomPanel({
         <span>{statusLabel}</span>
       </div>
       {variant === 'console' && (
-        <>
-          <p className="text-[11px] text-gray-500 leading-relaxed">
-            <strong className="text-gray-700">Primary:</strong> cloud broadcast — works for unlimited phones on the
-            same café Wi‑Fi, mobile data, or a mix. No peer-to-peer needed.
-          </p>
-          <p className="text-[11px] text-gray-400 leading-relaxed">
-            <strong className="text-gray-500">Backup:</strong> direct peer link when cloud is blocked. Audience opens{' '}
-            <span className="font-mono break-all">{POSTER_URL}</span> → Mobile App → log in → keep Home open.
-          </p>
-          <p className="text-[11px] text-gray-400 leading-relaxed flex items-start gap-1.5">
-            <Radio className="w-3.5 h-3.5 shrink-0 mt-0.5 text-hsbc-red" />
-            <span>
-              <strong className="text-gray-500">Standby:</strong> if both fail, use the tap URLs in the hazard section —
-              each person scans or opens the link on their own phone (same as NFC).
-            </span>
-          </p>
-        </>
+        <details className="mt-3 group">
+          <summary className="text-xs font-semibold text-gray-500 cursor-pointer hover:text-hsbc-red list-none [&::-webkit-details-marker]:hidden">
+            How relay &amp; standby work
+          </summary>
+          <div className="mt-2 space-y-2 text-[11px] text-gray-500 leading-relaxed">
+            <p>
+              <strong className="text-gray-700">Primary:</strong> cloud broadcast to every phone on the poster link —
+              café Wi‑Fi, mobile data, or mixed.
+            </p>
+            <p>
+              <strong className="text-gray-600">Backup:</strong> direct peer link when cloud is blocked. Audience opens{' '}
+              <span className="font-mono break-all text-gray-400">{POSTER_URL}</span> → Mobile App → log in.
+            </p>
+            <p className="flex items-start gap-1.5">
+              <Radio className="w-3.5 h-3.5 shrink-0 mt-0.5 text-hsbc-red" />
+              <span>
+                <strong className="text-gray-600">Standby:</strong> expand any card below and copy its tap URL if relay
+                fails.
+              </span>
+            </p>
+          </div>
+        </details>
       )}
     </div>
   );

@@ -1,6 +1,7 @@
 import { StrictMode, useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Copy, ExternalLink, Flame, Wind, CloudRain, CloudLightning, Bike, Bus, Train, Ticket, MapPin, Dumbbell, Waves, Mountain } from 'lucide-react';
+import './index.css';
 import { LOCATION_SCENARIO_IDS, SCENARIOS } from './data/constants';
 import { EXTERNAL_SIGNAL_KEY } from './context/ProtectionContext';
 import { getTapUrl } from './utils/tapUrl';
@@ -35,7 +36,8 @@ const GROUPS = [
     ],
   },
   {
-    title: 'Partner venues (signals only — no NFC)',
+    title: 'Partner venues',
+    subtitle: 'Signals only — no NFC',
     items: [
       { id: 'gym', icon: Dumbbell, label: 'Gym / fitness centre' },
       { id: 'pool', icon: Waves, label: 'Public swimming pool' },
@@ -112,7 +114,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-3xl mx-auto p-6 space-y-5">
-        <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
           <p className="text-xs font-bold text-hsbc-red uppercase tracking-wide mb-1">Signals Console</p>
           <h1 className="text-xl font-bold text-gray-900">Send live signals to the app</h1>
           <p className="text-sm text-gray-600 mt-2 leading-relaxed">
@@ -138,8 +140,11 @@ function App() {
         <SignalRoomPanel variant="console" relay={relay} />
 
         {GROUPS.map((group) => (
-          <div key={group.title} className="bg-white rounded-2xl border border-gray-100 p-5">
-            <h2 className="font-bold text-gray-900 mb-3">{group.title}</h2>
+          <div key={group.title} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+            <div className="mb-3">
+              <h2 className="font-bold text-gray-900">{group.title}</h2>
+              {group.subtitle && <p className="text-xs text-gray-500 mt-0.5">{group.subtitle}</p>}
+            </div>
             <div className="grid sm:grid-cols-2 gap-3">
               {group.items.map((item) => {
                 const Icon = item.icon;
@@ -188,10 +193,14 @@ function App() {
                       )}
                     </div>
 
-                    <p className={`text-[11px] mt-3 break-all font-mono ${signalOnlyIds.has(item.id) ? 'text-amber-600/80' : 'text-gray-400'}`}>
-                      {signalOnlyIds.has(item.id) ? 'Standby: ' : ''}
-                      {url}
-                    </p>
+                    <details className="mt-3 group">
+                      <summary className="text-[11px] font-semibold text-gray-500 cursor-pointer hover:text-hsbc-red list-none [&::-webkit-details-marker]:hidden">
+                        {signalOnlyIds.has(item.id) ? 'Standby tap URL' : 'NFC tap URL'}
+                      </summary>
+                      <p className={`text-[11px] mt-1.5 break-all font-mono leading-relaxed ${signalOnlyIds.has(item.id) ? 'text-amber-700/80' : 'text-gray-400'}`}>
+                        {url}
+                      </p>
+                    </details>
                   </div>
                 );
               })}
