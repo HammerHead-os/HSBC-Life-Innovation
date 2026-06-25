@@ -6,7 +6,8 @@ const GROUP_ICONS = {
   'HKO weather & hazard alerts': CloudRain,
   'Card + verified location (two-step)': MapPin,
   'Mobility & transit taps': Wallet,
-  'Gig work & activity checkpoints': Radio,
+  'Gig work': Radio,
+  'Partner venue locations (signals console)': MapPin,
   'Cyber (HSBC card feed)': Shield,
 };
 

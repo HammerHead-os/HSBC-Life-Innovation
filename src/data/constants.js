@@ -10,7 +10,7 @@ export const CATEGORIES = [
   { key: 'liability', name: 'Liability', color: '#6B9E8A', multiplier: 1000, floor: 5, max: 90 },
 ];
 
-// Manual demo picker — every NFC booth scenario except gate checkpoints (airport / HSR location only).
+// Manual demo picker — NFC booth + hazards + partner venues (gates stay NFC-only).
 export const DEMO_SCENARIO_IDS = [
   'helloride',
   'bus',
@@ -22,10 +22,15 @@ export const DEMO_SCENARIO_IDS = [
   'fire',
   'tornado',
   'keeta',
+  'gym',
+  'pool',
   'climbing',
   'tokyo',
   'guangzhou',
 ];
+
+/** Partner venue checkpoints — signals console only (no NFC). */
+export const LOCATION_SCENARIO_IDS = ['gym', 'pool', 'climbing'];
 
 export const SCENARIOS = {
   tokyo: {
@@ -77,6 +82,26 @@ export const SCENARIOS = {
     highlightCategory: 'health',
     allocatedAt: '14:00',
     allocation: { life: 90, health: 70, travel: 5, property: 15, cyber: 5, liability: 15 },
+  },
+  gym: {
+    id: 'gym',
+    label: 'Gym / fitness centre',
+    icon: 'dumbbell',
+    insight: 'Location checkpoint: registered fitness centre — health and liability cover boosted for your session window.',
+    insightTitle: 'Gym checkpoint detected',
+    highlightCategory: 'health',
+    allocatedAt: '18:30',
+    allocation: { life: 90, health: 62, travel: 5, property: 15, cyber: 5, liability: 18 },
+  },
+  pool: {
+    id: 'pool',
+    label: 'Public swimming pool',
+    icon: 'waves',
+    insight: 'Location checkpoint: LCSD pool venue — health cover increased for the swim session. Membership payment alone does not trigger this.',
+    insightTitle: 'Pool checkpoint detected',
+    highlightCategory: 'health',
+    allocatedAt: '07:00',
+    allocation: { life: 90, health: 58, travel: 5, property: 15, cyber: 5, liability: 12 },
   },
 
   // Mobility (good “tap → risk now” examples)

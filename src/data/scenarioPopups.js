@@ -1,5 +1,6 @@
 const HAZARD_IDS = new Set(['typhoon', 'black_rain', 'fire', 'tornado']);
-const CHECKPOINT_IDS = new Set(['flight_gate', 'hsr_gate', 'climbing', 'guangzhou']);
+const LOCATION_IDS = new Set(['gym', 'pool', 'climbing']);
+const CHECKPOINT_IDS = new Set(['flight_gate', 'hsr_gate', 'guangzhou']);
 const MOBILITY_IDS = new Set(['helloride', 'bus', 'mtr_gate', 'keeta']);
 
 const POPUP_COPY = {
@@ -74,8 +75,18 @@ const POPUP_COPY = {
     variant: 'mobility',
   },
   climbing: {
-    title: 'Activity checkpoint',
+    title: 'Rock climbing checkpoint',
     body: 'Kai Tak Climbing Centre — session cover active for 2 hours.',
+    variant: 'checkpoint',
+  },
+  gym: {
+    title: 'Gym checkpoint',
+    body: 'Registered fitness centre — health & liability cover boosted for your session.',
+    variant: 'checkpoint',
+  },
+  pool: {
+    title: 'Swimming pool checkpoint',
+    body: 'LCSD pool venue confirmed — health cover increased for your swim window.',
     variant: 'checkpoint',
   },
 };
@@ -86,7 +97,7 @@ export function getScenarioPopup(scenario) {
 
   let variant = 'default';
   if (HAZARD_IDS.has(scenario.id)) variant = 'hazard';
-  else if (CHECKPOINT_IDS.has(scenario.id)) variant = 'checkpoint';
+  else if (LOCATION_IDS.has(scenario.id) || CHECKPOINT_IDS.has(scenario.id)) variant = 'checkpoint';
   else if (MOBILITY_IDS.has(scenario.id)) variant = 'mobility';
   else if (scenario.highlightCategory === 'travel') variant = 'travel';
 

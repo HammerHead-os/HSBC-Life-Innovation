@@ -37,8 +37,8 @@ export default function ScenarioPanel({ variant = 'mobile', footer = null }) {
       {(isWeb || expanded) && (
         <>
           <p className={`text-gray-600 mb-3 ${isWeb ? 'text-[15px] leading-snug mt-1' : 'text-sm mt-3'}`}>
-            Same options as the NFC booth — tap a pill to preview, or use the physical boxes.
-            Airport and HSR <strong>gate checkpoints</strong> are NFC-only (not listed here).
+            Same options as the NFC booth and signals console — tap a pill to preview.
+            Airport and HSR <strong>gate checkpoints</strong> are NFC-only; gyms, pools, and climbing are also on the signals console.
           </p>
           <ScenarioPicker
             scenarios={scenarios}

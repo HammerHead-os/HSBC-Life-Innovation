@@ -99,8 +99,8 @@ export const TRIGGER_GROUPS = [
     ],
   },
   {
-    title: 'Gig work & activity checkpoints',
-    summary: 'Food-delivery shift status and partner-venue check-ins. Payment alone is not enough — the platform or venue confirms real risk.',
+    title: 'Gig work',
+    summary: 'Food-delivery shift status from partner platforms. Short liability and health windows while couriering.',
     triggers: [
       {
         label: 'Food delivery shift started',
@@ -110,11 +110,31 @@ export const TRIGGER_GROUPS = [
           'Keeta is a food-delivery platform (like Deliveroo). In the Alex demo he does courier shifts for extra income. When he clocks in, the app’s shift-start API tells HSBC Life he is on the road — liability and health cover scale for that delivery window.',
         shifts: 'Liability ↑ · Health ↑',
       },
+    ],
+  },
+  {
+    title: 'Partner venue locations (signals console)',
+    summary: 'One-time geofence at registered gyms, pools, and activity centres. No NFC box — presenter sends from the signals console.',
+    triggers: [
       {
-        label: 'Kai Tak Climbing Centre checkpoint',
+        label: 'Gym / fitness centre',
+        source: 'Partner venue geofence',
+        scenario: 'gym',
+        detail: 'Verified on-site at a registered fitness centre. Health and liability boosted for the session. Monthly gym payment alone does not trigger this.',
+        shifts: 'Health ↑ · Liability ↑',
+      },
+      {
+        label: 'Public swimming pool',
+        source: 'LCSD venue geofence',
+        scenario: 'pool',
+        detail: 'Checkpoint at a public pool venue. Health cover scales for the swim window — not triggered by membership fees alone.',
+        shifts: 'Health ↑',
+      },
+      {
+        label: 'Rock climbing centre',
         source: 'Partner venue geofence',
         scenario: 'climbing',
-        detail: 'One-time ping at the registered climbing venue. Gym membership payment does not trigger this — only verified on-site arrival.',
+        detail: 'One-time ping at Kai Tak Climbing Centre or partner wall. Session cover active for 2 hours.',
         shifts: 'Health ↑ · Liability ↑',
       },
     ],
@@ -145,6 +165,7 @@ export const TRIGGER_GROUPS = [
 
 export const TRIGGER_NOTES = [
   'Weather triggers come from the HKO open API — the demo signals console simulates a live hazard broadcast.',
+  'Gym, pool, and climbing venues are signals-console only — partner geofence, no NFC box.',
   'Location checkpoints are one-time venue pings (airport gate, West Kowloon Station, Kai Tak) — never continuous GPS.',
   'Card + location pairs need both steps: ticket on file first, then the gate checkpoint, before allocation changes.',
   'Keeta = food-delivery gig work in the Alex scenario. Shift-start is the trigger, not a random app install.',

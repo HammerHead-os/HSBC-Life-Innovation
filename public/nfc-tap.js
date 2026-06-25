@@ -5,7 +5,8 @@
   const PRESENCE = 'mpf-app-presence';
   const VALID = new Set([
     'helloride', 'bus', 'mtr_gate', 'hsr_card', 'hsr_gate', 'flight_card', 'flight_gate',
-    'black_rain', 'fire', 'tornado', 'tokyo', 'keeta', 'guangzhou', 'typhoon', 'climbing',
+    'black_rain', 'fire', 'tornado', 'tokyo', 'keeta', 'guangzhou', 'typhoon',
+    'gym', 'pool', 'climbing',
   ]);
 
   function readTap() {

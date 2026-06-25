@@ -1,8 +1,7 @@
 import { StrictMode, useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Copy, ExternalLink, Flame, Wind, CloudRain, CloudLightning, Bike, Bus, Train, Ticket, MapPin } from 'lucide-react';
-import './index.css';
-import { SCENARIOS } from './data/constants';
+import { Copy, ExternalLink, Flame, Wind, CloudRain, CloudLightning, Bike, Bus, Train, Ticket, MapPin, Dumbbell, Waves, Mountain } from 'lucide-react';
+import { LOCATION_SCENARIO_IDS, SCENARIOS } from './data/constants';
 import { EXTERNAL_SIGNAL_KEY } from './context/ProtectionContext';
 import { getTapUrl } from './utils/tapUrl';
 import { getSignalRoom, sendRemoteSignal, startSignalRelay } from './utils/signalSync';
@@ -33,6 +32,14 @@ const GROUPS = [
       { id: 'black_rain', icon: CloudRain, label: 'Black rainstorm warning' },
       { id: 'fire', icon: Flame, label: 'Fire alert nearby' },
       { id: 'tornado', icon: Wind, label: 'Tornado warning' },
+    ],
+  },
+  {
+    title: 'Partner venues (signals only — no NFC)',
+    items: [
+      { id: 'gym', icon: Dumbbell, label: 'Gym / fitness centre' },
+      { id: 'pool', icon: Waves, label: 'Public swimming pool' },
+      { id: 'climbing', icon: Mountain, label: 'Rock climbing centre' },
     ],
   },
 ];
@@ -100,6 +107,7 @@ function App() {
   };
 
   const hazardIds = new Set(['typhoon', 'tornado', 'fire', 'black_rain']);
+  const signalOnlyIds = new Set([...hazardIds, ...LOCATION_SCENARIO_IDS]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -109,7 +117,7 @@ function App() {
           <h1 className="text-xl font-bold text-gray-900">Send live signals to the app</h1>
           <p className="text-sm text-gray-600 mt-2 leading-relaxed">
             Broadcasts live signals to <strong>every phone</strong> on the poster link — café Wi‑Fi, mobile data, or
-            mixed. Hazard alerts need no NFC. Keep Standby tap URLs ready if the venue blocks outbound connections.
+            mixed. Hazards and venue locations are signal-only (no NFC). Keep Standby tap URLs ready if the venue blocks relay.
           </p>
           <div className="flex gap-2 flex-wrap mt-4">
             <a
@@ -163,14 +171,14 @@ function App() {
                       <Button
                         onClick={() => {
                           copy(url);
-                          setToast(hazardIds.has(item.id) ? 'Standby tap URL copied' : 'NFC URL copied');
+                          setToast(signalOnlyIds.has(item.id) ? 'Standby tap URL copied' : 'NFC URL copied');
                           setTimeout(() => setToast(null), 2000);
                         }}
                       >
-                        {hazardIds.has(item.id) ? 'Copy standby URL' : 'Copy NFC URL'}{' '}
+                        {signalOnlyIds.has(item.id) ? 'Copy standby URL' : 'Copy NFC URL'}{' '}
                         <Copy className="w-4 h-4 text-gray-500" />
                       </Button>
-                      {!hazardIds.has(item.id) && (
+                      {!signalOnlyIds.has(item.id) && (
                         <a
                           href={url}
                           className="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 transition-colors text-sm font-semibold text-gray-800"
@@ -180,8 +188,8 @@ function App() {
                       )}
                     </div>
 
-                    <p className={`text-[11px] mt-3 break-all font-mono ${hazardIds.has(item.id) ? 'text-amber-600/80' : 'text-gray-400'}`}>
-                      {hazardIds.has(item.id) ? 'Standby: ' : ''}
+                    <p className={`text-[11px] mt-3 break-all font-mono ${signalOnlyIds.has(item.id) ? 'text-amber-600/80' : 'text-gray-400'}`}>
+                      {signalOnlyIds.has(item.id) ? 'Standby: ' : ''}
                       {url}
                     </p>
                   </div>

@@ -14,6 +14,8 @@ const ACTIVITY_META = {
   tornado: { event: 'Tornado warning', change: 'Property ↑ · Travel ↓' },
   keeta: { event: 'Keeta delivery mode on', change: 'Liability +20 · Health +15' },
   climbing: { event: 'Checkpoint: Kai Tak Climbing Centre', change: 'Health +25 · Liability +10' },
+  gym: { event: 'Checkpoint: registered gym', change: 'Health ↑ · Liability ↑' },
+  pool: { event: 'Checkpoint: public swimming pool', change: 'Health ↑' },
   tokyo: { event: 'Flight CX500 departure', change: 'Travel +35 · Property −15' },
   guangzhou: { event: 'XRL West Kowloon → Guangzhou', change: 'Travel +35 · Property −15' },
 };
