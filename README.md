@@ -1,5 +1,7 @@
 # Micro Protection Fluid - HSBC Life Innovation Competition
 
+## Crowned Champion and awarded 30,000 HKD.
+
 This is an interactive mobile app and web dashboard prototype for HSBC Life's Innovation Competition 2026
 
 ## Access it online
